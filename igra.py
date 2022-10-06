@@ -1,1 +1,2 @@
-print ("MLK Jr games")
+print ("MLK Jr games") 
+print ("potapanje brodova")
