@@ -12,7 +12,7 @@ PROZOR.fill('White')
 
 FONT = pygame.font.Font(None, 30)
 FPS = 30
-tekst = ""
+
 
 ## OVO MORA LUKA DOVRŠIT
 class Button:
