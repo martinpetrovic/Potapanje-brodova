@@ -22,7 +22,7 @@ LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
-pritisak = 0
+
 BRODOVI_GRUPA = pygame.sprite.Group()
 Kvadrat_x, Kvadrat_y = 0, 0
 
@@ -56,8 +56,6 @@ class Brod(pygame.sprite.Sprite):
             if self.rect.width / 2 == 48:
                 duljina_broda = 2
             self.rect.topleft = (Kvadrat_x, Kvadrat_y)
-        vozi = True
-        while vozi:
             if pygame.key.get_pressed()[pygame.K_r]:
                 self.rotacija()
             collide_kvadrat()
@@ -96,14 +94,12 @@ class Button:
 
 
 def collide_kvadrat():
-    global vozi
     global Kvadrat_x, Kvadrat_y
     mouse_poz = pygame.mouse.get_pos()
     for kvadrat in lista:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
-    vozi = False
         
 
 
