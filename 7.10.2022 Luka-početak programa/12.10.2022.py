@@ -8,13 +8,11 @@ import time
 pygame.init()
 pygame.mixer.init()
 
-lista = []
-lista_rect = []
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
 
-WHITE = (255,255,255)
+#WHITE = (255,255,255)
 FPS = 30
 clock = pygame.time.Clock()
 
@@ -24,8 +22,13 @@ INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
 
+#sve za Brod spriteove i provjere postavljanja
 BRODOVI_GRUPA = pygame.sprite.Group()
+lista_imena_kvadrata = []
+lista_rect_kvadrata = []
 Kvadrat_x, Kvadrat_y = 0, 0
+brr = None
+klik = False
 
 
 class Brod(pygame.sprite.Sprite):
@@ -37,17 +40,17 @@ class Brod(pygame.sprite.Sprite):
         self.image = pygame.image.load(picture_path)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
-        self.copy = pygame.Surface.copy(self.image)
+       
     
     def rotacija(self): 
         self.image = pygame.transform.rotate(self.image, 90)
         
 
     def collide(self):
+        global brr
         global duljina_broda
         mouse_poz = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse_poz):
-                    # self.image.rotacija()
             if self.rect.width / 5 == 48:
                 duljina_broda = 5
             if self.rect.width / 4 == 48:
@@ -56,13 +59,38 @@ class Brod(pygame.sprite.Sprite):
                 duljina_broda = 3
             if self.rect.width / 2 == 48:
                 duljina_broda = 2
-            if pygame.key.get_pressed()[pygame.K_r]:
-                self.rotacija()
-            collide_kvadrat()
-            self.rect.topleft = (Kvadrat_x, Kvadrat_y)
+            brr = self
+       
+    
+def čekanje_za_odabir(brr):
+    global idi
+    count_r = 0
+    idi = True
+    while idi:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and event.key == K_r:
+                #if count_r == 1:
+                #    brr.rotacija_neg_90()
+                if count_r == 0:
+                    brr.rotacija_poz_90()
+                #    count_r == 1:
                 
+            if event.type == MOUSEBUTTONDOWN:
+                collide_kvadrat()
                 
-                
+def collide_kvadrat():
+    global Kvadrat_x, Kvadrat_y
+    global idi
+    mouse_poz = pygame.mouse.get_pos()
+    for kvadrat in lista_rect_kvadrata:
+            if kvadrat.collidepoint(mouse_poz):
+                if pygame.mouse.get_pressed()[0]:
+                    Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
+                    brr.rect.topleft = (Kvadrat_x, Kvadrat_y)
+                    idi = False
                    
 
 class Button:
@@ -94,13 +122,7 @@ class Button:
 
 
 
-def collide_kvadrat():
-    global Kvadrat_x, Kvadrat_y
-    mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista_rect:
-            if kvadrat.collidepoint(mouse_poz):
-                if pygame.mouse.get_pressed()[0]:
-                    Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
+
         
 
 
@@ -118,8 +140,8 @@ def GRIDLIJEVO():
             x = x + 48
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
             Kvadrat = "a" + str(i) + str(j)
-            lista.append(Kvadrat)
-            lista_rect.append(KVADRAT_RECT)
+            lista_imena_kvadrata.append(Kvadrat)
+            lista_rect_kvadrata.append(KVADRAT_RECT)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
          
 
@@ -270,6 +292,20 @@ def play():
                 DESTROYER.collide()
                 SUBMARINE.collide()
                 PATROL.collide()
+                if brr == CARRIER:
+                    čekanje_za_odabir(CARRIER)
+
+                elif brr == BATTLESHIP:
+                    čekanje_za_odabir(BATTLESHIP)
+
+                elif brr == SUBMARINE:
+                    čekanje_za_odabir(SUBMARINE)
+
+                elif brr == DESTROYER:
+                    čekanje_za_odabir(DESTROYER)
+
+                elif brr == PATROL:
+                    čekanje_za_odabir(PATROL)
 
                 
 
