@@ -96,9 +96,10 @@ class Button:
 
 
 def collide_kvadrat():
+    global vozi
     global Kvadrat_x, Kvadrat_y
     mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista():
+    for kvadrat in lista:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
@@ -122,7 +123,7 @@ def GRIDLIJEVO():
             Kvadrat = "a" + i + j
             lista.append(kvadrat)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
-            collide_kvadrat(KVADRAT_RECT)
+         
 
 
             #collide_kvadrat(KVADRAT_RECT)
