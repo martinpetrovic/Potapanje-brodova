@@ -1,3 +1,4 @@
+from ast import main
 import imghdr
 from tkinter import font
 import pygame, sys
