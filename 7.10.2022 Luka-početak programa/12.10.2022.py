@@ -38,10 +38,8 @@ class Brod(pygame.sprite.Sprite):
         self.rect.topleft =(poz_x, poz_y)
         self.copy = pygame.Surface.copy(self.image)
     
-    def rotacija(self):
-        mouse_poz = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mouse_poz): 
-            self.image = pygame.transform.rotate(self.image, 90)
+    def rotacija(self): 
+        self.image = pygame.transform.rotate(self.image, 90)
         
 
     def collide(self):
@@ -97,13 +95,13 @@ class Button:
 
 
 
-def collide_kvadrat(kvadratrect):
+def collide_kvadrat():
     global Kvadrat_x, Kvadrat_y
     mouse_poz = pygame.mouse.get_pos()
-    for i in lista():
-            if i.collidepoint(mouse_poz):
+    for kvadrat in lista():
+            if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
-                    Kvadrat_x, Kvadrat_y = KVADRAT_RECT.x, KVADRAT_RECT.y
+                    Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
     vozi = False
         
 
