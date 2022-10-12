@@ -9,6 +9,7 @@ pygame.init()
 pygame.mixer.init()
 
 lista = []
+lista_rect = []
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
@@ -117,7 +118,7 @@ def GRIDLIJEVO():
             x = x + 48
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
             Kvadrat = "a" + i + j
-            lista.append(kvadrat)
+            lista.append(Kvadrat)
             lista_rect.append(KVADRAT_RECT)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
          
