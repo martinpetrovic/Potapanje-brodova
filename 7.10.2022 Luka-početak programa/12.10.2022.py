@@ -55,10 +55,10 @@ class Brod(pygame.sprite.Sprite):
                 duljina_broda = 3
             if self.rect.width / 2 == 48:
                 duljina_broda = 2
-            self.rect.topleft = (Kvadrat_x, Kvadrat_y)
             if pygame.key.get_pressed()[pygame.K_r]:
                 self.rotacija()
             collide_kvadrat()
+            self.rect.topleft = (Kvadrat_x, Kvadrat_y)
                 
                 
                 
@@ -96,7 +96,7 @@ class Button:
 def collide_kvadrat():
     global Kvadrat_x, Kvadrat_y
     mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista:
+    for kvadrat in lista_rect:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
@@ -118,6 +118,7 @@ def GRIDLIJEVO():
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
             Kvadrat = "a" + i + j
             lista.append(kvadrat)
+            lista_rect.append(KVADRAT_RECT)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
          
 
