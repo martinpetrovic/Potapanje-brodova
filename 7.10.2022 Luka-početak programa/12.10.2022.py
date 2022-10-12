@@ -117,7 +117,7 @@ def GRIDLIJEVO():
         for j in range (10):
             x = x + 48
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
-            Kvadrat = "a" + i + j
+            Kvadrat = "a" + str(i) + str(j)
             lista.append(Kvadrat)
             lista_rect.append(KVADRAT_RECT)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
@@ -270,13 +270,6 @@ def play():
                 DESTROYER.collide()
                 SUBMARINE.collide()
                 PATROL.collide()
-            if event.type == KEYDOWN:
-                if event.key == K_r:
-                    CARRIER.rotacija()
-                    BATTLESHIP.rotacija()
-                    DESTROYER.rotacija()
-                    SUBMARINE.rotacija()
-                    PATROL.rotacija()
 
                 
 
