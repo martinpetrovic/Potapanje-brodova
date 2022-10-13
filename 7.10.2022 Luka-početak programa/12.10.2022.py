@@ -8,27 +8,28 @@ import time
 pygame.init()
 pygame.mixer.init()
 
+#Definiranje displaya
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
 
+#clock i boje
 #WHITE = (255,255,255)
 FPS = 30
 clock = pygame.time.Clock()
 
-
+#Slike, zvuk, font
 LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
 
-#sve za Brod spriteove i provjere postavljanja
+#Sve za Brod spriteove i provjere postavljanja
 BRODOVI_GRUPA = pygame.sprite.Group()
 lista_imena_kvadrata = []
 lista_rect_kvadrata = []
 Kvadrat_x, Kvadrat_y = 0, 0
-brr = None
-klik = False
+brod = None
 
 
 class Brod(pygame.sprite.Sprite):
@@ -41,13 +42,26 @@ class Brod(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
        
+    # def update(self):
+        # BRODOVI_GRUPA.clear(PROZOR, BACKGROUND )
+        # BRODOVI_GRUPA.update()
+        # BRODOVI_GRUPA.draw(PROZOR)
+        # pygame.display.update()
     
-    def rotacija(self): 
+    def rotacija_poz_90(self): 
         self.image = pygame.transform.rotate(self.image, 90)
+        # BRODOVI_GRUPA.clear(PROZOR, BACKGROUND)
+        # BRODOVI_GRUPA.update()
+        # BRODOVI_GRUPA.draw(PROZOR)
+        # pygame.display.update()
+        
+    def rotacija_neg_90(self):
+        self.image = pygame.transform.rotate(self.image, -90)
+        # self.update()
         
 
     def collide(self):
-        global brr
+        global brod
         global duljina_broda
         mouse_poz = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse_poz):
@@ -59,12 +73,11 @@ class Brod(pygame.sprite.Sprite):
                 duljina_broda = 3
             if self.rect.width / 2 == 48:
                 duljina_broda = 2
-            brr = self
+            brod = self
        
     
-def čekanje_za_odabir(brr):
+def čekanje_za_odabir(brod,brod_r):
     global idi
-    count_r = 0
     idi = True
     while idi:
         for event in pygame.event.get():
@@ -72,11 +85,17 @@ def čekanje_za_odabir(brr):
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN and event.key == K_r:
-                #if count_r == 1:
-                #    brr.rotacija_neg_90()
-                if count_r == 0:
-                    brr.rotacija_poz_90()
-                #    count_r == 1:
+                if brod_r == 0:
+                    brod.rotacija_poz_90()
+                    brodovi_rotacija.update({brod:1})
+                    print(brodovi_rotacija.values())
+                    brod_r = 1
+                    print("poz")
+                elif brod_r == 1: 
+                    brod.rotacija_neg_90()
+                    brodovi_rotacija.update({brod:0})
+                    brod_r = 0
+                    print("neg")
                 
             if event.type == MOUSEBUTTONDOWN:
                 collide_kvadrat()
@@ -89,7 +108,7 @@ def collide_kvadrat():
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
-                    brr.rect.topleft = (Kvadrat_x, Kvadrat_y)
+                    brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
                     idi = False
                    
 
@@ -135,7 +154,6 @@ def GRIDLIJEVO():
     for i in range(10):
         y = y + 48
         x = 50
-        #collide_kvadrat(KVADRAT_RECT)
         for j in range (10):
             x = x + 48
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
@@ -146,7 +164,6 @@ def GRIDLIJEVO():
          
 
 
-            #collide_kvadrat(KVADRAT_RECT)
     #brojevi
     broj_x = 70
     broj_y = 160
@@ -259,17 +276,19 @@ def esc_screen(ulazni_tekst, screen):
 
         
 
-CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
-BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
-DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
-SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
-PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
 
-BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,PATROL,DESTROYER,SUBMARINE)
 
 def play():
+    CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
+    BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
+    DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
+    SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
+    PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
+    BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,PATROL,DESTROYER,SUBMARINE)
     run = True
     global zmaj
+    global brodovi_rotacija
+    brodovi_rotacija = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
     while run:
         zmaj = False
         PROZOR.fill('White')
@@ -292,20 +311,20 @@ def play():
                 DESTROYER.collide()
                 SUBMARINE.collide()
                 PATROL.collide()
-                if brr == CARRIER:
-                    čekanje_za_odabir(CARRIER)
+                if brod == CARRIER:
+                    čekanje_za_odabir(CARRIER,brodovi_rotacija.get(CARRIER))
+        
+                elif brod == BATTLESHIP:
+                    čekanje_za_odabir(BATTLESHIP,brodovi_rotacija.get(BATTLESHIP))
 
-                elif brr == BATTLESHIP:
-                    čekanje_za_odabir(BATTLESHIP)
+                elif brod == SUBMARINE:
+                    čekanje_za_odabir(SUBMARINE,brodovi_rotacija.get(SUBMARINE))
 
-                elif brr == SUBMARINE:
-                    čekanje_za_odabir(SUBMARINE)
+                elif brod == DESTROYER:
+                    čekanje_za_odabir(DESTROYER,brodovi_rotacija.get(DESTROYER))
 
-                elif brr == DESTROYER:
-                    čekanje_za_odabir(DESTROYER)
-
-                elif brr == PATROL:
-                    čekanje_za_odabir(PATROL)
+                elif brod == PATROL:
+                    čekanje_za_odabir(PATROL,brodovi_rotacija.get(PATROL))
 
                 
 
