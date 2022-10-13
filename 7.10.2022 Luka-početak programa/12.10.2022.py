@@ -14,7 +14,7 @@ PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
 
 #clock i boje
-#WHITE = (255,255,255)
+WHITE = (255,255,255)
 FPS = 30
 clock = pygame.time.Clock()
 
@@ -42,22 +42,22 @@ class Brod(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
        
-    # def update(self):
-        # BRODOVI_GRUPA.clear(PROZOR, BACKGROUND )
-        # BRODOVI_GRUPA.update()
-        # BRODOVI_GRUPA.draw(PROZOR)
-        # pygame.display.update()
     
     def rotacija_poz_90(self): 
+        PROZOR.fill(WHITE)
+        GRID_LIJEVO()
+        GRID_DESNO()
         self.image = pygame.transform.rotate(self.image, 90)
-        # BRODOVI_GRUPA.clear(PROZOR, BACKGROUND)
-        # BRODOVI_GRUPA.update()
-        # BRODOVI_GRUPA.draw(PROZOR)
-        # pygame.display.update()
-        
+        BRODOVI_GRUPA.draw(PROZOR)
+        pygame.display.update()
+
     def rotacija_neg_90(self):
+        PROZOR.fill(WHITE)
+        GRID_LIJEVO()
+        GRID_DESNO()
         self.image = pygame.transform.rotate(self.image, -90)
-        # self.update()
+        BRODOVI_GRUPA.draw(PROZOR)
+        pygame.display.update()
         
 
     def collide(self):
