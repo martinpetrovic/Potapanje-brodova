@@ -23,7 +23,6 @@ KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
 
 #Sve za Brod spriteove i provjere postavljanja
-BRODOVI_GRUPA = pygame.sprite.Group()
 lista_imena_kvadrata = []
 lista_rect_kvadrata = []
 Kvadrat_x, Kvadrat_y = 0, 0
@@ -272,15 +271,13 @@ def esc_screen(ulazni_tekst, screen):
         clock.tick(FPS)
 
         
-
-
-
-def play():
+def postavljanje_igracaA():
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
     SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
     PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
+    BRODOVI_GRUPA = pygame.sprite.Group()
     BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,PATROL,DESTROYER,SUBMARINE)
     run = True
     global zmaj
@@ -327,6 +324,28 @@ def play():
 
         pygame.display.update()
         clock.tick(FPS)
+        
+#postavljanje_igracaB()
+
+#def igranje_A_ekran():
+
+#def igranje_B_ekran():
+
+
+def play():
+    postavljanje_igracA()
+    #postavljanje_igracaB()
+    rezultat1 = 17
+    rezultat2 = 17
+    run = True
+    #while run:
+        #igranje_A_ekran()
+        #if rezultat1 or rezultat2 == 0:
+            #run = False
+        #igranje_B_ekran()
+        #if rezultat1 or rezultat2 == 0:
+            #run = False
+    #zavrsetak()
 
 def main():
     #LOADING_SCREEN()
