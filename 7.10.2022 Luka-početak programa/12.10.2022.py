@@ -1,6 +1,4 @@
 from ast import main
-import imghdr
-from tkinter import font
 import pygame, sys
 from pygame.locals import *
 import os
@@ -228,7 +226,6 @@ def LOADING_SCREEN():
     time.sleep(4)                
     PROZOR.fill('White')
 
-zmaj = False
 
 def esc_screen(ulazni_tekst, screen):
     run = True
