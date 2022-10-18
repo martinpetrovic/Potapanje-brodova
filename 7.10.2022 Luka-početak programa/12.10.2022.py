@@ -147,6 +147,12 @@ class Button:
     def changeColor(self, position):
         if position[0] in range(self.main_rect.left, self.main_rect.right) and position[1] in range(self.main_rect.top, self.main_rect.bottom):
             self.main_rect_color = self.hovering_rect_color
+            
+    def checkForClick(self,):
+        mouse_poz = pygame.mouse.get_pos()
+        if self.main_rect.collidepoint(mouse_poz):
+            if pygame.mouse.get_pressed()[0]:
+                return True
 
 def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod): #Provjerava stanu li brodovi u polje i preklapaju li se
     
@@ -361,6 +367,8 @@ def postavljanje_igracaA():
         GRID_LIJEVO()
         GRID_DESNO()
         BRODOVI_GRUPA.draw(PROZOR)
+        CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+        CONFIRM_GUMB_PLAY.update(PROZOR)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -402,13 +410,16 @@ def postavljanje_igracaA():
                     čekanje_za_odabir(PATROL,brodovi_rotacija.get(PATROL))
                     if "P" not in postavljeni_brodovi:
                         postavljeni_brodovi.append("P")
-        
+                
+                print(postavljeni_brodovi)
+                    
         if len(postavljeni_brodovi) == 5:
-            CONFIRM_GUMB = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#D74B4B', (1040,70))
-            CONFIRM_GUMB.changeColor(play_mouse_pos)
-            CONFIRM_GUMB.update(PROZOR)
-        if CONFIRM_GUMB.collidepoint(play_mouse_pos):
-            run = False
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
+            CONFIRM_GUMB_PLAY.update(PROZOR)
+            print("radi")
+            if CONFIRM_GUMB_PLAY.checkForClick() == True:
+                run = False
                 
 
         pygame.display.update()
