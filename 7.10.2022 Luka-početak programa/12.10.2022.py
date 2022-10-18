@@ -145,7 +145,7 @@ class Button:
 
 
     
-def GRIDLIJEVO():
+def GRID_LIJEVO():
     y = 100
     x = 50
     global KVADRAT_RECT
@@ -184,7 +184,7 @@ def GRIDLIJEVO():
         PROZOR.blit(slovo, slovo_rect)
         slovo_x = slovo_x + 48
 
-def GRIDDESNO():
+def GRID_DESNO():
     #PROZOR.fill(WHITE)
     y = 100
     x = 640
@@ -287,8 +287,8 @@ def postavljanje_igracaA():
         zmaj = False
         play_mouse_pos = pygame.mouse.get_pos()
         PROZOR.fill('White')
-        GRIDLIJEVO()
-        GRIDDESNO()
+        GRID_LIJEVO()
+        GRID_DESNO()
         BRODOVI_GRUPA.draw(PROZOR)
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -351,7 +351,7 @@ def postavljanje_igracaA():
 
 
 def play():
-    postavljanje_igracA()
+    postavljanje_igracaA()
     #postavljanje_igracaB()
     rezultat1 = 17
     rezultat2 = 17
