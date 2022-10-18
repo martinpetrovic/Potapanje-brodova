@@ -30,6 +30,7 @@ Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
 postavljeni_brodovi = []
 
+#Služi da se određeni programi izvrše samo jednom
 PROVJERA= True
 GRIDLIJEVOJEDNOM = True
 
@@ -77,7 +78,7 @@ class Brod(pygame.sprite.Sprite):
                 duljina_broda = 2
             brod = self
     
-    def vrati_nazad(self):
+    def vrati_nazad(self):#Vraća brodove na 0,0 
         global brod
         self.rect.topleft=0,0
         brod = self   
@@ -147,7 +148,7 @@ class Button:
         if position[0] in range(self.main_rect.left, self.main_rect.right) and position[1] in range(self.main_rect.top, self.main_rect.bottom):
             self.main_rect_color = self.hovering_rect_color
 
-def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod):
+def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
