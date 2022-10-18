@@ -157,76 +157,48 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod):
             brod.vrati_nazad()
         else:
             if pygame.sprite.collide_rect(BATTLESHIP,PATROL)== True:
-                print("brod je na drugom brodu1")
                 brod.vrati_nazad()                           
             elif pygame.sprite.collide_rect(BATTLESHIP,SUBMARINE)== True:
-                print("brod je na drugom brodu2")
                 brod.vrati_nazad()
             elif pygame.sprite.collide_rect(BATTLESHIP,CARRIER)== True:
-                print("brod je na drugom brodu3")
                 brod.vrati_nazad()                          
             elif pygame.sprite.collide_rect(BATTLESHIP,DESTROYER)== True:
-                print("brod je na drugom brodu4")
                 brod.vrati_nazad()                          
             elif pygame.sprite.collide_rect(PATROL,SUBMARINE)== True:
-                print("brod je na drugom brodu5")
                 brod.vrati_nazad()  
             elif pygame.sprite.collide_rect(PATROL,DESTROYER)== True:
-                print("brod je na drugom brodu6")
                 brod.vrati_nazad()                                
             elif pygame.sprite.collide_rect(PATROL,CARRIER)== True:
-                print("brod je na drugom brodu7")
                 brod.vrati_nazad()                         
             elif pygame.sprite.collide_rect(DESTROYER,SUBMARINE)== True:
-                print("brod je na drugom brodu8")
                 brod.vrati_nazad()                              
             elif pygame.sprite.collide_rect(DESTROYER,CARRIER)== True:
-                print("brod je na drugom brodu9")
                 brod.vrati_nazad()
             elif pygame.sprite.collide_rect(SUBMARINE,CARRIER)== True:
-                print("brod je na drugom brodu10")
-                brod.vrati_nazad()
-            
-
-
-
-
-
-                                                                   
-
+                brod.vrati_nazad()                                                                               
     if rotacija == 0:
         if i + duljinabroda > 10:
             brod.vrati_nazad()
         else:
             if pygame.sprite.collide_rect(BATTLESHIP,PATROL)== True:
-                print("brod je na drugom brodu1")
                 brod.vrati_nazad()                           
             elif pygame.sprite.collide_rect(BATTLESHIP,SUBMARINE)== True:
-                print("brod je na drugom brodu2")
                 brod.vrati_nazad()
             elif pygame.sprite.collide_rect(BATTLESHIP,CARRIER)== True:
-                print("brod je na drugom brodu3")
                 brod.vrati_nazad()                          
             elif pygame.sprite.collide_rect(BATTLESHIP,DESTROYER)== True:
-                print("brod je na drugom brodu4")
                 brod.vrati_nazad()                          
             elif pygame.sprite.collide_rect(PATROL,SUBMARINE)== True:
-                print("brod je na drugom brodu5")
                 brod.vrati_nazad()  
             elif pygame.sprite.collide_rect(PATROL,DESTROYER)== True:
-                print("brod je na drugom brodu6")
                 brod.vrati_nazad()                                
             elif pygame.sprite.collide_rect(PATROL,CARRIER)== True:
-                print("brod je na drugom brodu7")
                 brod.vrati_nazad()                         
             elif pygame.sprite.collide_rect(DESTROYER,SUBMARINE)== True:
-                print("brod je na drugom brodu8")
                 brod.vrati_nazad()                              
             elif pygame.sprite.collide_rect(DESTROYER,CARRIER)== True:
-                print("brod je na drugom brodu9")
                 brod.vrati_nazad()
             elif pygame.sprite.collide_rect(SUBMARINE,CARRIER)== True:
-                print("brod je na drugom brodu10")
                 brod.vrati_nazad()
             
     
