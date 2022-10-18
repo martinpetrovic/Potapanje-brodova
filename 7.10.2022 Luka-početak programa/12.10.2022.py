@@ -30,6 +30,9 @@ Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
 postavljeni_brodovi = []
 
+PROVJERA= True
+GRIDLIJEVOJEDNOM = True
+
 
 class Brod(pygame.sprite.Sprite):
     def __init__(self,picture_path,poz_x,poz_y):
@@ -73,7 +76,11 @@ class Brod(pygame.sprite.Sprite):
             if self.rect.width / 2 == 48:
                 duljina_broda = 2
             brod = self
-       
+    
+    def vrati_nazad(self):
+        global brod
+        self.rect.topleft=0,0
+        brod = self   
     
 def čekanje_za_odabir(brod,brod_r):
     global idi
@@ -107,7 +114,12 @@ def collide_kvadrat():
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
                     brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
+                    while PROVJERA:
+                        PROVJERA_I_ZAPIS(Kvadrat_x, Kvadrat_y, duljina_broda,brodovi_rotacija.get(brod) ,brod)
                     idi = False
+    PROVJERA= True    
+ 
+ 
                    
 
 class Button:
@@ -135,7 +147,91 @@ class Button:
         if position[0] in range(self.main_rect.left, self.main_rect.right) and position[1] in range(self.main_rect.top, self.main_rect.bottom):
             self.main_rect_color = self.hovering_rect_color
 
+def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod):
+    
+    j = (y-100)/48 - 1
+    i = (x-50)/48 - 1
+    global PROVJERA
+    if rotacija == 1:
+        if j + duljinabroda > 10:
+            brod.vrati_nazad()
+        else:
+            if pygame.sprite.collide_rect(BATTLESHIP,PATROL)== True:
+                print("brod je na drugom brodu1")
+                brod.vrati_nazad()                           
+            elif pygame.sprite.collide_rect(BATTLESHIP,SUBMARINE)== True:
+                print("brod je na drugom brodu2")
+                brod.vrati_nazad()
+            elif pygame.sprite.collide_rect(BATTLESHIP,CARRIER)== True:
+                print("brod je na drugom brodu3")
+                brod.vrati_nazad()                          
+            elif pygame.sprite.collide_rect(BATTLESHIP,DESTROYER)== True:
+                print("brod je na drugom brodu4")
+                brod.vrati_nazad()                          
+            elif pygame.sprite.collide_rect(PATROL,SUBMARINE)== True:
+                print("brod je na drugom brodu5")
+                brod.vrati_nazad()  
+            elif pygame.sprite.collide_rect(PATROL,DESTROYER)== True:
+                print("brod je na drugom brodu6")
+                brod.vrati_nazad()                                
+            elif pygame.sprite.collide_rect(PATROL,CARRIER)== True:
+                print("brod je na drugom brodu7")
+                brod.vrati_nazad()                         
+            elif pygame.sprite.collide_rect(DESTROYER,SUBMARINE)== True:
+                print("brod je na drugom brodu8")
+                brod.vrati_nazad()                              
+            elif pygame.sprite.collide_rect(DESTROYER,CARRIER)== True:
+                print("brod je na drugom brodu9")
+                brod.vrati_nazad()
+            elif pygame.sprite.collide_rect(SUBMARINE,CARRIER)== True:
+                print("brod je na drugom brodu10")
+                brod.vrati_nazad()
+            
 
+
+
+
+
+                                                                   
+
+    if rotacija == 0:
+        if i + duljinabroda > 10:
+            brod.vrati_nazad()
+        else:
+            if pygame.sprite.collide_rect(BATTLESHIP,PATROL)== True:
+                print("brod je na drugom brodu1")
+                brod.vrati_nazad()                           
+            elif pygame.sprite.collide_rect(BATTLESHIP,SUBMARINE)== True:
+                print("brod je na drugom brodu2")
+                brod.vrati_nazad()
+            elif pygame.sprite.collide_rect(BATTLESHIP,CARRIER)== True:
+                print("brod je na drugom brodu3")
+                brod.vrati_nazad()                          
+            elif pygame.sprite.collide_rect(BATTLESHIP,DESTROYER)== True:
+                print("brod je na drugom brodu4")
+                brod.vrati_nazad()                          
+            elif pygame.sprite.collide_rect(PATROL,SUBMARINE)== True:
+                print("brod je na drugom brodu5")
+                brod.vrati_nazad()  
+            elif pygame.sprite.collide_rect(PATROL,DESTROYER)== True:
+                print("brod je na drugom brodu6")
+                brod.vrati_nazad()                                
+            elif pygame.sprite.collide_rect(PATROL,CARRIER)== True:
+                print("brod je na drugom brodu7")
+                brod.vrati_nazad()                         
+            elif pygame.sprite.collide_rect(DESTROYER,SUBMARINE)== True:
+                print("brod je na drugom brodu8")
+                brod.vrati_nazad()                              
+            elif pygame.sprite.collide_rect(DESTROYER,CARRIER)== True:
+                print("brod je na drugom brodu9")
+                brod.vrati_nazad()
+            elif pygame.sprite.collide_rect(SUBMARINE,CARRIER)== True:
+                print("brod je na drugom brodu10")
+                brod.vrati_nazad()
+            
+    
+    print(lista_imena_kvadrata)                                        
+    PROVJERA = False
 
 
 
@@ -155,10 +251,13 @@ def GRID_LIJEVO():
         for j in range (10):
             x = x + 48
             KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
-            Kvadrat = "a" + str(i) + str(j)
-            lista_imena_kvadrata.append(Kvadrat)
-            lista_rect_kvadrata.append(KVADRAT_RECT)
+            if GRIDLIJEVOJEDNOM == True:
+                Kvadrat = ["a" + str(i) + str(j)]
+                lista_imena_kvadrata.append(Kvadrat)
+                lista_rect_kvadrata.append(KVADRAT_RECT)
             PROZOR.blit(KVADRAT,KVADRAT_RECT)
+            PROZOR
+    GRIDLIJEVOJEDNOM = False  
          
 
 
@@ -270,14 +369,13 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
         pygame.display.update()
         clock.tick(FPS)
-
+CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
+BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
+DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
+SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
+PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
         
 def postavljanje_igracaA():
-    CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
-    BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
-    DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
-    SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
-    PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
     BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,PATROL,DESTROYER,SUBMARINE)
     run = True
     global zmaj
