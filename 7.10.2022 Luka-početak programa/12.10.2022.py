@@ -23,10 +23,12 @@ KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
 
 #Sve za Brod spriteove i provjere postavljanja
+BRODOVI_GRUPA = pygame.sprite.Group()
 lista_imena_kvadrata = []
 lista_rect_kvadrata = []
 Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
+postavljeni_brodovi = []
 
 
 class Brod(pygame.sprite.Sprite):
@@ -85,14 +87,13 @@ def čekanje_za_odabir(brod,brod_r):
                 if brod_r == 0:
                     brod.rotacija_poz_90()
                     brodovi_rotacija.update({brod:1})
-                    print(brodovi_rotacija.values())
                     brod_r = 1
-                    print("poz")
+                   
                 elif brod_r == 1: 
                     brod.rotacija_neg_90()
                     brodovi_rotacija.update({brod:0})
                     brod_r = 0
-                    print("neg")
+                    
                 
             if event.type == MOUSEBUTTONDOWN:
                 collide_kvadrat()
@@ -277,7 +278,6 @@ def postavljanje_igracaA():
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
     SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
     PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
-    BRODOVI_GRUPA = pygame.sprite.Group()
     BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,PATROL,DESTROYER,SUBMARINE)
     run = True
     global zmaj
@@ -285,6 +285,7 @@ def postavljanje_igracaA():
     brodovi_rotacija = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
     while run:
         zmaj = False
+        play_mouse_pos = pygame.mouse.get_pos()
         PROZOR.fill('White')
         GRIDLIJEVO()
         GRIDDESNO()
@@ -307,19 +308,36 @@ def postavljanje_igracaA():
                 PATROL.collide()
                 if brod == CARRIER:
                     čekanje_za_odabir(CARRIER,brodovi_rotacija.get(CARRIER))
+                    if "C" not in postavljeni_brodovi:
+                        postavljeni_brodovi.append("C")
         
                 elif brod == BATTLESHIP:
                     čekanje_za_odabir(BATTLESHIP,brodovi_rotacija.get(BATTLESHIP))
+                    if "B" not in postavljeni_brodovi:
+                        postavljeni_brodovi.append("B"
 
                 elif brod == SUBMARINE:
                     čekanje_za_odabir(SUBMARINE,brodovi_rotacija.get(SUBMARINE))
+                    if "S" not in postavljeni_brodovi:
+                        postavljeni_brodovi.append("S")
+                                                   
 
                 elif brod == DESTROYER:
                     čekanje_za_odabir(DESTROYER,brodovi_rotacija.get(DESTROYER))
+                    if "D" not in postavljeni_brodovi:
+                        postavljeni_brodovi.append("D")
 
                 elif brod == PATROL:
                     čekanje_za_odabir(PATROL,brodovi_rotacija.get(PATROL))
-
+                    if "P" not in postavljeni_brodovi:
+                        postavljeni_brodovi.append("P")
+        
+        if len(postavljeni_brodovi) == 5:
+            CONFIRM_GUMB = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#D74B4B', (1040,70))
+            CONFIRM_GUMB.changeColor(play_mouse_pos)
+            CONFIRM_GUMB.update(PROZOR)
+        if CONFIRM_GUMB.collidepoint(play_mouse_pos):
+            run = False
                 
 
         pygame.display.update()
