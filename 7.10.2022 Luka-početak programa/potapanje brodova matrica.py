@@ -1,3 +1,4 @@
+#funkcije kako bi pygame radio
 from ast import main
 import imghdr
 from tkinter import font
@@ -8,6 +9,7 @@ import time
 pygame.init()
 pygame.mixer.init()
 
+#grafičko sučelje
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
@@ -226,7 +228,7 @@ def LOADING_SCREEN():
     PROZOR.fill('White')
 
 zmaj = False
-
+#za sljučejeve kad korisnik odabre krivo polje
 def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija):
     global lista_imena_kvadrata
     j = (y-148)/48
@@ -335,7 +337,7 @@ def esc_screen(ulazni_tekst, screen):
         clock.tick(FPS)
 
         
-
+#elementi igre
 CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
 BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
 DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
