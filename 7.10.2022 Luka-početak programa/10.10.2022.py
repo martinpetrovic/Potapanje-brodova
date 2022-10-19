@@ -1,3 +1,4 @@
+#UVJETI ZA KODIRANJE
 from ast import main
 import imghdr
 from tkinter import font
@@ -8,7 +9,7 @@ import time
 pygame.init()
 pygame.mixer.init()
 
-
+#GRAFIČKO SUČELJE
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
 pygame.display.set_caption("Potapanje brodova")
@@ -242,7 +243,7 @@ def esc_screen(ulazni_tekst, screen):
         clock.tick(FPS)
 
         
-
+#POČETAK KODA ZA SAMU IGRU?
 CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
 BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
 DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
