@@ -66,7 +66,7 @@ class Brod(pygame.sprite.Sprite):
             CONFIRM_GUMB_PLAY.update(PROZOR)
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
         self.image = pygame.transform.rotate(self.image, 90)
-        BRODOVI_GRUPA.draw(PROZOR)
+        BRODOVI_GRUPA_A.draw(PROZOR)
         pygame.display.update()
 
     def rotacija_neg_90(self,brod_velkiX):
@@ -82,7 +82,7 @@ class Brod(pygame.sprite.Sprite):
             CONFIRM_GUMB_PLAY.update(PROZOR)
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
         self.image = pygame.transform.rotate(self.image, -90)
-        BRODOVI_GRUPA.draw(PROZOR)
+        BRODOVI_GRUPA_A.draw(PROZOR)
         pygame.display.update()
         
 
@@ -154,7 +154,7 @@ def collide_kvadrat(brod_velkiX):
     global idi
     global PROVJERA
     mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista_rect_kvadrata:
+    for kvadrat in lista_rect_kvadrata_A:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
@@ -247,7 +247,7 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava st
             elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[4])== True:
                 brod.vrati_nazad(brod_velkiX)                         
             elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazadbrod_velkiX)                              
+                brod.vrati_nazad(brod_velkiX)                              
             elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[4])== True:
                 brod.vrati_nazad(brod_velkiX)
             elif pygame.sprite.collide_rect(LISTA_BRODOVA[3],LISTA_BRODOVA[4])== True:
@@ -482,7 +482,7 @@ def postavljanje_igracaA():
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
     SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
     PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
-    BRODOVI_GRUPA.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
+    BRODOVI_GRUPA_A.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
     LISTA_BRODOVA = BRODOVI_GRUPA_A.sprites()
     
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
@@ -501,7 +501,7 @@ def postavljanje_igracaA():
         PROZOR.fill('White')
         gridA('lijevo')
         gridB('desno')
-        BRODOVI_GRUPA.draw(PROZOR)
+        BRODOVI_GRUPA_A.draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -572,7 +572,7 @@ def postavljanje_igracaA():
                         elif vrati_nazad_provjera == True:
                             vrati_nazad_provjera = False
                             if "P" in postavljeni_brodovi:
-                                postavljeni_brodovi.remove("P"))
+                                postavljeni_brodovi.remove("P")
                     
                     print(postavljeni_brodovi)
                 
