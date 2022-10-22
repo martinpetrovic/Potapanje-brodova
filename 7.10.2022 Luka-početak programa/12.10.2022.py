@@ -25,16 +25,19 @@ FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
 #Sve za Brod spriteove i provjere postavljanja
 BRODOVI_GRUPA = pygame.sprite.Group()
 VELIKI_XEVI_GRUPA = pygame.sprite.Group()
-lista_imena_kvadrata = []
-lista_rect_kvadrata = []
 Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
 brod_velkiX = None
 postavljeni_brodovi = []
+lista_rect_kvadrata_A = []
+lista_imena_kvadrata_A = []
+lista_imena_kvadrata_B = []
+lista_rect_kvadrata_B = []
 
 #Služi da se određeni programi izvrše samo jednom
 PROVJERA= True
-GRIDLIJEVOJEDNOM = True
+izrada_liste_A = True
+izrada_liste_B = True
 
 
 class Brod(pygame.sprite.Sprite):
@@ -50,8 +53,8 @@ class Brod(pygame.sprite.Sprite):
     
     def rotacija_poz_90(self,brod_velkiX): 
         PROZOR.fill(WHITE)
-        GRID_LIJEVO()
-        GRID_DESNO()
+        gridA('lijevo')
+        gridB('desno')
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -66,8 +69,8 @@ class Brod(pygame.sprite.Sprite):
 
     def rotacija_neg_90(self,brod_velkiX):
         PROZOR.fill(WHITE)
-        GRID_LIJEVO()
-        GRID_DESNO()
+        gridA('lijevo')
+        gridB('desno')
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -140,6 +143,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX):
 def collide_kvadrat(brod_velkiX):
     global Kvadrat_x, Kvadrat_y
     global idi
+    global PROVJERA
     mouse_poz = pygame.mouse.get_pos()
     for kvadrat in lista_rect_kvadrata:
             if kvadrat.collidepoint(mouse_poz):
@@ -243,82 +247,165 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod): #Provjerava stanu li brodo
 
 
     
-def GRID_LIJEVO():
-    y = 100
-    x = 50
-    global GRIDLIJEVOJEDNOM
+def gridA(pozicija):
+    global izrada_liste_A
     global KVADRAT_RECT
-    for i in range(10):
-        y = y + 48
-        x = 50
-        for j in range (10):
-            x = x + 48
-            KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
-            if GRIDLIJEVOJEDNOM == True:
-                Kvadrat = ["a" + str(i) + str(j)]
-                lista_imena_kvadrata.append(Kvadrat)
-                lista_rect_kvadrata.append(KVADRAT_RECT)
-            PROZOR.blit(KVADRAT,KVADRAT_RECT)
-            PROZOR
-    GRIDLIJEVOJEDNOM = False  
-         
-
-
-    #brojevi
-    broj_x = 70
-    broj_y = 160
-    for i in range(1,11):
-        broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
-        if i == 10:
-            broj_x = broj_x - 10
-        broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
-        PROZOR.blit(broj, broj_rect)
-        broj_y = broj_y + 48
-
-    #slova
-    slovo_x = 113
-    slovo_y = 637
-    for i in range(0,10):
-        slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
-        #if i == 10:
-        #    broj_x = broj_x - 10
-        slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
-        PROZOR.blit(slovo, slovo_rect)
-        slovo_x = slovo_x + 48
-
-def GRID_DESNO():
-    #PROZOR.fill(WHITE)
+    global lista_rect_kvadrata_A
+    global lista_imena_kvadrata_A
     y = 100
-    x = 640
-    for i in range(10):
-        KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
-        y = y + 48
-        x = 640
-        for i in range (10):
-            x = x + 48
-            KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
-            PROZOR.blit(KVADRAT,KVADRAT_RECT)
-    #brojevi
-    broj_x = 659
-    broj_y = 160
-    for i in range(1,11):
-        broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
-        if i == 10:
-            broj_x = broj_x - 10
-        broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
-        PROZOR.blit(broj, broj_rect)
-        broj_y = broj_y + 48
+    if pozicija == 'lijevo':
+        #crtanje grida
+        x = 50
+        for i in range(10):
+            y = y + 48
+            x = 50
+            for j in range (10):
+                x = x + 48
+                KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
+                if izrada_liste_A == True:
+                    Kvadrat = ["a" + str(i) + str(j)]
+                    lista_imena_kvadrata_A.append(Kvadrat)
+                    lista_rect_kvadrata_A.append(KVADRAT_RECT)
+                PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        izrada_liste_A = False
 
-    #slova
-    slovo_x = 704
-    slovo_y = 637
-    for i in range(0,10):
-        slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
-        #if i == 10:
-        #    broj_x = broj_x - 10
-        slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
-        PROZOR.blit(slovo, slovo_rect)
-        slovo_x = slovo_x + 48
+        #brojevi
+        broj_x = 70
+        broj_y = 160
+        for i in range(1,11):
+            broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
+            if i == 10:
+                broj_x = broj_x - 10
+            broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
+            PROZOR.blit(broj, broj_rect)
+            broj_y = broj_y + 48
+
+        #slova
+        slovo_x = 113
+        slovo_y = 637
+        for i in range(0,10):
+            slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
+            slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
+            PROZOR.blit(slovo, slovo_rect)
+            slovo_x = slovo_x + 48
+
+    elif pozicija == 'desno':
+        #crtanje grida
+        x = 640
+        for i in range(10):
+            y = y + 48
+            x = 640
+            for j in range (10):
+                x = x + 48
+                KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
+                if izrada_liste_A == True:
+                    lista_rect_kvadrata_A = []
+                    lista_imena_kvadrata_A = []
+                    Kvadrat = ["a" + str(i) + str(j)]
+                    lista_imena_kvadrata_A.append(Kvadrat)
+                    lista_rect_kvadrata_A.append(KVADRAT_RECT)
+                PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        izrada_liste_A = False
+
+        #brojevi
+        broj_x = 659
+        broj_y = 160
+        for i in range(1,11):
+            broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
+            if i == 10:
+                broj_x = broj_x - 10
+            broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
+            PROZOR.blit(broj, broj_rect)
+            broj_y = broj_y + 48
+
+        #slova
+        slovo_x = 704
+        slovo_y = 637
+        for i in range(0,10):
+            slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
+            slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
+            PROZOR.blit(slovo, slovo_rect)
+            slovo_x = slovo_x + 48
+
+def gridB(pozicija):
+    global izrada_liste_B
+    global KVADRAT_RECT
+    global lista_rect_kvadrata_B
+    global lista_imena_kvadrata_B
+    y = 100
+    if pozicija == 'lijevo':
+        #crtanje grida
+        x = 50
+        for i in range(10):
+            y = y + 48
+            x = 50
+            for j in range (10):
+                x = x + 48
+                KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
+                if izrada_liste_B == True:
+                    Kvadrat = ["a" + str(i) + str(j)]
+                    lista_imena_kvadrata_B.append(Kvadrat)
+                    lista_rect_kvadrata_B.append(KVADRAT_RECT)
+                PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        izrada_liste_B = False
+
+        #brojevi
+        broj_x = 70
+        broj_y = 160
+        for i in range(1,11):
+            broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
+            if i == 10:
+                broj_x = broj_x - 10
+            broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
+            PROZOR.blit(broj, broj_rect)
+            broj_y = broj_y + 48
+
+        #slova
+        slovo_x = 113
+        slovo_y = 637
+        for i in range(0,10):
+            slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
+            slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
+            PROZOR.blit(slovo, slovo_rect)
+            slovo_x = slovo_x + 48
+
+    else:
+        #crtanje grida
+        x = 640
+        for i in range(10):
+            y = y + 48
+            x = 640
+            for j in range (10):
+                x = x + 48
+                KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
+                if izrada_liste_B == True:
+                    lista_rect_kvadrata_B = []
+                    lista_imena_kvadrata_B = []
+                    Kvadrat = ["a" + str(i) + str(j)]
+                    lista_imena_kvadrata_B.append(Kvadrat)
+                    lista_rect_kvadrata_B.append(KVADRAT_RECT)
+                PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        izrada_liste_B = False
+
+        #brojevi
+        broj_x = 659
+        broj_y = 160
+        for i in range(1,11):
+            broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
+            if i == 10:
+                broj_x = broj_x - 10
+            broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
+            PROZOR.blit(broj, broj_rect)
+            broj_y = broj_y + 48
+
+        #slova
+        slovo_x = 704
+        slovo_y = 637
+        for i in range(0,10):
+            slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
+            slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
+            PROZOR.blit(slovo, slovo_rect)
+            slovo_x = slovo_x + 48
 
 def LOADING_SCREEN():
     PROZOR.fill('White')
@@ -398,8 +485,8 @@ def postavljanje_igracaA():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill('White')
-        GRID_LIJEVO()
-        GRID_DESNO()
+        gridA('lijevo')
+        gridB('desno')
         BRODOVI_GRUPA.draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
@@ -417,7 +504,7 @@ def postavljanje_igracaA():
                 if event.key == K_ESCAPE:
                     esc_screen('Are you sure you want to exit current game?', PROZOR)
                     if zmaj == True:
-                        run = False
+                        run_Pa = False
                     else: pass
             if event.type == MOUSEBUTTONDOWN:
                 CARRIER.collide()
