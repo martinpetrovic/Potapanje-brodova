@@ -246,6 +246,7 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod): #Provjerava stanu li brodo
 def GRID_LIJEVO():
     y = 100
     x = 50
+    global GRIDLIJEVOJEDNOM
     global KVADRAT_RECT
     for i in range(10):
         y = y + 48
