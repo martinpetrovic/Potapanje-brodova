@@ -80,8 +80,10 @@ class Brod(pygame.sprite.Sprite):
     
     def vrati_nazad(self):#Vraća brodove na 0,0 
         global brod
-        self.rect.topleft=0,0
-        brod = self   
+        poz_x = self.pozx
+        poz_y = self.pozy
+        self.rect.topleft = poz_x, poz_y
+        brod = self 
     
 def čekanje_za_odabir(brod,brod_r):
     global idi
@@ -207,16 +209,7 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod): #Provjerava stanu li brodo
                 brod.vrati_nazad()
             elif pygame.sprite.collide_rect(SUBMARINE,CARRIER)== True:
                 brod.vrati_nazad()
-            
-    
-    print(lista_imena_kvadrata)                                        
     PROVJERA = False
-
-
-
-
-        
-
 
 
     
@@ -359,6 +352,7 @@ def postavljanje_igracaA():
     run = True
     global zmaj
     global brodovi_rotacija
+    crtaj_sivi_gumb = 1
     brodovi_rotacija = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
     while run:
         zmaj = False
@@ -368,7 +362,11 @@ def postavljanje_igracaA():
         GRID_DESNO()
         BRODOVI_GRUPA.draw(PROZOR)
         CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+        CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
         CONFIRM_GUMB_PLAY.update(PROZOR)
+        SIVI_GUMB_RECT = SIVI_GUMB_SLIKA.get_rect(center = (1040,70))
+        if crtaj_sivi_gumb == 1:
+            PROZOR.blit(SIVI_GUMB_SLIKA, SIVI_GUMB_RECT)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -413,13 +411,11 @@ def postavljanje_igracaA():
                 
                 print(postavljeni_brodovi)
                     
-        if len(postavljeni_brodovi) == 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
-            CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
-            CONFIRM_GUMB_PLAY.update(PROZOR)
-            print("radi")
-            if CONFIRM_GUMB_PLAY.checkForClick() == True:
-                run = False
+                if len(postavljeni_brodovi) == 5:
+                    print("radi")
+                    crtaj_sivi_gumb = 0
+                    if CONFIRM_GUMB_PLAY.checkForInput(play_mouse_pos) == True:
+                        run = False
                 
 
         pygame.display.update()
