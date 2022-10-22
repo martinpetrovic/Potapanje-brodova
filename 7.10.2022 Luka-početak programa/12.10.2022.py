@@ -62,7 +62,7 @@ class Brod(pygame.sprite.Sprite):
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
         self.image = pygame.transform.rotate(self.image, 90)
         BRODOVI_GRUPA.draw(PROZOR)
-        pygame.display.update())
+        pygame.display.update()
 
     def rotacija_neg_90(self,brod_velkiX):
         PROZOR.fill(WHITE)
