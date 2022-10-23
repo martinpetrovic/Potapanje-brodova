@@ -204,6 +204,24 @@ def provjera(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava stanu li b
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
     global PROVJERA
+    #if brodovi_rotacija.get(brod) == 1:
+    #     if j + duljinabroda > 10:
+    #         brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
+    #     else:
+    #         for brodek in LISTA_BRODOVA:
+    #             if brod != brodek:
+    #                 if pygame.sprite.collide_rect(brodek,brod) == True:
+    #                     print("sudaranje")
+    #                     brod.vrati_nazad(brod_velkiX,brodovi_rotacija)                                                                               
+    # if brodovi_rotacija.get(brod) == 0:
+    #     if i + duljinabroda > 10:
+    #         brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
+    #     else:
+    #         for brodek in LISTA_BRODOVA:
+    #             if brod != brodek:
+    #                 if pygame.sprite.collide_rect(brodek,brod) == True:
+    #                     print("sudaranje")
+    #                     brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
     if rotacija == 1:
         if j + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX)
