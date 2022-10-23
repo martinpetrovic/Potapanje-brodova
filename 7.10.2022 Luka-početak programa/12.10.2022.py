@@ -987,7 +987,6 @@ def play():
         #igranje_A_ekran()
         #if zmaj == True:
             #run = False
-            #sys.exit()
         #if rezultat1 or rezultat2 == 0:
             #run = False
         #pauza_prije_promjene_igraca()
@@ -995,9 +994,10 @@ def play():
         #igranje_B_ekran()
         #if zmaj == True:
             #run = False
-            #sys.exit()
         #if rezultat1 or rezultat2 == 0:
             #run = False
+    #if zmaj == True:
+        #sys.exit()
     #end_screen()
 
 def main():
