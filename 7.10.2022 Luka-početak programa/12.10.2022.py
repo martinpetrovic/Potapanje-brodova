@@ -161,7 +161,7 @@ def collide_kvadrat(brod_velkiX):
                     brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
                     brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
                     while PROVJERA:
-                        PROVJERA_I_ZAPIS(Kvadrat_x, Kvadrat_y, duljina_broda,brodovi_rotacija.get(brod),brod,brod_velkiX)
+                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brodovi_rotacija.get(brod),brod,brod_velkiX)
                     idi = False
     PROVJERA= True    
  
@@ -199,7 +199,7 @@ class Button:
         if self.main_rect.collidepoint(mouse_poz):
             run_pA = False
 
-def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava stanu li brodovi u polje i preklapaju li se
+def provjera(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
@@ -253,8 +253,44 @@ def PROVJERA_I_ZAPIS(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava st
             elif pygame.sprite.collide_rect(LISTA_BRODOVA[3],LISTA_BRODOVA[4])== True:
                 brod.vrati_nazad(brod_velkiX)
     PROVJERA = False
+    
+def zapis(igračA,igračB): #zapisuje pozicije brodova u listu
+    index = 0
+    if igračA == True:
+        for i in lista_rect_kvadrata_A:
+            print (i) 
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[0].rect):
+                lista_imena_kvadrata_A[index].append("c")
 
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[1].rect):
+                lista_imena_kvadrata_A[index].append("b")
 
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[2].rect):
+                lista_imena_kvadrata_A[index].append("d")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[3].rect):
+                lista_imena_kvadrata_A[index].append("s")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[4].rect):
+                lista_imena_kvadrata_A[index].append("p")
+            index = index + 1
+    if igračB == True:
+        for i in lista_rect_kvadrata_B:
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[0].rect):
+                lista_imena_kvadrata_A[index].append("c")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[1].rect):
+                lista_imena_kvadrata_A[index].append("b")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[2].rect):
+                lista_imena_kvadrata_A[index].append("d")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[3].rect):
+                lista_imena_kvadrata_A[index].append("s")
+
+            if pygame.Rect.colliderect(i,LISTA_BRODOVA[4].rect):
+                lista_imena_kvadrata_A[index].append("p")
+            index = index + 1
     
 def gridA(pozicija):
     global izrada_liste_A
@@ -589,8 +625,10 @@ def postavljanje_igracaA():
 
 def play():
     postavljanje_igracaA()
+    zapis(True,False)  
     print("kraj")
     #postavljanje_igracaB()
+    #zapis (False, True)
     rezultat1 = 17
     rezultat2 = 17
     run = True
