@@ -621,7 +621,7 @@ def postavljanje_igracaA():
 #def igranje_A_ekran():
 
 #def igranje_B_ekran():
-def end_screen(rezultat1, rezultat2):
+def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata igrača
     global FONT_BROJ_SLOVO
     PROZOR.fill(WHITE)
     pobjednik = ""
