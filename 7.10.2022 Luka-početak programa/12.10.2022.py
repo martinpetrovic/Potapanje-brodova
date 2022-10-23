@@ -621,7 +621,25 @@ def postavljanje_igracaA():
 #def igranje_A_ekran():
 
 #def igranje_B_ekran():
-
+def end_screen(rezultat1, rezultat2):
+    global FONT_BROJ_SLOVO
+    PROZOR.fill(WHITE)
+    pobjednik = ""
+    if rezultat1 == 0:
+        pobjednik = "Igrač 2 je pobijedio"
+        a=1
+    if rezultat2 == 0:
+        pobjednik = "Igrač 1 je pobijedio"
+        a=0
+    with open("rezultati.txt", encoding="utf-8") as datoteka:
+        rezultati = datoteka.readlines()
+    with open("rezultati.txt", "wt") as datoteka:
+        datoteka.writelines(rezultati)
+    font = pygame.font.Font(None, 100)
+    winner = font.render(pobjednik,True,"#32CD32",)
+    print(rezultati)
+    PROZOR.blit(winner,(300, 310))
+    pygame.display.update()
 
 def play():
     postavljanje_igracaA()
