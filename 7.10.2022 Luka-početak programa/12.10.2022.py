@@ -27,13 +27,11 @@ ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani
 VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png"))
 
 #Sve za Brod spriteove i provjere postavljanja
-BRODOVI_GRUPA_A = pygame.sprite.Group()
-VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
+stari_brod_x, stari_brod_y = 0,0
 Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
 brod_velkiX = None
-LISTA_BRODOVA = []
-postavljeni_brodovi = []
+
 lista_rect_kvadrata_A = []
 lista_imena_kvadrata_A = []
 lista_imena_kvadrata_B = []
@@ -43,7 +41,7 @@ lista_rect_kvadrata_B = []
 PROVJERA= True
 izrada_liste_A = True
 izrada_liste_B = True
-vrati_nazad_provjera = False
+
 
 
 class Brod(pygame.sprite.Sprite):
@@ -57,7 +55,7 @@ class Brod(pygame.sprite.Sprite):
         self.rect.topleft =(poz_x, poz_y)
        
     
-    def rotacija_poz_90(self,brod_velkiX): 
+    def rotacija_poz_90(self,brod_velkiX,Brodovi_grupa): 
         PROZOR.fill(WHITE)
         gridA('lijevo')
         gridB('desno')
@@ -68,12 +66,26 @@ class Brod(pygame.sprite.Sprite):
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
-        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
-        self.image = pygame.transform.rotate(self.image, 90)
-        BRODOVI_GRUPA_A.draw(PROZOR)
+            
+        if Kvadrat_x == 0:
+            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(self.pozx, self.pozy)
+        else:
+            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(Kvadrat_x+590, Kvadrat_y)
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(Kvadrat_x, Kvadrat_y)
+        
+        Brodovi_grupa.draw(PROZOR)
         pygame.display.update()
 
-    def rotacija_neg_90(self,brod_velkiX):
+    def rotacija_neg_90(self,brod_velkiX,Brodovi_grupa):
         PROZOR.fill(WHITE)
         gridA('lijevo')
         gridB('desno')
@@ -84,9 +96,26 @@ class Brod(pygame.sprite.Sprite):
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
-        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
-        self.image = pygame.transform.rotate(self.image, -90)
-        BRODOVI_GRUPA_A.draw(PROZOR)
+        if Kvadrat_x == 0:
+            
+            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
+            self.image = pygame.transform.rotate(self.image, -90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(self.pozx, self.pozy)
+        #elif
+        else: 
+        
+            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(Kvadrat_x+590, Kvadrat_y)
+            self.image = pygame.transform.rotate(self.image, -90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(Kvadrat_x, Kvadrat_y)
+
+
+        Brodovi_grupa.draw(PROZOR)
         pygame.display.update()
         
 
@@ -105,7 +134,7 @@ class Brod(pygame.sprite.Sprite):
                 duljina_broda = 2
             brod = self
     
-    def vrati_nazad(self,brod_velkiX):#Vraća brodove na prvobitne pozicije brodova 
+    def vrati_nazad(self,brod_velkiX,brodovi_rotacija):#Vraća brodove na prvobitne pozicije brodova 
         global brod
         global vrati_nazad_provjera
         vrati_nazad_provjera = True
@@ -114,7 +143,7 @@ class Brod(pygame.sprite.Sprite):
         if brodovi_rotacija.get(self) == 1:
             self.image = pygame.transform.rotate(self.image, -90)
             brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
-            brodovi_rotacija.update({brod:1})
+            brodovi_rotacija.update({brod:0})
         brod_velkiX.rect.topleft = poz_x + 590, poz_y
         self.rect.topleft = poz_x, poz_y
         brod = self 
@@ -130,8 +159,10 @@ class Veliki_Xevi(pygame.sprite.Sprite):
         self.rect.topleft =(poz_x, poz_y)
         
                
-def čekanje_za_odabir(brod,brod_r,brod_velkiX):
+def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa):
     global idi
+    global Kvadrat_x, Kvadrat_y
+    global stari_brod_x, stari_brod_y
     idi = True
     while idi:
         for event in pygame.event.get():
@@ -140,32 +171,37 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX):
                 sys.exit()
             if event.type == KEYDOWN and event.key == K_r:
                 if brod_r == 0:
-                    brod.rotacija_poz_90(brod_velkiX)
+                    Kvadrat_x, Kvadrat_y = brod.pozx, brod.pozy
+                    brod.rotacija_poz_90(brod_velkiX,Brodovi_grupa)
                     brodovi_rotacija.update({brod:1})
                     brod_r = 1
                    
                 elif brod_r == 1: 
-                    brod.rotacija_neg_90(brod_velkiX)
+                    Kvadrat_x, Kvadrat_y = brod.pozx, brod.pozy
+                    brod.rotacija_neg_90(brod_velkiX,Brodovi_grupa)
                     brodovi_rotacija.update({brod:0})
                     brod_r = 0
                     
                 
             if event.type == MOUSEBUTTONDOWN:
-                collide_kvadrat(brod_velkiX)
+                collide_kvadrat(brod_velkiX,brodovi_rotacija)
                 
-def collide_kvadrat(brod_velkiX):
+def collide_kvadrat(brod_velkiX,brodovi_rotacija):
     global Kvadrat_x, Kvadrat_y
     global idi
     global PROVJERA
+    global stari_brod_x, stari_brod_y
     mouse_poz = pygame.mouse.get_pos()
     for kvadrat in lista_rect_kvadrata_A:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
+                    #if stari_brod_x == Kvadrat_x and stari_brod_y == Kvadrat_y:
+                    #    stari_brod_x, stari_brod_y = Kvadrat_x, Kvadrat_y
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
                     brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
                     brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
                     while PROVJERA:
-                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brodovi_rotacija.get(brod),brod,brod_velkiX)
+                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija)
                     idi = False
     PROVJERA= True    
  
@@ -199,81 +235,33 @@ class Button:
             
     def checkForClick(self):
         global run_pA
+        global run_pB
         mouse_poz = pygame.mouse.get_pos()
         if self.main_rect.collidepoint(mouse_poz):
             run_pA = False
+            run_pB = False
 
-def provjera(x,y,duljinabroda,rotacija,brod,brod_velkiX): #Provjerava stanu li brodovi u polje i preklapaju li se
+def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija)): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
     global PROVJERA
-    #if brodovi_rotacija.get(brod) == 1:
-    #     if j + duljinabroda > 10:
-    #         brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
-    #     else:
-    #         for brodek in LISTA_BRODOVA:
-    #             if brod != brodek:
-    #                 if pygame.sprite.collide_rect(brodek,brod) == True:
-    #                     print("sudaranje")
-    #                     brod.vrati_nazad(brod_velkiX,brodovi_rotacija)                                                                               
-    # if brodovi_rotacija.get(brod) == 0:
-    #     if i + duljinabroda > 10:
-    #         brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
-    #     else:
-    #         for brodek in LISTA_BRODOVA:
-    #             if brod != brodek:
-    #                 if pygame.sprite.collide_rect(brodek,brod) == True:
-    #                     print("sudaranje")
-    #                     brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
-    if rotacija == 1:
+    if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX)
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
         else:
-            if pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[1])== True:
-                brod.vrati_nazad(brod_velkiX)                           
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[2])== True:
-                brod.vrati_nazad(brod_velkiX)
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                          
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)                          
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[2])== True:
-                brod.vrati_nazad(brod_velkiX)  
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                                
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)                         
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                              
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[3],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)                                                                               
-    if rotacija == 0:
+            for brodek in LISTA_BRODOVA:
+                if brod != brodek:
+                    if pygame.sprite.collide_rect(brodek,brod) == True:
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija)                                                                               
+    if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX)
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
         else:
-            if pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[1])== True:
-                brod.vrati_nazad(brod_velkiX)                           
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[2])== True:
-                brod.vrati_nazad(brod_velkiX)
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                          
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[0],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)                          
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[2])== True:
-                brod.vrati_nazad(brod_velkiX)  
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                                
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[1],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)                         
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[3])== True:
-                brod.vrati_nazad(brod_velkiX)                              
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[2],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)
-            elif pygame.sprite.collide_rect(LISTA_BRODOVA[3],LISTA_BRODOVA[4])== True:
-                brod.vrati_nazad(brod_velkiX)
+            for brodek in LISTA_BRODOVA:
+                if brod != brodek:
+                    if pygame.sprite.collide_rect(brodek,brod) == True:
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
     PROVJERA = False
     
 def zapis(igračA,igračB): #zapisuje pozicije brodova u listu
@@ -322,7 +310,6 @@ def zapis(igračA,igračB): #zapisuje pozicije brodova u listu
     
 def gridA(pozicija):
     global izrada_liste_A
-    global KVADRAT_RECT
     global lista_rect_kvadrata_A
     global lista_imena_kvadrata_A
     y = 100
@@ -396,7 +383,6 @@ def gridA(pozicija):
 
 def gridB(pozicija):
     global izrada_liste_B
-    global KVADRAT_RECT
     global lista_rect_kvadrata_B
     global lista_imena_kvadrata_B
     y = 100
@@ -526,9 +512,15 @@ def postavljanje_igracaA():
     global run_pA
     global zmaj
     global play_mouse_pos
-    global brodovi_rotacija
     global vrati_nazad_provjera
+    global postavljeni_brodovi
+    global BRODOVI_GRUPA_A
+    global VELIKI_XEVI_GRUPA_A
     global LISTA_BRODOVA
+    postavljeni_brodovi = []
+    LISTA_BRODOVA = []
+    vrati_nazad_provjera = False
+    
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
@@ -547,7 +539,7 @@ def postavljanje_igracaA():
     
     
     run_pA = True
-    brodovi_rotacija = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
+    brodovi_rotacija_A = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
     while run_pA == True:
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
@@ -555,6 +547,7 @@ def postavljanje_igracaA():
         gridA('lijevo')
         gridB('desno')
         BRODOVI_GRUPA_A.draw(PROZOR)
+        VELIKI_XEVI_GRUPA_A.draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -583,7 +576,7 @@ def postavljanje_igracaA():
                     CONFIRM_GUMB_PLAY.checkForClick()
                 if run_pA == True:
                     if brod == CARRIER:
-                        čekanje_za_odabir(CARRIER,brodovi_rotacija.get(CARRIER),CARRIER_X)
+                        čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
                         if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("C")
                         elif vrati_nazad_provjera == True:
@@ -592,7 +585,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("C")
         
                     elif brod == BATTLESHIP:
-                        čekanje_za_odabir(BATTLESHIP,brodovi_rotacija.get(BATTLESHIP),BATTLESHIP_X)
+                        čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_A.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
                         if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("B")
                         elif vrati_nazad_provjera == True:
@@ -601,7 +594,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("B")
 
                     elif brod == SUBMARINE:
-                        čekanje_za_odabir(SUBMARINE,brodovi_rotacija.get(SUBMARINE),SUBMARINE_X)
+                        čekanje_za_odabir(SUBMARINE,brodovi_rotacija_A.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
                         if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("S")
                         elif vrati_nazad_provjera == True:
@@ -610,7 +603,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("S")
                                                    
                     elif brod == DESTROYER:
-                        čekanje_za_odabir(DESTROYER,brodovi_rotacija.get(DESTROYER),DESTROYER_X)
+                        čekanje_za_odabir(DESTROYER,brodovi_rotacija_A.get(DESTROYER),DESTROYER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
                         if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("D")
                         elif vrati_nazad_provjera == True:
@@ -619,7 +612,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("D")
 
                     elif brod == PATROL:
-                        čekanje_za_odabir(PATROL,brodovi_rotacija.get(PATROL),PATROL_X)
+                        čekanje_za_odabir(PATROL,brodovi_rotacija_A.get(PATROL),PATROL_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
                         if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("P")
                         elif vrati_nazad_provjera == True:
@@ -627,13 +620,132 @@ def postavljanje_igracaA():
                             if "P" in postavljeni_brodovi:
                                 postavljeni_brodovi.remove("P")
                     
-                    print(postavljeni_brodovi)
+                    #print(postavljeni_brodovi)
                 
 
         pygame.display.update()
         clock.tick(FPS)
         
-#postavljanje_igracaB()
+def postavljanje_igracaB():
+    global run_pB
+    global zmaj
+    global play_mouse_pos
+    global brodovi_rotacija_B
+    global vrati_nazad_provjera
+    global postavljeni_brodovi
+    global BRODOVI_GRUPA_B
+    global VELIKI_XEVI_GRUPA_B
+    global LISTA_BRODOVA
+    
+    postavljeni_brodovi = []
+    LISTA_BRODOVA = []
+    vrati_nazad_provjera = False
+    
+    CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
+    BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
+    DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
+    SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
+    PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
+    BRODOVI_GRUPA_B = pygame.sprite.Group()
+    BRODOVI_GRUPA_B.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
+    LISTA_BRODOVA = BRODOVI_GRUPA_B.sprites()
+    
+    CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
+    BATTLESHIP_X = Veliki_Xevi(os.path.join("potapanje brodova", "battleship_X.png"), 360, 35)
+    DESTROYER_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 225, 90)
+    SUBMARINE_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 400, 90)
+    PATROL_X = Veliki_Xevi(os.path.join("potapanje brodova", "patrol_X.png"), 97, 90)
+    VELIKI_XEVI_GRUPA_B = pygame.sprite.Group()
+    VELIKI_XEVI_GRUPA_B.add(CARRIER_X,BATTLESHIP_X,DESTROYER_X,SUBMARINE_X,PATROL_X)
+    
+    
+    run_pB = True
+    brodovi_rotacija_B = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
+    while run_pB == True:
+        play_mouse_pos = pygame.mouse.get_pos()
+        zmaj = False
+        PROZOR.fill('White')
+        gridA('desno')
+        gridB('lijevo')
+        BRODOVI_GRUPA_B.draw(PROZOR)
+        VELIKI_XEVI_GRUPA_B.draw(PROZOR)
+        if len(postavljeni_brodovi) < 5:
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+            CONFIRM_GUMB_PLAY.update(PROZOR)
+        else:
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
+            CONFIRM_GUMB_PLAY.update(PROZOR)
+            
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Are you sure you want to exit current game?', PROZOR)
+                    if zmaj == True:
+                        run_pB = False
+                    else: pass
+            if event.type == MOUSEBUTTONDOWN:
+                CARRIER.collide()
+                BATTLESHIP.collide()
+                DESTROYER.collide()
+                SUBMARINE.collide()
+                PATROL.collide()
+                if len(postavljeni_brodovi) == 5:
+                    CONFIRM_GUMB_PLAY.checkForClick()
+                if run_pB == True:
+                    if brod == CARRIER:
+                        čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B)
+                        if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                            postavljeni_brodovi.append("C")
+                        elif vrati_nazad_provjera == True:
+                            vrati_nazad_provjera = False
+                            if "C" in postavljeni_brodovi:
+                                postavljeni_brodovi.remove("C")
+        
+                    elif brod == BATTLESHIP:
+                        čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_B.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_B,BRODOVI_GRUPA_B)
+                        if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                            postavljeni_brodovi.append("B")
+                        elif vrati_nazad_provjera == True:
+                            vrati_nazad_provjera = False
+                            if "B" in postavljeni_brodovi:
+                                postavljeni_brodovi.remove("B")
+
+                    elif brod == SUBMARINE:
+                        čekanje_za_odabir(SUBMARINE,brodovi_rotacija_B.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_B,BRODOVI_GRUPA_B)
+                        if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                            postavljeni_brodovi.append("S")
+                        elif vrati_nazad_provjera == True:
+                            vrati_nazad_provjera = False
+                            if "S" in postavljeni_brodovi:
+                                postavljeni_brodovi.remove("S")
+                                                   
+                    elif brod == DESTROYER:
+                        čekanje_za_odabir(DESTROYER,brodovi_rotacija_B.get(DESTROYER),DESTROYER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B)
+                        if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                            postavljeni_brodovi.append("D")
+                        elif vrati_nazad_provjera == True:
+                            vrati_nazad_provjera = False
+                            if "D" in postavljeni_brodovi:
+                                postavljeni_brodovi.remove("D")
+
+                    elif brod == PATROL:
+                        čekanje_za_odabir(PATROL,brodovi_rotacija_B.get(PATROL),PATROL_X,brodovi_rotacija_B,BRODOVI_GRUPA_B)
+                        if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                            postavljeni_brodovi.append("P")
+                        elif vrati_nazad_provjera == True:
+                            vrati_nazad_provjera = False
+                            if "P" in postavljeni_brodovi:
+                                postavljeni_brodovi.remove("P")
+                    
+                    #print(postavljeni_brodovi)
+                
+
+        pygame.display.update()
+        clock.tick(FPS)
 
 def crtanje_fulanih_podrucja():  # Funkcija crta područja na gridu gdje su oba igrača fulala brod
     for i in range(0,100):
