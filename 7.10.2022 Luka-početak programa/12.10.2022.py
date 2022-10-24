@@ -159,7 +159,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
         self.rect.topleft =(poz_x, poz_y)
         
                
-def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa):
+def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata):
     global idi
     global Kvadrat_x, Kvadrat_y
     global stari_brod_x, stari_brod_y
@@ -184,15 +184,15 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa):
                     
                 
             if event.type == MOUSEBUTTONDOWN:
-                collide_kvadrat(brod_velkiX,brodovi_rotacija)
+                collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata)
                 
-def collide_kvadrat(brod_velkiX,brodovi_rotacija):
+def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata):
     global Kvadrat_x, Kvadrat_y
     global idi
     global PROVJERA
     global stari_brod_x, stari_brod_y
     mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista_rect_kvadrata_A:
+    for kvadrat in lista_rect_kvadrata:
             if kvadrat.collidepoint(mouse_poz):
                 if pygame.mouse.get_pressed()[0]:
                     #if stari_brod_x == Kvadrat_x and stari_brod_y == Kvadrat_y:
@@ -517,6 +517,9 @@ def postavljanje_igracaA():
     global BRODOVI_GRUPA_A
     global VELIKI_XEVI_GRUPA_A
     global LISTA_BRODOVA
+    global VELIKI_XEVI_LISTA_A
+    global lista_rect_kvadrata_A
+    
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
@@ -530,12 +533,21 @@ def postavljanje_igracaA():
     BRODOVI_GRUPA_A.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
     LISTA_BRODOVA = BRODOVI_GRUPA_A.sprites()
     
+    
+    CARRIER_X_GRUPA_A = pygame.sprite.GroupSingle()
+    BATTLESHIP_X_GRUPA_A = pygame.sprite.GroupSingle()
+    DESTROYER_X_GRUPA_A = pygame.sprite.GroupSingle()
+    SUBMARINE_X_GRUPA_A = pygame.sprite.GroupSingle()
+    PATROL_X_GRUPA_A = pygame.sprite.GroupSingle()
+    VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
+    
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
     BATTLESHIP_X = Veliki_Xevi(os.path.join("potapanje brodova", "battleship_X.png"), 360, 35)
     DESTROYER_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 225, 90)
     SUBMARINE_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 400, 90)
     PATROL_X = Veliki_Xevi(os.path.join("potapanje brodova", "patrol_X.png"), 97, 90)
     VELIKI_XEVI_GRUPA_A.add(CARRIER_X,BATTLESHIP_X,DESTROYER_X,SUBMARINE_X,PATROL_X)
+    VELIKI_XEVI_LISTA_A = [CARRIER_X_GRUPA_A.add(CARRIER_X), BATTLESHIP_X_GRUPA_A.add(BATTLESHIP_X), DESTROYER_X_GRUPA_A.add(DESTROYER_X) ,SUBMARINE_X_GRUPA_A.add(SUBMARINE_X) ,PATROL_X_GRUPA_A.add(PATROL_X)]
     
     
     run_pA = True
@@ -576,7 +588,7 @@ def postavljanje_igracaA():
                     CONFIRM_GUMB_PLAY.checkForClick()
                 if run_pA == True:
                     if brod == CARRIER:
-                        čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
+                        čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
                         if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("C")
                         elif vrati_nazad_provjera == True:
@@ -585,7 +597,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("C")
         
                     elif brod == BATTLESHIP:
-                        čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_A.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
+                        čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_A.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
                         if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("B")
                         elif vrati_nazad_provjera == True:
@@ -594,7 +606,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("B")
 
                     elif brod == SUBMARINE:
-                        čekanje_za_odabir(SUBMARINE,brodovi_rotacija_A.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
+                        čekanje_za_odabir(SUBMARINE,brodovi_rotacija_A.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
                         if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("S")
                         elif vrati_nazad_provjera == True:
@@ -603,7 +615,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("S")
                                                    
                     elif brod == DESTROYER:
-                        čekanje_za_odabir(DESTROYER,brodovi_rotacija_A.get(DESTROYER),DESTROYER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
+                        čekanje_za_odabir(DESTROYER,brodovi_rotacija_A.get(DESTROYER),DESTROYER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
                         if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("D")
                         elif vrati_nazad_provjera == True:
@@ -612,7 +624,7 @@ def postavljanje_igracaA():
                                 postavljeni_brodovi.remove("D")
 
                     elif brod == PATROL:
-                        čekanje_za_odabir(PATROL,brodovi_rotacija_A.get(PATROL),PATROL_X,brodovi_rotacija_A,BRODOVI_GRUPA_A)
+                        čekanje_za_odabir(PATROL,brodovi_rotacija_A.get(PATROL),PATROL_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
                         if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                             postavljeni_brodovi.append("P")
                         elif vrati_nazad_provjera == True:
@@ -636,6 +648,8 @@ def postavljanje_igracaB():
     global BRODOVI_GRUPA_B
     global VELIKI_XEVI_GRUPA_B
     global LISTA_BRODOVA
+    global VELIKI_XEVI_LISTA_B
+    global lista_rect_kvadrata_B
     
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
@@ -650,13 +664,22 @@ def postavljanje_igracaB():
     BRODOVI_GRUPA_B.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
     LISTA_BRODOVA = BRODOVI_GRUPA_B.sprites()
     
+    
+    CARRIER_X_GRUPA_B = pygame.sprite.GroupSingle()
+    BATTLESHIP_X_GRUPA_B = pygame.sprite.GroupSingle()
+    DESTROYER_X_GRUPA_B = pygame.sprite.GroupSingle()
+    SUBMARINE_X_GRUPA_B = pygame.sprite.GroupSingle()
+    PATROL_X_GRUPA_B = pygame.sprite.GroupSingle()
+    VELIKI_XEVI_GRUPA_B = pygame.sprite.Group()
+    
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
     BATTLESHIP_X = Veliki_Xevi(os.path.join("potapanje brodova", "battleship_X.png"), 360, 35)
     DESTROYER_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 225, 90)
     SUBMARINE_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 400, 90)
     PATROL_X = Veliki_Xevi(os.path.join("potapanje brodova", "patrol_X.png"), 97, 90)
-    VELIKI_XEVI_GRUPA_B = pygame.sprite.Group()
     VELIKI_XEVI_GRUPA_B.add(CARRIER_X,BATTLESHIP_X,DESTROYER_X,SUBMARINE_X,PATROL_X)
+    VELIKI_XEVI_LISTA_B = [CARRIER_X_GRUPA_B.add(CARRIER_X), BATTLESHIP_X_GRUPA_B.add(BATTLESHIP_X), DESTROYER_X_GRUPA_B.add(DESTROYER_X) ,SUBMARINE_X_GRUPA_B.add(SUBMARINE_X) ,PATROL_X_GRUPA_B.add(PATROL_X)]
+    
     
     
     run_pB = True
@@ -787,7 +810,7 @@ def zbrajanje_pogodenih_dijelova_brodova():  # Funkcija sprema u zasebne varijab
 def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brodovi i crta x-eve ako jesu, crta jedan veliki x ako je cijeli brod unisten
     if igrac == 'A':
         if patrolB_counter == 2:
-            VELIKI_XEVI_GRUPA_B[4].draw(PROZOR)
+            VELIKI_XEVI_LISTA_B[4].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
@@ -795,7 +818,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectB = XISIC.get_rect(recB.topleft)
                     PROZOR.blit(XISIC, xisic_rectB)
         if submarineB_counter == 3:
-            VELIKI_XEVI_GRUPA_B[3].draw(PROZOR)
+            VELIKI_XEVI_LISTA_B[3].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
@@ -803,7 +826,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectB = XISIC.get_rect(recB.topleft)
                     PROZOR.blit(XISIC, xisic_rectB)
         if destroyerB_counter == 3:
-            VELIKI_XEVI_GRUPA_B[2].draw(PROZOR)
+            VELIKI_XEVI_LISTA_B[2].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
@@ -811,7 +834,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectB = XISIC.get_rect(recB.topleft)
                     PROZOR.blit(XISIC, xisic_rectB)
         if battleshipB_counter == 4:
-            VELIKI_XEVI_GRUPA_B[1].draw(PROZOR)
+            VELIKI_XEVI_LISTA_B[1].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
@@ -819,7 +842,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectB = XISIC.get_rect(recB.topleft)
                     PROZOR.blit(XISIC, xisic_rectB)
         if carrierB_counter == 5:
-            VELIKI_XEVI_GRUPA_B[0].draw(PROZOR)
+            VELIKI_XEVI_LISTA_B[0].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
@@ -828,7 +851,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     PROZOR.blit(XISIC, xisic_rectB)
     elif igrac == 'B':
         if patrolA_counter == 2:
-            VELIKI_XEVI_GRUPA_A[4].draw(PROZOR)
+            VELIKI_XEVI_LISTA_A[4].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
@@ -836,7 +859,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectA = XISIC.get_rect(recA.topleft)
                     PROZOR.blit(XISIC, xisic_rectA)
         if submarineA_counter == 3:
-            VELIKI_XEVI_GRUPA_A[3].draw(PROZOR)
+            VELIKI_XEVI_LISTA_A[3].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
@@ -844,7 +867,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectA = XISIC.get_rect(recA.topleft)
                     PROZOR.blit(XISIC, xisic_rectA)
         if destroyerA_counter == 3:
-            VELIKI_XEVI_GRUPA_A[2].draw(PROZOR)
+            VELIKI_XEVI_LISTA_A[2].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
@@ -852,7 +875,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectA = XISIC.get_rect(recA.topleft)
                     PROZOR.blit(XISIC, xisic_rectA)
         if battleshipA_counter == 4:
-            VELIKI_XEVI_GRUPA_A[1].draw(PROZOR)
+            VELIKI_XEVI_LISTA_A[1].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
@@ -860,7 +883,7 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                     xisic_rectA = XISIC.get_rect(recA.topleft)
                     PROZOR.blit(XISIC, xisic_rectA)
         if carrierA_counter == 5:
-            VELIKI_XEVI_GRUPA_A[0].draw(PROZOR)
+            VELIKI_XEVI_LISTA_A[0].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
@@ -1084,11 +1107,12 @@ def play():
     global rezultat_A_igrac
     global rezultat_B_igrac
     postavljanje_igracaA()
-    #if zmaj == True:
-        #sys.exit()
-    #postavljanje_igracaB()
-    #if zmaj == True:
-        #sys.exit()
+    if zmaj == True:
+        sys.exit()
+    resetiranje_prije_igre()
+    postavljanje_igracaB()
+    if zmaj == True:
+        sys.exit()
     rezultat_A_igrac = 17
     rezultat_B_igrac = 17
     run = True
