@@ -525,6 +525,15 @@ def postavljanje_igracaA():
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
     
+    CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
+    BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
+    DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
+    SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
+    PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
+    BRODOVI_GRUPA_B = pygame.sprite.Group()
+    BRODOVI_GRUPA_B.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
+    LISTA_BRODOVA = BRODOVI_GRUPA_B.sprites()
+    
     VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
     
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
