@@ -242,7 +242,7 @@ class Button:
             run_pA = False
             run_pB = False
 
-def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija)): #Provjerava stanu li brodovi u polje i preklapaju li se
+def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
