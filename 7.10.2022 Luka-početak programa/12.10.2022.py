@@ -41,7 +41,7 @@ lista_rect_kvadrata_B = []
 PROVJERA= True
 izrada_liste_A = True
 izrada_liste_B = True
-
+zapis_rezultata_jednom = True
 
 
 class Brod(pygame.sprite.Sprite):
@@ -530,9 +530,9 @@ def postavljanje_igracaA():
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
     SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
     PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
-    BRODOVI_GRUPA_B = pygame.sprite.Group()
-    BRODOVI_GRUPA_B.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
-    LISTA_BRODOVA = BRODOVI_GRUPA_B.sprites()
+    BRODOVI_GRUPA_A = pygame.sprite.Group()
+    BRODOVI_GRUPA_A.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
+    LISTA_BRODOVA = BRODOVI_GRUPA_A.sprites()
     
     VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
     
@@ -561,7 +561,7 @@ def postavljanje_igracaA():
         gridA('lijevo')
         gridB('desno')
         BRODOVI_GRUPA_A.draw(PROZOR)
-        VELIKI_XEVI_GRUPA_A.draw(PROZOR)
+        
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -694,7 +694,7 @@ def postavljanje_igracaB():
         gridA('desno')
         gridB('lijevo')
         BRODOVI_GRUPA_B.draw(PROZOR)
-        VELIKI_XEVI_GRUPA_B.draw(PROZOR)
+        
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -1078,9 +1078,27 @@ def igranje_B_ekran():
         pygame.display.update()
         clock.tick(FPS)        
         
-def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata igrača
-    global FONT_BROJ_SLOVO
+def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata igrača i restart gumb i
+    global zapis_rezultata_jednom
+    global rezultat_desno
+    global rezultat_lijevo
+    global restart
     PROZOR.fill(WHITE)
+
+    Miš_pozicija= pygame.mouse.get_pos()
+
+    font = pygame.font.Font(None, 100)
+    RESTART_BUTTON = Button('Restart', 30, 'Black', 200, 40, '#475F77', '#77dd77', (620,500))
+    RESTART_BUTTON.update(PROZOR)
+    RESTART_BUTTON.changeColor(Miš_pozicija)
+    RESTART_BUTTON.update(PROZOR)
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == MOUSEBUTTONDOWN:
+            if RESTART_BUTTON.checkForInput(Miš_pozicija):
+                restart = True
     pobjednik = ""
     if rezultat1 == 0:
         pobjednik = "Igrač 2 je pobijedio"
@@ -1088,14 +1106,33 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     if rezultat2 == 0:
         pobjednik = "Igrač 1 je pobijedio"
         a=0
-    with open("rezultati.txt", encoding="utf-8") as datoteka:
-        rezultati = datoteka.readlines()
-    with open("rezultati.txt", "wt") as datoteka:
-        datoteka.writelines(rezultati)
-    font = pygame.font.Font(None, 100)
+    while zapis_rezultata_jednom==True:
+        with open("rezultati.txt", encoding="utf-8") as datoteka:
+            rezultati = datoteka.readlines()
+            rezultati[a] = str(int(rezultati[a]) + 1)
+            if int(rezultati[0])>int(rezultati[1]):
+                boja_lijevo = "#32CD32"
+                boja_desno = "#FF0000"  
+            elif int(rezultati[1])>int(rezultati[0]):
+                boja_lijevo = "#FF0000"
+                boja_desno = "#32CD32"  
+            elif int(rezultati[1])== int(rezultati[0]):
+                boja_desno= "#32CD32"
+                boja_lijevo = boja_desno
+        with open("rezultati.txt", "wt") as datoteka:
+            datoteka.writelines(rezultati)
+            rezultat_lijevo = font.render(rezultati[1][:-1],True,boja_lijevo)
+            rezultat_desno = font.render(rezultati[1],True,boja_desno)
+            
+        zapis_rezultata_jednom = False
+    
     winner = font.render(pobjednik,True,"#32CD32",)
-    print(rezultati)
-    PROZOR.blit(winner,(300, 310))
+    dvotocka = font.render(":",True,"#000000")
+    PROZOR.blit(winner,(340, 210))
+    PROZOR.blit(rezultat_lijevo,(550,310))
+    PROZOR.blit(rezultat_desno,(650,310))
+    PROZOR.blit(dvotocka,(605,305))
+    
     pygame.display.update()
     
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
@@ -1135,41 +1172,52 @@ def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
     time.sleep(1)        
     
 def play():
+    global lista_imena_kvadrata_A
+    global lista_imena_kvadrata_B
+    global restart
     global zmaj
     global postavljen_kvadratA
     global postavljen_kvadratB
     global rezultat_A_igrac
     global rezultat_B_igrac
-    postavljanje_igracaA()
-    if zmaj == True:
-        sys.exit()
-    resetiranje_prije_igre()
-    postavljanje_igracaB()
-    if zmaj == True:
-        sys.exit()
-    rezultat_A_igrac = 17
-    rezultat_B_igrac = 17
-    run = True
-    while run == True:
-        postavljen_kvadratA = False
-        postavljen_kvadratB = False
+    play_run = True
+    while play_run == True:
+        postavljanje_igracaA()
+        if zmaj == True:
+            sys.exit()
         pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
-        igranje_A_ekran()
+        postavljanje_igracaB()
         if zmaj == True:
-            run = False
-        if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
-            run = False
-        pauza_prije_promjene_igraca()
+            sys.exit()
+        rezultat_A_igrac = 17
+        rezultat_B_igrac = 17
+        run = True
+        while run == True:
+            postavljen_kvadratA = False
+            postavljen_kvadratB = False
+            pauza_prije_promjene_igraca()
+            resetiranje_prije_igre()
+            igranje_A_ekran()
+            if zmaj == True:
+                run = False
+            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
+                run = False
+            pauza_prije_promjene_igraca()
+            resetiranje_prije_igre()
+            igranje_B_ekran()
+            if zmaj == True:
+                run = False
+            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
+                run = False
+        if zmaj == True:
+            sys.exit()
+        restart = False
+        while restart == False:
+            end_screen(rezultat_A_igrac,rezultat_B_igrac)
+        lista_imena_kvadrata_A= []   
+        lista_imena_kvadrata_B = [] 
         resetiranje_prije_igre()
-        igranje_B_ekran()
-        if zmaj == True:
-            run = False
-        if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
-            run = False
-    if zmaj == True:
-        sys.exit()
-    end_screen()
 
 def main():
     #LOADING_SCREEN()
