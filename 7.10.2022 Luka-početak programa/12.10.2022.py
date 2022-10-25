@@ -985,6 +985,7 @@ def promjena_poz_odabranog_kvadrata(igrac, mis_poz):  # Funkcija mijenja pozicij
 
 def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezultat
     global rezultat_A_igrac, rezultat_B_igrac, provjera_gadanja
+    provjera_gadanja = False
     if igrac == 'A':
         if postavljen_kvadratA:
             for i in range(0,100):
@@ -1189,15 +1190,18 @@ def play():
     global rezultat_A_igrac
     global rezultat_B_igrac
     play_run = True
+    resetiranje_prije_igre()
     while play_run == True:
         postavljanje_igracaA()
         if zmaj == True:
-            sys.exit()
+            play_run == False
+            break
         pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         postavljanje_igracaB()
         if zmaj == True:
-            sys.exit()
+            play_run == False
+            break
         rezultat_A_igrac = 17
         rezultat_B_igrac = 17
         run = True
@@ -1206,18 +1210,23 @@ def play():
             resetiranje_prije_igre()
             igranje_A_ekran()
             if zmaj == True:
+                play_run == False
                 run = False
+                break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
             pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_B_ekran()
             if zmaj == True:
+                play_run == False
                 run = False
+                break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
         if zmaj == True:
-            sys.exit()
+            play_run = False
+            break
         restart = False
         while restart == False:
             end_screen(rezultat_A_igrac,rezultat_B_igrac)
