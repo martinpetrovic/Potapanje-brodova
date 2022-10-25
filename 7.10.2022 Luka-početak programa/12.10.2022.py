@@ -88,10 +88,10 @@ class Brod(pygame.sprite.Sprite):
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
         
-        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
+        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
         brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
-        self.image = pygame.transform.rotate(self.image, 90)
+        self.image = pygame.transform.rotate(self.image, -90)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
 
@@ -144,6 +144,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
 def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije):
     global idi
     global Kvadrat_x, Kvadrat_y
+    poz_broda_x, poz_broda_y = brodovi_pozicije.get(brod)
     idi = True
     while idi:
         for event in pygame.event.get():
@@ -157,7 +158,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
                     brod_r = 1
                    
                 elif brod_r == 1: 
-                    brod.rotacija_poz_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y)
+                    brod.rotacija_neg_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y)
                     brodovi_rotacija.update({brod:0})
                     brod_r = 0
                     
@@ -226,20 +227,20 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
     global PROVJERA
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije))
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije))                                                                               
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)                                                                               
     if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije))
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije))
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
     PROVJERA = False
     
 def zapis(igrac): #zapisuje pozicije brodova u listu
