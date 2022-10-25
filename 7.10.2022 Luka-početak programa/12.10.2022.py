@@ -233,11 +233,12 @@ class Button:
         if position[0] in range(self.main_rect.left, self.main_rect.right) and position[1] in range(self.main_rect.top, self.main_rect.bottom):
             self.main_rect_color = self.hovering_rect_color
             
-    def checkForClick(self):
+    def checkForClick(self, igrac):
         global run_pA
         global run_pB
         mouse_poz = pygame.mouse.get_pos()
         if self.main_rect.collidepoint(mouse_poz):
+            zapis(igrac)
             run_pA = False
             run_pB = False
 
@@ -264,54 +265,55 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija)): #Provjerava s
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija)
     PROVJERA = False
     
-def zapis(igračA,igračB): #zapisuje pozicije brodova u listu
+def zapis(igrac): #zapisuje pozicije brodova u listu
+    global lista_imena_kvadrata_A
+    global lista_imena_kvadrata_B
+    global LISTA_BRODOVA
     index = 0
-    if igračA == True:
+    if igrac == 'A':
         for z in range(0,100):
             Kvadrat = ["a" + str(z)]
             lista_imena_kvadrata_A.append(Kvadrat)
-        for i in lista_rect_kvadrata_A:
-            print (i) 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[0].rect):
+        for kvadrat in lista_rect_kvadrata_A:
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
                 lista_imena_kvadrata_A[index].append("c")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[1].rect):
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
                 lista_imena_kvadrata_A[index].append("b")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[2].rect):
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
                 lista_imena_kvadrata_A[index].append("d")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[3].rect):
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
                 lista_imena_kvadrata_A[index].append("s")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[4].rect):
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
                 lista_imena_kvadrata_A[index].append("p")
-            index = index + 1
-    if igračB == True:
+            index += 1
+    if igrac == 'B':
         for z in range(0,100):
             Kvadrat = ["b" + str(z)]
             lista_imena_kvadrata_B.append(Kvadrat)
-        for i in lista_rect_kvadrata_B:
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[0].rect):
-                lista_imena_kvadrata_A[index].append("c")
+        for kvadrat in lista_rect_kvadrata_B:
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
+                lista_imena_kvadrata_B[index].append("c")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[1].rect):
-                lista_imena_kvadrata_A[index].append("b")
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
+                lista_imena_kvadrata_B[index].append("b")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[2].rect):
-                lista_imena_kvadrata_A[index].append("d")
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
+                lista_imena_kvadrata_B[index].append("d")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[3].rect):
-                lista_imena_kvadrata_A[index].append("s")
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
+                lista_imena_kvadrata_B[index].append("s")
 
-            if pygame.Rect.colliderect(i,LISTA_BRODOVA[4].rect):
-                lista_imena_kvadrata_A[index].append("p")
-            index = index + 1
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
+                lista_imena_kvadrata_B[index].append("p")
+            index += 1
     
 def gridA(pozicija):
     global izrada_liste_A
     global lista_rect_kvadrata_A
-    global lista_imena_kvadrata_A
     y = 100
     if pozicija == 'lijevo':
         #crtanje grida
@@ -384,7 +386,6 @@ def gridA(pozicija):
 def gridB(pozicija):
     global izrada_liste_B
     global lista_rect_kvadrata_B
-    global lista_imena_kvadrata_B
     y = 100
     if pozicija == 'lijevo':
         #crtanje grida
@@ -585,7 +586,7 @@ def postavljanje_igracaA():
                 SUBMARINE.collide()
                 PATROL.collide()
                 if len(postavljeni_brodovi) == 5:
-                    CONFIRM_GUMB_PLAY.checkForClick()
+                    CONFIRM_GUMB_PLAY.checkForClick('A')
                 if run_pA == True:
                     if brod == CARRIER:
                         čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A)
@@ -717,7 +718,7 @@ def postavljanje_igracaB():
                 SUBMARINE.collide()
                 PATROL.collide()
                 if len(postavljeni_brodovi) == 5:
-                    CONFIRM_GUMB_PLAY.checkForClick()
+                    CONFIRM_GUMB_PLAY.checkForClick('B')
                 if run_pB == True:
                     if brod == CARRIER:
                         čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B)
@@ -774,38 +775,42 @@ def crtanje_fulanih_podrucja():  # Funkcija crta područja na gridu gdje su oba 
     for i in range(0,100):
             rectA = lista_rect_kvadrata_A[i]
             rectB = lista_rect_kvadrata_B[i]
-            if lista_imena_kvadrata_A[i][1] == 'x':
-                fulano_rectA = FULANO.get_rect(rectA.topleft)
-                PROZOR.blit(FULANO, fulano_rectA)
-            elif lista_imena_kvadrata_B[i][1] == 'x':
-                fulano_rectB = FULANO.get_rect(rectB.topleft)
-                PROZOR.blit(FULANO, fulano_rectB)
+            if len(lista_imena_kvadrata_A[i]) == 2:
+                if lista_imena_kvadrata_A[i][1] == 'x':
+                    fulano_rectA = FULANO.get_rect(topleft = (rectA.topleft))
+                    PROZOR.blit(FULANO, fulano_rectA)
+            if len(lista_imena_kvadrata_B[i]) == 2:
+                if lista_imena_kvadrata_B[i][1] == 'x':
+                    fulano_rectB = FULANO.get_rect(topleft = (rectB.topleft))
+                    PROZOR.blit(FULANO, fulano_rectB)
 
 def zbrajanje_pogodenih_dijelova_brodova():  # Funkcija sprema u zasebne varijable zbroj koliko je puta neki brod pogoden; informacije potrebne za funkciju crtanje_xeva()
     global patrolA_counter, submarineA_counter, destroyerA_counter, battleshipA_counter, carrierA_counter, patrolB_counter, submarineB_counter, destroyerB_counter, battleshipB_counter, carrierB_counter
     patrolA_counter, submarineA_counter, destroyerA_counter, battleshipA_counter, carrierA_counter = 0, 0, 0, 0, 0
     patrolB_counter, submarineB_counter, destroyerB_counter, battleshipB_counter, carrierB_counter = 0, 0, 0, 0, 0
     for i in range(0,100):
-        if lista_imena_kvadrata_A[i][1] == 'p' and lista_imena_kvadrata_A[i][2] == 'x':
-            patrolA_counter += 1
-        elif lista_imena_kvadrata_B[i][1] == 'p' and lista_imena_kvadrata_B[i][2] == 'x':
-            patrolB_counter += 1
-        elif lista_imena_kvadrata_A[i][1] == 's' and lista_imena_kvadrata_A[i][2] == 'x':
-            submarineA_counter += 1
-        elif lista_imena_kvadrata_B[i][1] == 's' and lista_imena_kvadrata_B[i][2] == 'x':
-            submarineB_counter += 1
-        elif lista_imena_kvadrata_A[i][1] == 'd' and lista_imena_kvadrata_A[i][2] == 'x':
-            destroyerA_counter += 1
-        elif lista_imena_kvadrata_B[i][1] == 'd' and lista_imena_kvadrata_B[i][2] == 'x':
-            destroyerB_counter += 1
-        elif lista_imena_kvadrata_A[i][1] == 'b' and lista_imena_kvadrata_A[i][2] == 'x':
-            battleshipA_counter += 1
-        elif lista_imena_kvadrata_B[i][1] == 'b' and lista_imena_kvadrata_B[i][2] == 'x':
-            battleshipB_counter += 1
-        elif lista_imena_kvadrata_A[i][1] == 'c' and lista_imena_kvadrata_A[i][2] == 'x':
-            carrierA_counter += 1
-        elif lista_imena_kvadrata_B[i][1] == 'c' and lista_imena_kvadrata_B[i][2] == 'x':
-            carrierB_counter += 1
+        if len(lista_imena_kvadrata_A[i]) == 3:
+            if lista_imena_kvadrata_A[i][1] == 'p' and lista_imena_kvadrata_A[i][2] == 'x':
+                patrolA_counter += 1
+            elif lista_imena_kvadrata_A[i][1] == 's' and lista_imena_kvadrata_A[i][2] == 'x':
+                submarineA_counter += 1
+            elif lista_imena_kvadrata_A[i][1] == 'd' and lista_imena_kvadrata_A[i][2] == 'x':
+                destroyerA_counter += 1
+            elif lista_imena_kvadrata_A[i][1] == 'b' and lista_imena_kvadrata_A[i][2] == 'x':
+                battleshipA_counter += 1
+            elif lista_imena_kvadrata_A[i][1] == 'c' and lista_imena_kvadrata_A[i][2] == 'x':
+                carrierA_counter += 1
+        if len(lista_imena_kvadrata_B[i]) == 3:
+            if lista_imena_kvadrata_B[i][1] == 'p' and lista_imena_kvadrata_B[i][2] == 'x':
+                patrolB_counter += 1
+            elif lista_imena_kvadrata_B[i][1] == 's' and lista_imena_kvadrata_B[i][2] == 'x':
+                submarineB_counter += 1
+            elif lista_imena_kvadrata_B[i][1] == 'd' and lista_imena_kvadrata_B[i][2] == 'x':
+                destroyerB_counter += 1
+            elif lista_imena_kvadrata_B[i][1] == 'b' and lista_imena_kvadrata_B[i][2] == 'x':
+                battleshipB_counter += 1
+            elif lista_imena_kvadrata_B[i][1] == 'c' and lista_imena_kvadrata_B[i][2] == 'x':
+                carrierB_counter += 1
 
 def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brodovi i crta x-eve ako jesu, crta jedan veliki x ako je cijeli brod unisten
     if igrac == 'A':
@@ -814,111 +819,123 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
-                if lista_imena_kvadrata_B[i][1] == 'p' and lista_imena_kvadrata_B[i][2] == 'x':
-                    xisic_rectB = XISIC.get_rect(recB.topleft)
-                    PROZOR.blit(XISIC, xisic_rectB)
+                if len(lista_imena_kvadrata_B[i]) == 3:
+                    if lista_imena_kvadrata_B[i][1] == 'p' and lista_imena_kvadrata_B[i][2] == 'x':
+                        xisic_rectB = XISIC.get_rect(topleft = (recB.topleft))
+                        PROZOR.blit(XISIC, xisic_rectB)
         if submarineB_counter == 3:
             VELIKI_XEVI_LISTA_B[3].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
-                if lista_imena_kvadrata_B[i][1] == 's' and lista_imena_kvadrata_B[i][2] == 'x':
-                    xisic_rectB = XISIC.get_rect(recB.topleft)
-                    PROZOR.blit(XISIC, xisic_rectB)
+                if len(lista_imena_kvadrata_B[i]) == 3:
+                    if lista_imena_kvadrata_B[i][1] == 's' and lista_imena_kvadrata_B[i][2] == 'x':
+                        xisic_rectB = XISIC.get_rect(topleft = (recB.topleft))
+                        PROZOR.blit(XISIC, xisic_rectB)
         if destroyerB_counter == 3:
             VELIKI_XEVI_LISTA_B[2].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
-                if lista_imena_kvadrata_B[i][1] == 'd' and lista_imena_kvadrata_B[i][2] == 'x':
-                    xisic_rectB = XISIC.get_rect(recB.topleft)
-                    PROZOR.blit(XISIC, xisic_rectB)
+                if len(lista_imena_kvadrata_B[i]) == 3:
+                    if lista_imena_kvadrata_B[i][1] == 'd' and lista_imena_kvadrata_B[i][2] == 'x':
+                        xisic_rectB = XISIC.get_rect(topleft = (recB.topleft))
+                        PROZOR.blit(XISIC, xisic_rectB)
         if battleshipB_counter == 4:
             VELIKI_XEVI_LISTA_B[1].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
-                if lista_imena_kvadrata_B[i][1] == 'b' and lista_imena_kvadrata_B[i][2] == 'x':
-                    xisic_rectB = XISIC.get_rect(recB.topleft)
-                    PROZOR.blit(XISIC, xisic_rectB)
+                if len(lista_imena_kvadrata_B[i]) == 3:
+                    if lista_imena_kvadrata_B[i][1] == 'b' and lista_imena_kvadrata_B[i][2] == 'x':
+                        xisic_rectB = XISIC.get_rect(topleft = (recB.topleft))
+                        PROZOR.blit(XISIC, xisic_rectB)
         if carrierB_counter == 5:
             VELIKI_XEVI_LISTA_B[0].draw(PROZOR)
         else:
             for i in range(0,100):
                 recB = lista_rect_kvadrata_B[i]
-                if lista_imena_kvadrata_B[i][1] == 'c' and lista_imena_kvadrata_B[i][2] == 'x':
-                    xisic_rectB = XISIC.get_rect(recB.topleft)
-                    PROZOR.blit(XISIC, xisic_rectB)
+                if len(lista_imena_kvadrata_B[i]) == 3:
+                    if lista_imena_kvadrata_B[i][1] == 'c' and lista_imena_kvadrata_B[i][2] == 'x':
+                        xisic_rectB = XISIC.get_rect(topleft = (recB.topleft))
+                        PROZOR.blit(XISIC, xisic_rectB)
     elif igrac == 'B':
         if patrolA_counter == 2:
             VELIKI_XEVI_LISTA_A[4].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
-                if lista_imena_kvadrata_A[i][1] == 'p' and lista_imena_kvadrata_A[i][2] == 'x':
-                    xisic_rectA = XISIC.get_rect(recA.topleft)
-                    PROZOR.blit(XISIC, xisic_rectA)
+                if len(lista_imena_kvadrata_A[i]) == 3:
+                    if lista_imena_kvadrata_A[i][1] == 'p' and lista_imena_kvadrata_A[i][2] == 'x':
+                        xisic_rectA = XISIC.get_rect(topleft = (recA.topleft))
+                        PROZOR.blit(XISIC, xisic_rectA)
         if submarineA_counter == 3:
             VELIKI_XEVI_LISTA_A[3].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
-                if lista_imena_kvadrata_A[i][1] == 's' and lista_imena_kvadrata_A[i][2] == 'x':
-                    xisic_rectA = XISIC.get_rect(recA.topleft)
-                    PROZOR.blit(XISIC, xisic_rectA)
+                if len(lista_imena_kvadrata_A[i]) == 3:
+                    if lista_imena_kvadrata_A[i][1] == 's' and lista_imena_kvadrata_A[i][2] == 'x':
+                        xisic_rectA = XISIC.get_rect(topleft = (recA.topleft))
+                        PROZOR.blit(XISIC, xisic_rectA)
         if destroyerA_counter == 3:
             VELIKI_XEVI_LISTA_A[2].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
-                if lista_imena_kvadrata_A[i][1] == 'd' and lista_imena_kvadrata_A[i][2] == 'x':
-                    xisic_rectA = XISIC.get_rect(recA.topleft)
-                    PROZOR.blit(XISIC, xisic_rectA)
+                if len(lista_imena_kvadrata_A[i]) == 3:
+                    if lista_imena_kvadrata_A[i][1] == 'd' and lista_imena_kvadrata_A[i][2] == 'x':
+                        xisic_rectA = XISIC.get_rect(topleft = (recA.topleft))
+                        PROZOR.blit(XISIC, xisic_rectA)
         if battleshipA_counter == 4:
             VELIKI_XEVI_LISTA_A[1].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
-                if lista_imena_kvadrata_A[i][1] == 'b' and lista_imena_kvadrata_A[i][2] == 'x':
-                    xisic_rectA = XISIC.get_rect(recA.topleft)
-                    PROZOR.blit(XISIC, xisic_rectA)
+                if len(lista_imena_kvadrata_A[i]) == 3:
+                    if lista_imena_kvadrata_A[i][1] == 'b' and lista_imena_kvadrata_A[i][2] == 'x':
+                        xisic_rectA = XISIC.get_rect(topleft = (recA.topleft))
+                        PROZOR.blit(XISIC, xisic_rectA)
         if carrierA_counter == 5:
             VELIKI_XEVI_LISTA_A[0].draw(PROZOR)
         else:
             for i in range(0,100):
                 recA = lista_rect_kvadrata_A[i]
-                if lista_imena_kvadrata_A[i][1] == 'c' and lista_imena_kvadrata_A[i][2] == 'x':
-                    xisic_rectA = XISIC.get_rect(recA.topleft)
-                    PROZOR.blit(XISIC, xisic_rectA)          
+                if len(lista_imena_kvadrata_A[i]) == 3:
+                    if lista_imena_kvadrata_A[i][1] == 'c' and lista_imena_kvadrata_A[i][2] == 'x':
+                        xisic_rectA = XISIC.get_rect(topleft = (recA.topleft))
+                        PROZOR.blit(XISIC, xisic_rectA)          
 
 def crtanje_pogodenih_vlastitih(igrac):  # Funkcija provjerava i crta vatru ondje gdje je brod pogođen SAMO NA GRIDU IGRACA KOJI IGRA
     if igrac == 'A':
         for i in range(0,100):
             recA = lista_rect_kvadrata_A[i]
-            if lista_imena_kvadrata_A[i][2] == 'x':
-                pogoden_rectA = VLASTITI_POGODEN.get_rect(recA.topleft)
-                PROZOR.blit(VLASTITI_POGODEN, pogoden_rectA)
+            if len(lista_imena_kvadrata_A[i]) == 3:
+                if lista_imena_kvadrata_A[i][2] == 'x':
+                    pogoden_rectA = VLASTITI_POGODEN.get_rect(topleft = (recA.topleft))
+                    PROZOR.blit(VLASTITI_POGODEN, pogoden_rectA)
     elif igrac == 'B':   
         for i in range(0,100):
             recB = lista_rect_kvadrata_B[i]
-            if lista_imena_kvadrata_B[i][2] == 'x':
-                pogoden_rectB = VLASTITI_POGODEN.get_rect(recB.topleft)
-                PROZOR.blit(VLASTITI_POGODEN, pogoden_rectB)                   
+            if len(lista_imena_kvadrata_B[i]) == 3:
+                if lista_imena_kvadrata_B[i][2] == 'x':
+                    pogoden_rectB = VLASTITI_POGODEN.get_rect(topleft = (recB.topleft))
+                    PROZOR.blit(VLASTITI_POGODEN, pogoden_rectB)                 
 
 def hoveranje_animacija(igrac, mis_poz):  # Funkcija provjerava nalazi li se mis iznad kvadratica, ako da onda nacrta poseban kvadratic da to oznaci
     HOVERANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "hoverani_kvadrat.png"))
     if igrac == 'A':
         for i in range(0,100):
             rect = lista_rect_kvadrata_B[i]
-            hoverani_rect = HOVERANI_KVADRAT.get_rect(rect.topleft)
+            hoverani_rect = HOVERANI_KVADRAT.get_rect(topleft = (rect.topleft))
             if rect.collidepoint(mis_poz):
                 PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)
     if igrac == 'B':
         for i in range(0,100):
             rect = lista_rect_kvadrata_A[i]
-            hoverani_rect = HOVERANI_KVADRAT.get_rect(rect.topleft)
+            hoverani_rect = HOVERANI_KVADRAT.get_rect(topleft = (rect.topleft))
             if rect.collidepoint(mis_poz):
-                PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)                
+                PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)               
 
 def crtanje_odabranog_kvadrata(igrac):  # Funkcija na ekranu crta označeni kvadratić na gridu
     global postavljen_kvadratA
@@ -930,7 +947,7 @@ def crtanje_odabranog_kvadrata(igrac):  # Funkcija na ekranu crta označeni kvad
     if igrac == 'B':
         if postavljen_kvadratB:
             PROZOR.blit(ODABRANI_KVADRAT, odabrani_kvadrat_rectB)
-        pass               
+        pass              
    
 def promjena_poz_odabranog_kvadrata(igrac, mis_poz):  # Funkcija mijenja poziciju kvadrata koji označuje odabrani kvadratić na gridu
     global postavljen_kvadratA
@@ -943,42 +960,45 @@ def promjena_poz_odabranog_kvadrata(igrac, mis_poz):  # Funkcija mijenja pozicij
         for i in range(0,100):
             rect = lista_rect_kvadrata_B[i]
             if rect.collidepoint(mis_poz):
-                if lista_imena_kvadrata_B[i][1] == None:
-                    odabrani_kvadrat_rectA = ODABRANI_KVADRAT.get_rect(rect.topleft)
+                if len(lista_imena_kvadrata_B[i]) == 1:
+                    odabrani_kvadrat_rectA = ODABRANI_KVADRAT.get_rect(topleft = (rect.topleft))
                     postavljen_kvadratA = True
                 for brod in lista_brod:
-                    if lista_imena_kvadrata_B[i][1] == brod and lista_imena_kvadrata_B[i][2] == None:
-                       odabrani_kvadrat_rectA = ODABRANI_KVADRAT.get_rect(rect.topleft)
-                       postavljen_kvadratA = True
+                    if len(lista_imena_kvadrata_B[i]) == 2:
+                        if lista_imena_kvadrata_B[i][1] == brod:
+                            odabrani_kvadrat_rectA = ODABRANI_KVADRAT.get_rect(topleft = (rect.topleft))
+                            postavljen_kvadratA = True
     elif igrac == 'B':
         for i in range(0,100):
             rect = lista_rect_kvadrata_A[i]
             if rect.collidepoint(mis_poz):
-                if lista_imena_kvadrata_A[i][1] == None:
-                    odabrani_kvadrat_rectB = ODABRANI_KVADRAT.get_rect(rect.topleft)
+                if len(lista_imena_kvadrata_A[i]) == 1:
+                    odabrani_kvadrat_rectB = ODABRANI_KVADRAT.get_rect(topleft = (rect.topleft))
                     postavljen_kvadratB = True
                 for brod in lista_brod:
-                    if lista_imena_kvadrata_A[i][1] == brod and lista_imena_kvadrata_A[i][2] == None:
-                       odabrani_kvadrat_rectB = ODABRANI_KVADRAT.get_rect(rect.topleft)
-                       postavljen_kvadratB = True
+                    if len(lista_imena_kvadrata_A[i]) == 2:
+                        if lista_imena_kvadrata_A[i][1] == brod:
+                            odabrani_kvadrat_rectB = ODABRANI_KVADRAT.get_rect(topleft = (rect.topleft))
+                            postavljen_kvadratB = True
 
 def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezultat
+    global rezultat_A_igrac, rezultat_B_igrac
     if igrac == 'A':
         if postavljen_kvadratA:
             for i in range(0,100):
                 rect = lista_rect_kvadrata_B[i]
-                if rect.collidepoint(odabrani_kvadrat_rectA.topleft):
+                if rect.collidepoint((odabrani_kvadrat_rectA.topleft)):
                     lista_imena_kvadrata_B[i].append('x')
-                    if lista_imena_kvadrata_B[i][1] is not 'x':
+                    if lista_imena_kvadrata_B[i][1] != 'x':
                         rezultat_B_igrac -= 1
     if igrac == 'B':
         if postavljen_kvadratB:
             for i in range(0,100):
                 rect = lista_rect_kvadrata_A[i]
-                if rect.collidepoint(odabrani_kvadrat_rectB.topleft):
+                if rect.collidepoint((odabrani_kvadrat_rectB.topleft)):
                     lista_imena_kvadrata_A[i].append('x')
-                    if lista_imena_kvadrata_A[i][1] is not 'x':
-                        rezultat_A_igrac -= 1                        
+                    if lista_imena_kvadrata_A[i][1] != 'x':
+                        rezultat_A_igrac -= 1                         
  
 def igranje_A_ekran():
     global zmaj
@@ -1090,15 +1110,27 @@ def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
     TAJMER3 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_3sec.png"))
     TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png"))
     TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png"))
-    lista_tajmera = [TAJMER3, TAJMER2, TAJMER1]
     font = pygame.font.Font(None, 30)
     tekst_surf = font.render('Next player in:', False, 'White')
     tekst_rect = tekst_surf.get_rect(midtop = (640,160))
-    for i in lista_tajmera:
-        PROZOR.fill("Black")
-        PROZOR.blit(tekst_surf, tekst_rect)
-        PROZOR.blit(lista_tajmera[i], midtop = (640, 210))
-        time.sleep(1)      
+    tajmer_rect = TAJMER3.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER3, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)
+    tajmer_rect = TAJMER2.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER2, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)
+    tajmer_rect = TAJMER1.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER1, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)        
     
 def play():
     global zmaj
@@ -1116,25 +1148,25 @@ def play():
     rezultat_A_igrac = 17
     rezultat_B_igrac = 17
     run = True
-    #while run:
-        #postavljen_kvadratA = False
-        #postavljen_kvadratB = False
-        #pauza_prije_promjene_igraca()
-        #resetiranje_prije_igre()
-        #igranje_A_ekran()
-        #if zmaj == True:
-            #run = False
-        #if rezultat1 or rezultat2 == 0:
-            #run = False
-        #pauza_prije_promjene_igraca()
-        #resetiranje_prije_igre()
-        #igranje_B_ekran()
-        #if zmaj == True:
-            #run = False
-        #if rezultat1 or rezultat2 == 0:
-            #run = False
-    #if zmaj == True:
-        #sys.exit()
+    while run == True:
+        postavljen_kvadratA = False
+        postavljen_kvadratB = False
+        pauza_prije_promjene_igraca()
+        resetiranje_prije_igre()
+        igranje_A_ekran()
+        if zmaj == True:
+            run = False
+        if rezultat_A_igrac or rezultat_B_igrac == 0:
+            run = False
+        pauza_prije_promjene_igraca()
+        resetiranje_prije_igre()
+        igranje_B_ekran()
+        if zmaj == True:
+            run = False
+        if rezultat_A_igrac or rezultat_B_igrac == 0:
+            run = False
+    if zmaj == True:
+        sys.exit()
     #end_screen()
 
 def main():
