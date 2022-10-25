@@ -498,10 +498,19 @@ def postavljanje_igracaA():
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_A
     global lista_rect_kvadrata_A
-    
+    global player_A
+    global player_A_render
+    global player_A_rect
+    global PLAYERI_FONT
+
+    player_A = "Martin"
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
+    
+    PLAYERI_FONT = pygame.font.Font(None, 35)
+    player_A_render = PLAYERI_FONT.render(player_A,1,'Black')
+    player_A_rect = player_A_render.get_rect(center = (630, 20))
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
@@ -541,6 +550,7 @@ def postavljanje_igracaA():
         PROZOR.fill('White')
         gridA('lijevo')
         gridB('desno')
+        PROZOR.blit(player_A_render,player_A_rect)
         BRODOVI_GRUPA_A.draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
@@ -632,10 +642,17 @@ def postavljanje_igracaB():
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_B
     global lista_rect_kvadrata_B
+    global player_B
+    global player_B_render
+    global player_B_rect
     
+    player_B = "Karlo"
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
+    
+    player_B_render = PLAYERI_FONT.render(player_B,1,'Black')
+    player_B_rect = player_B_render.get_rect(center = (630, 20))
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
@@ -675,6 +692,7 @@ def postavljanje_igracaB():
         PROZOR.fill('White')
         gridA('desno')
         gridB('lijevo')
+        PROZOR.blit(player_B_render,player_B_rect)
         BRODOVI_GRUPA_B.draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
@@ -993,6 +1011,7 @@ def igranje_A_ekran():
         PROZOR.fill('White')
         gridA('lijevo')
         gridB('desno')
+        PROZOR.blit(player_A_render,player_A_rect)
         BRODOVI_GRUPA_A.draw(PROZOR)
         crtanje_fulanih_podrucja()
         zbrajanje_pogodenih_dijelova_brodova()
@@ -1032,6 +1051,7 @@ def igranje_B_ekran():
         PROZOR.fill('White')
         gridA('desno')
         gridB('lijevo')
+        PROZOR.blit(player_B_render,player_B_rect)
         BRODOVI_GRUPA_B.draw(PROZOR)
         crtanje_fulanih_podrucja()
         zbrajanje_pogodenih_dijelova_brodova()
