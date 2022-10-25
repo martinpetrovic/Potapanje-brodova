@@ -525,21 +525,6 @@ def postavljanje_igracaA():
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
     
-    CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
-    BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
-    DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 225, 90)
-    SUBMARINE = Brod(os.path.join("potapanje brodova", "submarine3.png"), 400, 90)
-    PATROL = Brod(os.path.join("potapanje brodova", "patrol2.png"), 97, 90)
-    BRODOVI_GRUPA_A = pygame.sprite.Group()
-    BRODOVI_GRUPA_A.add(CARRIER,BATTLESHIP,DESTROYER,SUBMARINE,PATROL)
-    LISTA_BRODOVA = BRODOVI_GRUPA_A.sprites()
-    
-    
-    CARRIER_X_GRUPA_A = pygame.sprite.GroupSingle()
-    BATTLESHIP_X_GRUPA_A = pygame.sprite.GroupSingle()
-    DESTROYER_X_GRUPA_A = pygame.sprite.GroupSingle()
-    SUBMARINE_X_GRUPA_A = pygame.sprite.GroupSingle()
-    PATROL_X_GRUPA_A = pygame.sprite.GroupSingle()
     VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
     
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
@@ -548,7 +533,14 @@ def postavljanje_igracaA():
     SUBMARINE_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 400, 90)
     PATROL_X = Veliki_Xevi(os.path.join("potapanje brodova", "patrol_X.png"), 97, 90)
     VELIKI_XEVI_GRUPA_A.add(CARRIER_X,BATTLESHIP_X,DESTROYER_X,SUBMARINE_X,PATROL_X)
-    VELIKI_XEVI_LISTA_A = [CARRIER_X_GRUPA_A.add(CARRIER_X), BATTLESHIP_X_GRUPA_A.add(BATTLESHIP_X), DESTROYER_X_GRUPA_A.add(DESTROYER_X) ,SUBMARINE_X_GRUPA_A.add(SUBMARINE_X) ,PATROL_X_GRUPA_A.add(PATROL_X)]
+    
+    CARRIER_X_GRUPA_A = pygame.sprite.GroupSingle(CARRIER_X)
+    BATTLESHIP_X_GRUPA_A = pygame.sprite.GroupSingle(BATTLESHIP_X)
+    DESTROYER_X_GRUPA_A = pygame.sprite.GroupSingle(DESTROYER_X)
+    SUBMARINE_X_GRUPA_A = pygame.sprite.GroupSingle(SUBMARINE_X)
+    PATROL_X_GRUPA_A = pygame.sprite.GroupSingle(PATROL_X)
+    
+    VELIKI_XEVI_LISTA_A = [CARRIER_X_GRUPA_A, BATTLESHIP_X_GRUPA_A, DESTROYER_X_GRUPA_A, SUBMARINE_X_GRUPA_A, PATROL_X_GRUPA_A]
     
     
     run_pA = True
@@ -633,7 +625,7 @@ def postavljanje_igracaA():
                             if "P" in postavljeni_brodovi:
                                 postavljeni_brodovi.remove("P")
                     
-                    #print(postavljeni_brodovi)
+                   
                 
 
         pygame.display.update()
@@ -666,11 +658,6 @@ def postavljanje_igracaB():
     LISTA_BRODOVA = BRODOVI_GRUPA_B.sprites()
     
     
-    CARRIER_X_GRUPA_B = pygame.sprite.GroupSingle()
-    BATTLESHIP_X_GRUPA_B = pygame.sprite.GroupSingle()
-    DESTROYER_X_GRUPA_B = pygame.sprite.GroupSingle()
-    SUBMARINE_X_GRUPA_B = pygame.sprite.GroupSingle()
-    PATROL_X_GRUPA_B = pygame.sprite.GroupSingle()
     VELIKI_XEVI_GRUPA_B = pygame.sprite.Group()
     
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
@@ -679,8 +666,14 @@ def postavljanje_igracaB():
     SUBMARINE_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 400, 90)
     PATROL_X = Veliki_Xevi(os.path.join("potapanje brodova", "patrol_X.png"), 97, 90)
     VELIKI_XEVI_GRUPA_B.add(CARRIER_X,BATTLESHIP_X,DESTROYER_X,SUBMARINE_X,PATROL_X)
-    VELIKI_XEVI_LISTA_B = [CARRIER_X_GRUPA_B.add(CARRIER_X), BATTLESHIP_X_GRUPA_B.add(BATTLESHIP_X), DESTROYER_X_GRUPA_B.add(DESTROYER_X) ,SUBMARINE_X_GRUPA_B.add(SUBMARINE_X) ,PATROL_X_GRUPA_B.add(PATROL_X)]
     
+    CARRIER_X_GRUPA_B = pygame.sprite.GroupSingle(CARRIER_X)
+    BATTLESHIP_X_GRUPA_B = pygame.sprite.GroupSingle(BATTLESHIP_X)
+    DESTROYER_X_GRUPA_B = pygame.sprite.GroupSingle(DESTROYER_X)
+    SUBMARINE_X_GRUPA_B = pygame.sprite.GroupSingle(SUBMARINE_X)
+    PATROL_X_GRUPA_B = pygame.sprite.GroupSingle(PATROL_X)
+    
+    VELIKI_XEVI_LISTA_B = [CARRIER_X_GRUPA_B,BATTLESHIP_X_GRUPA_B,DESTROYER_X_GRUPA_B,SUBMARINE_X_GRUPA_B,PATROL_X_GRUPA_B]
     
     
     run_pB = True
@@ -1156,18 +1149,18 @@ def play():
         igranje_A_ekran()
         if zmaj == True:
             run = False
-        if rezultat_A_igrac or rezultat_B_igrac == 0:
+        if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
             run = False
         pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         igranje_B_ekran()
         if zmaj == True:
             run = False
-        if rezultat_A_igrac or rezultat_B_igrac == 0:
+        if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
             run = False
     if zmaj == True:
         sys.exit()
-    #end_screen()
+    end_screen()
 
 def main():
     #LOADING_SCREEN()
