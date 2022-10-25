@@ -1089,9 +1089,11 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
         pobjednik = "Igrač 1 je pobijedio"
         a=0
     while zapis_rezultata_jednom==True:
-        with open("rezultati.txt", encoding="utf-8") as datoteka:
+        with open("potapanje brodova\score.txt", encoding="utf-8") as datoteka:
             rezultati = datoteka.readlines()
-            rezultati[a] = str(int(rezultati[a]) + 1)
+            print(rezultati)
+            rezultati[a] = str(int(rezultati[a]) + 1) + "\n"
+            print(rezultati)
             if int(rezultati[0])>int(rezultati[1]):
                 boja_lijevo = "#32CD32"
                 boja_desno = "#FF0000"  
@@ -1101,10 +1103,10 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
             elif int(rezultati[1])== int(rezultati[0]):
                 boja_desno= "#32CD32"
                 boja_lijevo = boja_desno
-        with open("rezultati.txt", "wt") as datoteka:
+        with open("potapanje brodova\score.txt", "wt") as datoteka:
             datoteka.writelines(rezultati)
-            rezultat_lijevo = font.render(rezultati[1][:-1],True,boja_lijevo)
-            rezultat_desno = font.render(rezultati[1],True,boja_desno)
+            rezultat_lijevo = font.render(rezultati[0][:-1],True,boja_lijevo)
+            rezultat_desno = font.render(rezultati[1][:-1],True,boja_desno)
             
         zapis_rezultata_jednom = False
     
@@ -1116,6 +1118,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     PROZOR.blit(dvotocka,(605,305))
     
     pygame.display.update()
+    
     
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A
