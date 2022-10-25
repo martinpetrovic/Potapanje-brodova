@@ -931,13 +931,21 @@ def hoveranje_animacija(igrac, mis_poz):  # Funkcija provjerava nalazi li se mis
             rect = lista_rect_kvadrata_B[i]
             hoverani_rect = HOVERANI_KVADRAT.get_rect(topleft = (rect.topleft))
             if rect.collidepoint(mis_poz):
-                PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)
+                if len(lista_imena_kvadrata_B[i]) == 1:
+                    PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)
+                elif len(lista_imena_kvadrata_B[i]) == 2:
+                    if lista_imena_kvadrata_B[i][1] != 'x':
+                        PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)
     if igrac == 'B':
         for i in range(0,100):
             rect = lista_rect_kvadrata_A[i]
             hoverani_rect = HOVERANI_KVADRAT.get_rect(topleft = (rect.topleft))
             if rect.collidepoint(mis_poz):
-                PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)               
+                if len(lista_imena_kvadrata_A[i]) == 1:
+                    PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)
+                elif len(lista_imena_kvadrata_A[i]) == 2:
+                    if lista_imena_kvadrata_A[i][1] != 'x':
+                        PROZOR.blit(HOVERANI_KVADRAT, hoverani_rect)                
 
 def crtanje_odabranog_kvadrata(igrac):  # Funkcija na ekranu crta označeni kvadratić na gridu
     global postavljen_kvadratA
