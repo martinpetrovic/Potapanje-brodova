@@ -966,13 +966,14 @@ def promjena_poz_odabranog_kvadrata(igrac, mis_poz):  # Funkcija mijenja pozicij
                             postavljen_kvadratB = True
 
 def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezultat
-    global rezultat_A_igrac, rezultat_B_igrac
+    global rezultat_A_igrac, rezultat_B_igrac, provjera_gadanja
     if igrac == 'A':
         if postavljen_kvadratA:
             for i in range(0,100):
                 rect = lista_rect_kvadrata_B[i]
                 if rect.collidepoint((odabrani_kvadrat_rectA.topleft)):
                     lista_imena_kvadrata_B[i].append('x')
+                    provjera_gadanja = True
                     if lista_imena_kvadrata_B[i][1] != 'x':
                         rezultat_B_igrac -= 1
     if igrac == 'B':
@@ -981,6 +982,7 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
                 rect = lista_rect_kvadrata_A[i]
                 if rect.collidepoint((odabrani_kvadrat_rectB.topleft)):
                     lista_imena_kvadrata_A[i].append('x')
+                    provjera_gadanja = True
                     if lista_imena_kvadrata_A[i][1] != 'x':
                         rezultat_A_igrac -= 1                         
  
@@ -1016,7 +1018,8 @@ def igranje_A_ekran():
             if event.type == MOUSEBUTTONDOWN:
                 if GUMB_SHOOT.checkForInput(mouse_pos):
                     gadanje('A')
-                    run = False
+                    if provjera_gadanja == True:
+                        run = False
                 promjena_poz_odabranog_kvadrata('A', mouse_pos)
                 pass
         pygame.display.update()
@@ -1054,7 +1057,8 @@ def igranje_B_ekran():
             if event.type == MOUSEBUTTONDOWN:
                 if GUMB_SHOOT.checkForInput(mouse_pos):
                     gadanje('B')
-                    run = False
+                    if provjera_gadanja == True:
+                        run = False
                 promjena_poz_odabranog_kvadrata('B', mouse_pos)
                 pass
         pygame.display.update()
