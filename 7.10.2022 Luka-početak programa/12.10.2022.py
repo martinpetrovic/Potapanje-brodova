@@ -1121,10 +1121,9 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     
     
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
-    global lista_rect_kvadrata_A
-    global lista_rect_kvadrata_B
-    global izrada_liste_A
-    global izrada_liste_B
+    global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B
+    postavljen_kvadratA = False
+    postavljen_kvadratB = False
     lista_rect_kvadrata_A = []
     lista_rect_kvadrata_B = []
     izrada_liste_A = True
@@ -1179,8 +1178,6 @@ def play():
         rezultat_B_igrac = 17
         run = True
         while run == True:
-            postavljen_kvadratA = False
-            postavljen_kvadratB = False
             pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_A_ekran()
