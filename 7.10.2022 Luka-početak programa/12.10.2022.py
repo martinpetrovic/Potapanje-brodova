@@ -1160,7 +1160,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     
     
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
-    global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B
+    global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB
     postavljen_kvadratA = False
     postavljen_kvadratB = False
     lista_rect_kvadrata_A = []
