@@ -1157,7 +1157,172 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     PROZOR.blit(dvotocka,(605,305))
     
     pygame.display.update()
-    
+def score():
+    player_1= False
+    player1 = ""
+    player_2= False
+    player2 = ""
+    player_3= False
+    player3 = ""
+    player_4= False
+    player4 = ""
+    player_5= False
+    player5 = ""
+    player_6= False
+    player6 = ""
+    player_7= False
+    player7 = ""
+    player_8= False
+    player8 = ""
+    player_9= False
+    player9 = ""
+    player_10= False
+    player10 = ""
+    while True:
+
+        #global gumbi_profili
+        #global SCORE_JEDNOM
+        Miš_pozicija = pygame.mouse.get_pos()
+        
+        PROZOR.fill(WHITE)
+        PLAYER_BUTTON1 = Button(player1, 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 0*100+100))    
+        PLAYER_BUTTON1.update(PROZOR)
+        PLAYER_BUTTON1.changeColor(Miš_pozicija)
+        PLAYER_BUTTON1.update(PROZOR)
+        PLAYER_BUTTON2 = Button(player2, 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 1*100+100))    
+        PLAYER_BUTTON2.update(PROZOR)
+        PLAYER_BUTTON2.changeColor(Miš_pozicija)
+        PLAYER_BUTTON2.update(PROZOR)
+        PLAYER_BUTTON3 = Button(player3, 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 2*100+100))    
+        PLAYER_BUTTON3.update(PROZOR)
+        PLAYER_BUTTON3.changeColor(Miš_pozicija)
+        PLAYER_BUTTON3.update(PROZOR)
+        PLAYER_BUTTON4 = Button(player4, 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 3*100+100))    
+        PLAYER_BUTTON4.update(PROZOR)
+        PLAYER_BUTTON4.changeColor(Miš_pozicija)
+        PLAYER_BUTTON4.update(PROZOR)
+        PLAYER_BUTTON5 = Button(player5, 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 4*100+100))    
+        PLAYER_BUTTON5.update(PROZOR)
+        PLAYER_BUTTON5.changeColor(Miš_pozicija)
+        PLAYER_BUTTON5.update(PROZOR)
+        PLAYER_BUTTON6 = Button(player6, 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 0*100+100))    
+        PLAYER_BUTTON6.update(PROZOR)
+        PLAYER_BUTTON6.changeColor(Miš_pozicija)
+        PLAYER_BUTTON6.update(PROZOR)
+        PLAYER_BUTTON7 = Button(player7, 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 1*100+100))    
+        PLAYER_BUTTON7.update(PROZOR)
+        PLAYER_BUTTON7.changeColor(Miš_pozicija)
+        PLAYER_BUTTON7.update(PROZOR)
+        PLAYER_BUTTON8 = Button(player8, 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 2*100+100))    
+        PLAYER_BUTTON8.update(PROZOR)
+        PLAYER_BUTTON8.changeColor(Miš_pozicija)
+        PLAYER_BUTTON8.update(PROZOR)
+        PLAYER_BUTTON9 = Button(player9, 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 3*100+100))    
+        PLAYER_BUTTON9.update(PROZOR)
+        PLAYER_BUTTON9.changeColor(Miš_pozicija)
+        PLAYER_BUTTON9.update(PROZOR)
+        PLAYER_BUTTON10 = Button(player10, 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 4*100+100))    
+        PLAYER_BUTTON10.update(PROZOR)
+        PLAYER_BUTTON10.changeColor(Miš_pozicija)
+        PLAYER_BUTTON10.update(PROZOR)                    
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if PLAYER_BUTTON1.checkForInput(Miš_pozicija):
+                    player_1 = True
+                if PLAYER_BUTTON2.checkForInput(Miš_pozicija):
+                    player_2 = True
+                if PLAYER_BUTTON3.checkForInput(Miš_pozicija):
+                    player_3 = True
+                if PLAYER_BUTTON4.checkForInput(Miš_pozicija):
+                    player_4 = True
+                if PLAYER_BUTTON5.checkForInput(Miš_pozicija):
+                    player_5 = True
+                if PLAYER_BUTTON6.checkForInput(Miš_pozicija):
+                    player_6 = True
+                if PLAYER_BUTTON7.checkForInput(Miš_pozicija):
+                    player_7 = True
+                if PLAYER_BUTTON8.checkForInput(Miš_pozicija):
+                    player_8 = True
+                if PLAYER_BUTTON9.checkForInput(Miš_pozicija):
+                    player_9 = True
+                if PLAYER_BUTTON10.checkForInput(Miš_pozicija):
+                    player_10 = True
+            if event.type == pygame.KEYDOWN:
+                if player_1==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player1 = player1[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_1 = False
+                    else:
+                        player1 += event.unicode
+                if player_2==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player2 = player2[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_2 = False
+                    else:
+                        player2 += event.unicode
+                if player_3==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player3 = player3[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_3 = False
+                    else:
+                        player3 += event.unicode
+                if player_4==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player4 = player4[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_4 = False
+                    else:
+                        player4 += event.unicode
+                if player_5==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player5 = player5[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_5 = False
+                    else:
+                        player5 += event.unicode
+                if player_6==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player6 = player6[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_6 = False
+                    else:
+                        player6 += event.unicode
+                if player_7==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player7 = player7[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_7 = False
+                    else:
+                        player7 += event.unicode
+                if player_8==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player8 = player8[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_8 = False
+                    else:
+                        player8 += event.unicode
+                if player_9==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player9 = player9[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_9 = False
+                    else:
+                        player9 += event.unicode
+                if player_10==True:
+                    if event.key == pygame.K_BACKSPACE:
+                        player10 = player10[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        player_10 = False
+                    else:
+                        player10 += event.unicode
+        pygame.display.update()    
     
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB
@@ -1276,7 +1441,7 @@ def main():
                 if GUMB_PLAY.checkForInput(MENU_MOUSE_POS):
                     play()
                 if GUMB_SCORE.checkForInput(MENU_MOUSE_POS):
-                    pass
+                    score()
                 if GUMB_EXIT.checkForInput(MENU_MOUSE_POS):
                     esc_screen('Are you sure you want to quit the game?', PROZOR)
                     if zmaj == True:
