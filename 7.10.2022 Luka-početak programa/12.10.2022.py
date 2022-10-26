@@ -155,12 +155,12 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
                 sys.exit()
             if event.type == KEYDOWN and event.key == K_r:
                 if brod_r == 0:
-                    brod.rotacija_poz_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y)
+                    brod.rotacija_poz_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y,crtanje_imena)
                     brodovi_rotacija.update({brod:1})
                     brod_r = 1
                    
                 elif brod_r == 1: 
-                    brod.rotacija_neg_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y)
+                    brod.rotacija_neg_90(brod_velkiX,Brodovi_grupa,poz_broda_x, poz_broda_y,crtanje_imena)
                     brodovi_rotacija.update({brod:0})
                     brod_r = 0
                     
