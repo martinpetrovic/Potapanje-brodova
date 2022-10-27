@@ -511,7 +511,7 @@ def postavljanje_igracaA():
     global player_A_rect
     global PLAYERI_FONT
 
-    player_A = "Martin"
+    player_A = selektirani_profili[0]
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
@@ -656,7 +656,7 @@ def postavljanje_igracaB():
     global player_B_render
     global player_B_rect
     
-    player_B = "Karlo"
+    player_B = selektirani_profili[1]
     postavljeni_brodovi = []
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
