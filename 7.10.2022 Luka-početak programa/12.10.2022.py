@@ -105,7 +105,11 @@ class Brod(pygame.sprite.Sprite):
         poz_y = self.pozy
         if brodovi_rotacija.get(self) == 1:
             self.image = pygame.transform.rotate(self.image, -90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(self.pozx, self.pozy)
             brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
             brodovi_rotacija.update({self:0})
         brod_velkiX.rect.topleft = poz_x + 590, poz_y
         self.rect.topleft = poz_x, poz_y
