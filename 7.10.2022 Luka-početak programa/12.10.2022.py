@@ -169,7 +169,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
             if event.type == MOUSEBUTTONDOWN:
                 collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod)
                 
-       pygame.display.update()
+        pygame.display.update()
                 
 def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod):
     global Kvadrat_x, Kvadrat_y
