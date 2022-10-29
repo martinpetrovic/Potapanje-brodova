@@ -16,11 +16,17 @@ WHITE = (255,255,255)
 FPS = 30
 clock = pygame.time.Clock()
 
+
 #Slike, zvuk, font
+#Loading screen
 LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
+
+#Grid
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
+
+#Igranje
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png"))
 FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png"))
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png"))
@@ -32,6 +38,18 @@ HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_ba
 HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
 HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
 HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
+
+#Sound effecti
+POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
+VRATI_NAZAD_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "vrati_nazad_zvuk.ogg"))
+
+#Hoveri brodova
+HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
+HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_battleship.png" ))
+HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
+HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
+HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
+
 
 #Sve za Brod spriteove i provjere postavljanja
 Kvadrat_x, Kvadrat_y = 0, 0
@@ -448,19 +466,27 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
-        else:
-            for brodek in LISTA_BRODOVA:
-                if brod != brodek:
-                    if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)                                                                               
-    if brodovi_rotacija.get(brod) == 0:
-        if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+    if brodovi_rotacija.get(brod) == 0:
+        if i + duljinabroda > 10:
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+        else:
+            for brodek in LISTA_BRODOVA:
+                if brod != brodek:
+                    if pygame.sprite.collide_rect(brodek,brod) == True:
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+                        
+    if vrati_nazad_provjera == False:
+        pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
+        
     PROVJERA = False
     
 def zapis(igrac): #zapisuje pozicije brodova u listu
