@@ -26,6 +26,13 @@ FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png"))
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png"))
 VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png"))
 
+#Hoveri brodova
+HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
+HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_battleship.png" ))
+HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
+HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
+HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
+
 #Sve za Brod spriteove i provjere postavljanja
 Kvadrat_x, Kvadrat_y = 0, 0
 brod = None
@@ -48,148 +55,6 @@ PLAYERI_IMENA = {}
 PLAYERI_LISTA_GUMBOVA = []
 selektirani_profili = []
 
-
-class Brod(pygame.sprite.Sprite):
-    def __init__(self,picture_path,poz_x,poz_y):
-        super().__init__()
-        #rectangle
-        self.pozx = poz_x
-        self.pozy = poz_y
-        self.image = pygame.image.load(picture_path)
-        self.rect = self.image.get_rect()
-        self.rect.topleft =(poz_x, poz_y)
-       
-    
-    def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y):    
-        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
-        brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
-        self.image = pygame.transform.rotate(self.image, 90)
-        self.rect = self.image.get_rect()
-        self.rect.topleft =(poz_broda_x, poz_broda_y)
-        
-
-    def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y):
-        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
-        brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
-        self.image = pygame.transform.rotate(self.image, -90)
-        self.rect = self.image.get_rect()
-        self.rect.topleft =(poz_broda_x, poz_broda_y)
-
-
-        
-        
-
-    def collide(self):
-        global brod_collidean
-        global duljina_broda
-        global brod_izabran
-        mouse_poz = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mouse_poz):
-            if self.rect.width / 5 == 48:
-                duljina_broda = 5
-            if self.rect.width / 4 == 48:
-                duljina_broda = 4  
-            if self.rect.width / 3 == 48:
-                duljina_broda = 3
-            if self.rect.width / 2 == 48:
-                duljina_broda = 2
-            brod_izabran = True
-            brod_collidean = self
-    
-    def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije):#Vraća brodove na prvobitne pozicije brodova 
-        global vrati_nazad_provjera
-        vrati_nazad_provjera = True
-        poz_x = self.pozx
-        poz_y = self.pozy
-        if brodovi_rotacija.get(self) == 1:
-            self.image = pygame.transform.rotate(self.image, -90)
-            self.rect = self.image.get_rect()
-            self.rect.topleft =(self.pozx, self.pozy)
-            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
-            brod_velkiX.rect = brod_velkiX.image.get_rect()
-            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
-            brodovi_rotacija.update({self:0})
-        brod_velkiX.rect.topleft = poz_x + 590, poz_y
-        self.rect.topleft = poz_x, poz_y
-        brodovi_pozicije.update({self:(poz_x, poz_y)})
-       
-
-        
-class Veliki_Xevi(pygame.sprite.Sprite):
-     def __init__(self,picture_path,poz_x,poz_y):
-        super().__init__()
-        self.pozx = poz_x
-        self.pozy = poz_y
-        self.image = pygame.image.load(picture_path)
-        self.rect = self.image.get_rect()
-        self.rect.topleft =(poz_x, poz_y)
-        
-               
-def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena):
-    global idi
-    global Kvadrat_x, Kvadrat_y
-    idi = True
-    while idi:
-        čekanje_mouse_poz = pygame.mouse.get_pos()
-        PROZOR.fill(WHITE)
-        gridA('lijevo')
-        gridB('desno')
-        Brodovi_grupa.draw(PROZOR)
-        PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
-        if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
-            CONFIRM_GUMB_PLAY.update(PROZOR)
-        else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
-            CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
-            CONFIRM_GUMB_PLAY.update(PROZOR) 
-        
-        poz_broda_x, poz_broda_y = čekanje_mouse_poz
-        brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
-        
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == KEYDOWN and event.key == K_r:
-                if brod_r == 0:
-                    brod.rotacija_poz_90(brod_velkiX,poz_broda_x, poz_broda_y)
-                    brodovi_rotacija.update({brod:1})
-                    brod_r = 1
-                   
-                elif brod_r == 1: 
-                    brod.rotacija_neg_90(brod_velkiX,poz_broda_x, poz_broda_y)
-                    brodovi_rotacija.update({brod:0})
-                    brod_r = 0
-                    
-                
-            if event.type == MOUSEBUTTONDOWN:
-                collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod)
-                
-        pygame.display.update()
-                
-def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod):
-    global Kvadrat_x, Kvadrat_y
-    global idi
-    global PROVJERA
-    collide_mouse_poz = pygame.mouse.get_pos()
-    for kvadrat in lista_rect_kvadrata:
-            if kvadrat.collidepoint(collide_mouse_poz):
-                if pygame.mouse.get_pressed()[0]:
-                    Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
-                    brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
-                    brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
-                    brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
-                    while PROVJERA:
-                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije)
-                    idi = False
-    PROVJERA= True    
- 
- 
-                   
 
 class Button:
     def __init__(self, text_input, text_size, text_color, rect_width, rect_height, rect_color, hoveringRect_color, pos):
@@ -225,75 +90,141 @@ class Button:
             run_pA = False
             run_pB = False
 
-def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije): #Provjerava stanu li brodovi u polje i preklapaju li se
+class Brod(pygame.sprite.Sprite):
+    def __init__(self,picture_path,poz_x,poz_y):
+        super().__init__()
+        #rectangle
+        self.pozx = poz_x
+        self.pozy = poz_y
+        self.image = pygame.image.load(picture_path)
+        self.rect = self.image.get_rect()
+        self.rect.topleft =(poz_x, poz_y)
+       
     
-    j = (y-100)/48 - 1
-    i = (x-50)/48 - 1
-    global PROVJERA
-    if brodovi_rotacija.get(brod) == 1:
-        if j + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
-        else:
-            for brodek in LISTA_BRODOVA:
-                if brod != brodek:
-                    if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)                                                                               
-    if brodovi_rotacija.get(brod) == 0:
-        if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
-        else:
-            for brodek in LISTA_BRODOVA:
-                if brod != brodek:
-                    if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije)
-    PROVJERA = False
+    def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod):    
+        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
+        brod_velkiX.rect = brod_velkiX.image.get_rect()
+        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        self.image = pygame.transform.rotate(self.image, 90)
+        self.rect = self.image.get_rect()
+        self.rect.topleft =(poz_broda_x, poz_broda_y)
+        Hover_brod = pygame.transform.rotate(Hover_brod, 90)
+        HOVER_BRODOVA.update({self:Hover_brod})
+        
+
+    def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod):
+        brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
+        brod_velkiX.rect = brod_velkiX.image.get_rect()
+        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        self.image = pygame.transform.rotate(self.image, -90)
+        self.rect = self.image.get_rect()
+        self.rect.topleft =(poz_broda_x, poz_broda_y)
+        Hover_brod = pygame.transform.rotate(Hover_brod, -90)
+        HOVER_BRODOVA.update({self:Hover_brod})
+
+
+    def collide(self):
+        global brod_collidean
+        global duljina_broda
+        global brod_izabran
+        mouse_poz = pygame.mouse.get_pos()
+        if self.rect.collidepoint(mouse_poz):
+            if self.rect.width / 5 == 48:
+                duljina_broda = 5
+            if self.rect.width / 4 == 48:
+                duljina_broda = 4  
+            if self.rect.width / 3 == 48:
+                duljina_broda = 3
+            if self.rect.width / 2 == 48:
+                duljina_broda = 2
+            brod_izabran = True
+            brod_collidean = self
     
-def zapis(igrac): #zapisuje pozicije brodova u listu
-    global lista_imena_kvadrata_A
-    global lista_imena_kvadrata_B
-    global LISTA_BRODOVA
-    index = 0
-    if igrac == 'A':
-        for z in range(0,100):
-            Kvadrat = ["a" + str(z)]
-            lista_imena_kvadrata_A.append(Kvadrat)
-        for kvadrat in lista_rect_kvadrata_A:
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
-                lista_imena_kvadrata_A[index].append("c")
+    def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod):#Vraća brodove na prvobitne pozicije brodova 
+        global vrati_nazad_provjera
+        vrati_nazad_provjera = True
+        poz_x = self.pozx
+        poz_y = self.pozy
+        if brodovi_rotacija.get(self) == 1:
+            self.image = pygame.transform.rotate(self.image, -90)
+            self.rect = self.image.get_rect()
+            self.rect.topleft =(self.pozx, self.pozy)
+            brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
+            brod_velkiX.rect = brod_velkiX.image.get_rect()
+            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
+            brodovi_rotacija.update({self:0})
+            Hover_brod = pygame.transform.rotate(Hover_brod, -90)
+            HOVER_BRODOVA.update({self:Hover_brod})
+            
+        brod_velkiX.rect.topleft = poz_x + 590, poz_y
+        self.rect.topleft = poz_x, poz_y
+        brodovi_pozicije.update({self:(poz_x, poz_y)})
+       
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
-                lista_imena_kvadrata_A[index].append("b")
+        
+class Veliki_Xevi(pygame.sprite.Sprite):
+     def __init__(self,picture_path,poz_x,poz_y):
+        super().__init__()
+        self.pozx = poz_x
+        self.pozy = poz_y
+        self.image = pygame.image.load(picture_path)
+        self.rect = self.image.get_rect()
+        self.rect.topleft =(poz_x, poz_y)
+        
+def LOADING_SCREEN():
+    PROZOR.fill('White')
+    PROZOR.blit(LOGO,(150,0))
+    pygame.mixer.Sound.play(INTRO)
+    pygame.display.update()
+    time.sleep(4)                
+    PROZOR.fill('White')
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
-                lista_imena_kvadrata_A[index].append("d")
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
-                lista_imena_kvadrata_A[index].append("s")
+def esc_screen(ulazni_tekst, screen):
+    run = True
+    global zmaj
+    while run:
+        zmaj = False
+        ESC_MOUSE_POS = pygame.mouse.get_pos()
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
-                lista_imena_kvadrata_A[index].append("p")
-            index += 1
-    if igrac == 'B':
-        for z in range(0,100):
-            Kvadrat = ["b" + str(z)]
-            lista_imena_kvadrata_B.append(Kvadrat)
-        for kvadrat in lista_rect_kvadrata_B:
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
-                lista_imena_kvadrata_B[index].append("c")
+        trans_background = pygame.Surface((1280,720))
+        trans_background.fill('Black')
+        trans_background.set_alpha(1)
+        sivo = pygame.Surface((640,360))
+        sivo.fill('Grey')
+        okvir_surf = pygame.Surface((600,320))
+        okvir_rect = okvir_surf.get_rect(center = (640,360))
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
-                lista_imena_kvadrata_B[index].append("b")
+        font = pygame.font.Font(None, 30)
+        tekst_surf = font.render(ulazni_tekst, False, 'Black')
+        tekst_rect = tekst_surf.get_rect(midtop = (640,280))
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
-                lista_imena_kvadrata_B[index].append("d")
+        screen.blit(trans_background,(0,0))
+        screen.blit(sivo, (320,180))
+        pygame.draw.rect(screen,'Black', okvir_rect, 6)
+        screen.blit(tekst_surf, tekst_rect)
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
-                lista_imena_kvadrata_B[index].append("s")
+        CANCEL_GUMB = Button('Cancel', 30, 'Black', 200, 40, '#475F77', '#D74B4B', (490, 410))
+        CONFIRM_GUMB = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (790, 410))
 
-            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
-                lista_imena_kvadrata_B[index].append("p")
-            index += 1
-    
+        for gumb in [CANCEL_GUMB, CONFIRM_GUMB]:
+            gumb.changeColor(ESC_MOUSE_POS)
+            gumb.update(screen)
+        
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if CONFIRM_GUMB.checkForInput(ESC_MOUSE_POS):
+                    zmaj = True
+                    run = False
+                if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
+                    run = False
+        pygame.display.update()
+        clock.tick(FPS)
+        
+
 def gridA(pozicija):
     global izrada_liste_A
     global lista_rect_kvadrata_A
@@ -436,60 +367,151 @@ def gridB(pozicija):
             slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
-            slovo_x = slovo_x + 48
-
-def LOADING_SCREEN():
-    PROZOR.fill('White')
-    PROZOR.blit(LOGO,(150,0))
-    pygame.mixer.Sound.play(INTRO)
-    pygame.display.update()
-    time.sleep(4)                
-    PROZOR.fill('White')
-
-
-def esc_screen(ulazni_tekst, screen):
-    run = True
-    global zmaj
-    while run:
-        zmaj = False
-        ESC_MOUSE_POS = pygame.mouse.get_pos()
-
-        trans_background = pygame.Surface((1280,720))
-        trans_background.fill('Black')
-        trans_background.set_alpha(1)
-        sivo = pygame.Surface((640,360))
-        sivo.fill('Grey')
-        okvir_surf = pygame.Surface((600,320))
-        okvir_rect = okvir_surf.get_rect(center = (640,360))
-
-        font = pygame.font.Font(None, 30)
-        tekst_surf = font.render(ulazni_tekst, False, 'Black')
-        tekst_rect = tekst_surf.get_rect(midtop = (640,280))
-
-        screen.blit(trans_background,(0,0))
-        screen.blit(sivo, (320,180))
-        pygame.draw.rect(screen,'Black', okvir_rect, 6)
-        screen.blit(tekst_surf, tekst_rect)
-
-        CANCEL_GUMB = Button('Cancel', 30, 'Black', 200, 40, '#475F77', '#D74B4B', (490, 410))
-        CONFIRM_GUMB = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (790, 410))
-
-        for gumb in [CANCEL_GUMB, CONFIRM_GUMB]:
-            gumb.changeColor(ESC_MOUSE_POS)
-            gumb.update(screen)
+            slovo_x = slovo_x + 48     
+        
+  
+def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena):
+    global idi
+    global Kvadrat_x, Kvadrat_y
+    global HOVER_BRODOVA
+    idi = True
+    while idi:
+        čekanje_mouse_poz = pygame.mouse.get_pos()
+        PROZOR.fill(WHITE)
+        gridA('lijevo')
+        gridB('desno')
+        Brodovi_grupa.draw(PROZOR)
+        PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
+        if len(postavljeni_brodovi) < 5:
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+            CONFIRM_GUMB_PLAY.update(PROZOR)
+        else:
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
+            CONFIRM_GUMB_PLAY.update(PROZOR) 
+        
+        poz_broda_x, poz_broda_y = čekanje_mouse_poz
+        brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
+        
+        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
+        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
         
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+                
+            if event.type == KEYDOWN and event.key == K_r:
+                if brod_r == 0:
+                    brod.rotacija_poz_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod))
+                    brodovi_rotacija.update({brod:1})
+                    brod_r = 1
+                   
+                elif brod_r == 1: 
+                    brod.rotacija_neg_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod))
+                    brodovi_rotacija.update({brod:0})
+                    brod_r = 0
+                    
+                
             if event.type == MOUSEBUTTONDOWN:
-                if CONFIRM_GUMB.checkForInput(ESC_MOUSE_POS):
-                    zmaj = True
-                    run = False
-                if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
-                    run = False
+                collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,HOVER_BRODOVA.get(brod))
+                
         pygame.display.update()
-        clock.tick(FPS)
+                
+def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,Hover_brod):
+    global Kvadrat_x, Kvadrat_y
+    global idi
+    global PROVJERA
+    collide_mouse_poz = pygame.mouse.get_pos()
+    for kvadrat in lista_rect_kvadrata:
+            if kvadrat.collidepoint(collide_mouse_poz):
+                if pygame.mouse.get_pressed()[0]:
+                    Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
+                    brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
+                    brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
+                    brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
+                    while PROVJERA:
+                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                    idi = False
+    PROVJERA= True    
+ 
+ 
+                   
+
+
+
+def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod): #Provjerava stanu li brodovi u polje i preklapaju li se
+    
+    j = (y-100)/48 - 1
+    i = (x-50)/48 - 1
+    global PROVJERA
+    if brodovi_rotacija.get(brod) == 1:
+        if j + duljinabroda > 10:
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+        else:
+            for brodek in LISTA_BRODOVA:
+                if brod != brodek:
+                    if pygame.sprite.collide_rect(brodek,brod) == True:
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)                                                                               
+    if brodovi_rotacija.get(brod) == 0:
+        if i + duljinabroda > 10:
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+        else:
+            for brodek in LISTA_BRODOVA:
+                if brod != brodek:
+                    if pygame.sprite.collide_rect(brodek,brod) == True:
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+    PROVJERA = False
+    
+def zapis(igrac): #zapisuje pozicije brodova u listu
+    global lista_imena_kvadrata_A
+    global lista_imena_kvadrata_B
+    global LISTA_BRODOVA
+    index = 0
+    if igrac == 'A':
+        for z in range(0,100):
+            Kvadrat = ["a" + str(z)]
+            lista_imena_kvadrata_A.append(Kvadrat)
+        for kvadrat in lista_rect_kvadrata_A:
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
+                lista_imena_kvadrata_A[index].append("c")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
+                lista_imena_kvadrata_A[index].append("b")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
+                lista_imena_kvadrata_A[index].append("d")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
+                lista_imena_kvadrata_A[index].append("s")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
+                lista_imena_kvadrata_A[index].append("p")
+            index += 1
+    if igrac == 'B':
+        for z in range(0,100):
+            Kvadrat = ["b" + str(z)]
+            lista_imena_kvadrata_B.append(Kvadrat)
+        for kvadrat in lista_rect_kvadrata_B:
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[0].rect):
+                lista_imena_kvadrata_B[index].append("c")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[1].rect):
+                lista_imena_kvadrata_B[index].append("b")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[2].rect):
+                lista_imena_kvadrata_B[index].append("d")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[3].rect):
+                lista_imena_kvadrata_B[index].append("s")
+
+            if pygame.Rect.colliderect(kvadrat,LISTA_BRODOVA[4].rect):
+                lista_imena_kvadrata_B[index].append("p")
+            index += 1
+    
+
+
+
 
         
 def postavljanje_igracaA():
@@ -503,6 +525,7 @@ def postavljanje_igracaA():
     global VELIKI_XEVI_GRUPA_A
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_A
+    global HOVER_BRODOVA
     global lista_rect_kvadrata_A
     global player_A
     global player_A_render
@@ -548,6 +571,8 @@ def postavljanje_igracaA():
     PATROL_X_GRUPA_A = pygame.sprite.GroupSingle(PATROL_X)
     
     VELIKI_XEVI_LISTA_A = [CARRIER_X_GRUPA_A, BATTLESHIP_X_GRUPA_A, DESTROYER_X_GRUPA_A, SUBMARINE_X_GRUPA_A, PATROL_X_GRUPA_A]
+    
+    HOVER_BRODOVA = {CARRIER:HOVER_CARRIER, BATTLESHIP:HOVER_BATTLESHIP, DESTROYER:HOVER_DESTROYER, SUBMARINE:HOVER_SUBMARINE, PATROL:HOVER_PATROL}
     
     
     run_pA = True
@@ -656,6 +681,7 @@ def postavljanje_igracaB():
     global VELIKI_XEVI_GRUPA_B
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_B
+    global HOVER_BRODOVA
     global lista_rect_kvadrata_B
     global player_B
     global player_B_render
@@ -699,6 +725,8 @@ def postavljanje_igracaB():
     PATROL_X_GRUPA_B = pygame.sprite.GroupSingle(PATROL_X)
     
     VELIKI_XEVI_LISTA_B = [CARRIER_X_GRUPA_B,BATTLESHIP_X_GRUPA_B,DESTROYER_X_GRUPA_B,SUBMARINE_X_GRUPA_B,PATROL_X_GRUPA_B]
+    
+    HOVER_BRODOVA = {CARRIER:HOVER_CARRIER, BATTLESHIP:HOVER_BATTLESHIP, DESTROYER:HOVER_DESTROYER, SUBMARINE:HOVER_SUBMARINE, PATROL:HOVER_PATROL}
     
     
     run_pB = True
