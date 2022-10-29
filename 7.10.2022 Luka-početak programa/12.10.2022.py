@@ -42,6 +42,8 @@ HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol
 #Sound effecti
 POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
 VRATI_NAZAD_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "vrati_nazad_zvuk.ogg"))
+EXIT_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "exit_gumb_zvuk.ogg"))
+TUPI_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "tupi_gumb_zvuk.ogg"))
 
 #Hoveri brodova
 HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
@@ -1465,16 +1467,30 @@ def play():
 def main():
     #LOADING_SCREEN()
     global zmaj
+    tupi_zvuk = 1
+    gumboslav = None
     while True:
         zmaj = False
         PROZOR.fill('White')
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
+        menu_mouse_poz = pygame.mouse.get_pos()
         GUMB_PLAY = Button(text_input = "Play", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,200))
         GUMB_SCORE = Button(text_input = "Score", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,275))
         GUMB_EXIT = Button(text_input = "Exit", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#D74B4B', pos = (640,350))
+        MAIN_GUMBOVI_LISTA = {GUMB_PLAY: "GUMB_PLAY", GUMB_SCORE: "GUMB_SCORE", GUMB_EXIT: "GUMB_EXIT"}
+        
         for gumb in [GUMB_PLAY, GUMB_SCORE, GUMB_EXIT]:
-            gumb.changeColor(MENU_MOUSE_POS)
+            gumb.changeColor(menu_mouse_poz)
             gumb.update(PROZOR)
+            
+            #Zvuk
+            print(tupi_zvuk)
+            if gumb.checkForInput(menu_mouse_poz) == True and tupi_zvuk == 1:
+                pygame.mixer.Sound.play(TUPI_GUMB_ZVUK)
+                gumboslav = MAIN_GUMBOVI_LISTA.get(gumb)
+                tupi_zvuk = 0
+            elif MAIN_GUMBOVI_LISTA.get(gumb) == gumboslav and gumb.checkForInput(menu_mouse_poz) == False:
+                tupi_zvuk = 1
+                
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -1483,18 +1499,22 @@ def main():
                 if event.key == K_ESCAPE:
                     esc_screen('Are you sure you want to quit the game?', PROZOR)
                     if zmaj == True:
+                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
+                        time.sleep(1.2)
                         pygame.quit()
                         sys.exit()
                     else: pass
             if event.type == MOUSEBUTTONDOWN:
-                if GUMB_PLAY.checkForInput(MENU_MOUSE_POS):
+                if GUMB_PLAY.checkForInput(menu_mouse_poz):
                     play()
-                if GUMB_SCORE.checkForInput(MENU_MOUSE_POS):
+                if GUMB_SCORE.checkForInput(menu_mouse_poz):
                     #score()
                     pass
-                if GUMB_EXIT.checkForInput(MENU_MOUSE_POS):
+                if GUMB_EXIT.checkForInput(menu_mouse_poz):
                     esc_screen('Are you sure you want to quit the game?', PROZOR)
                     if zmaj == True:
+                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
+                        time.sleep(1.2)
                         pygame.quit()
                         sys.exit()
                     else: pass
