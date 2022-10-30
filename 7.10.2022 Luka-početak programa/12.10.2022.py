@@ -32,13 +32,6 @@ FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png"))
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png"))
 VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png"))
 
-#Hoveri brodova
-HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
-HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_battleship.png" ))
-HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
-HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
-HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
-
 #Sound effecti
 POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
 VRATI_NAZAD_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "vrati_nazad_zvuk.ogg"))
