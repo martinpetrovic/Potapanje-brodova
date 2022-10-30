@@ -44,6 +44,7 @@ POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "
 VRATI_NAZAD_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "vrati_nazad_zvuk.ogg"))
 EXIT_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "exit_gumb_zvuk.ogg"))
 TUPI_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "tupi_gumb_zvuk.ogg"))
+KLIK_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "klik_gumb_zvuk.ogg"))
 
 #Hoveri brodova
 HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
@@ -51,6 +52,16 @@ HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_ba
 HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
 HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
 HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
+
+ZELENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad2.png" ))
+ZELENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad3.png" ))
+ZELENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad4.png" ))
+ZELENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad5.png" ))
+
+CRVENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad2.png" ))
+CRVENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad3.png" ))
+CRVENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad4.png" ))
+CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad5.png" ))
 
 play_run = True
 
@@ -116,6 +127,7 @@ class Button:
         global run_pB
         mouse_poz = pygame.mouse.get_pos()
         if self.main_rect.collidepoint(mouse_poz):
+            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
             zapis(igrac)
             run_pA = False
             run_pB = False
@@ -131,7 +143,7 @@ class Brod(pygame.sprite.Sprite):
         self.rect.topleft =(poz_x, poz_y)
        
     
-    def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod):    
+    def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):    
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
         brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
@@ -139,10 +151,14 @@ class Brod(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
         Hover_brod = pygame.transform.rotate(Hover_brod, 90)
+        Zeleni_brod = pygame.transform.rotate(Zeleni_brod, 90)
+        Crveni_brod = pygame.transform.rotate(Crveni_brod, 90)
         HOVER_BRODOVA.update({self:Hover_brod})
+        ZELENI_KVADRATI.update({self:Zeleni_brod})
+        CRVENI_KVADRATI.update({self:Crveni_brod})
         
 
-    def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod):
+    def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
         brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
@@ -150,7 +166,11 @@ class Brod(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
         Hover_brod = pygame.transform.rotate(Hover_brod, -90)
+        Zeleni_brod = pygame.transform.rotate(Zeleni_brod, -90)
+        Crveni_brod = pygame.transform.rotate(Crveni_brod, -90)
         HOVER_BRODOVA.update({self:Hover_brod})
+        ZELENI_KVADRATI.update({self:Zeleni_brod})
+        CRVENI_KVADRATI.update({self:Crveni_brod})
 
 
     def collide(self):
@@ -170,7 +190,7 @@ class Brod(pygame.sprite.Sprite):
             brod_izabran = True
             brod_collidean = self
     
-    def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod):#Vraća brodove na prvobitne pozicije brodova 
+    def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod):#Vraća brodove na prvobitne pozicije brodova 
         global vrati_nazad_provjera
         vrati_nazad_provjera = True
         poz_x = self.pozx
@@ -184,7 +204,11 @@ class Brod(pygame.sprite.Sprite):
             brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
             brodovi_rotacija.update({self:0})
             Hover_brod = pygame.transform.rotate(Hover_brod, -90)
+            Zeleni_brod = pygame.transform.rotate(Zeleni_brod, -90)
+            Crveni_brod = pygame.transform.rotate(Crveni_brod, -90)
             HOVER_BRODOVA.update({self:Hover_brod})
+            ZELENI_KVADRATI.update({self:Zeleni_brod})
+            CRVENI_KVADRATI.update({self:Crveni_brod})
             
         brod_velkiX.rect.topleft = poz_x + 590, poz_y
         self.rect.topleft = poz_x, poz_y
@@ -247,9 +271,11 @@ def esc_screen(ulazni_tekst, screen):
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if CONFIRM_GUMB.checkForInput(ESC_MOUSE_POS):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     zmaj = True
                     run = False
                 if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     run = False
         pygame.display.update()
         clock.tick(FPS)
@@ -399,7 +425,28 @@ def gridB(pozicija):
             PROZOR.blit(slovo, slovo_rect)
             slovo_x = slovo_x + 48     
         
-  
+def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos): #Crveni i zeleni hoveri
+    global Zeleno, Crveno
+    global Crveno_crtaj,Zeleno_crtaj
+    brodoslav = None
+    Crveno_crtaj = False
+    Zeleno_crtaj = False
+    for kvadrat in lista_rect_kvadrata:
+            if kvadrat.collidepoint(mouse_pos):
+                for brodek in LISTA_BRODOVA:
+                    if brod != brodek:
+                        if pygame.sprite.collide_rect(brod,brodek) == True:
+                            crveni_pravokutnik = CRVENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
+                            if pygame.Rect.colliderect(crveni_pravokutnik,brodek.rect) == True:
+                                brodoslav = brod
+                                #print("uslo")
+                                Crveno_crtaj = True
+                                Crveno = PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
+                        elif brodoslav == brod:
+                            zeleni_pravokutnik = ZELENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
+                            Zeleno_crtaj = True          
+                            Zeleno = PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
+
 def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena):
     global idi
     global Kvadrat_x, Kvadrat_y
@@ -410,6 +457,13 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         PROZOR.fill(WHITE)
         gridA('lijevo')
         gridB('desno')
+        
+        poz_broda_x, poz_broda_y = čekanje_mouse_poz
+        brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
+        
+        #Crveni i zeleni hoveri
+        provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz)
+        
         Brodovi_grupa.draw(PROZOR)
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
         if len(postavljeni_brodovi) < 5:
@@ -420,8 +474,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR) 
         
-        poz_broda_x, poz_broda_y = čekanje_mouse_poz
-        brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
+        
         
         hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
         PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
@@ -433,22 +486,22 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
                 
             if event.type == KEYDOWN and event.key == K_r:
                 if brod_r == 0:
-                    brod.rotacija_poz_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod))
+                    brod.rotacija_poz_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod),ZELENI_KVADRATI.get(brod),CRVENI_KVADRATI.get(brod))
                     brodovi_rotacija.update({brod:1})
                     brod_r = 1
                    
                 elif brod_r == 1: 
-                    brod.rotacija_neg_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod))
+                    brod.rotacija_neg_90(brod_velkiX,poz_broda_x,poz_broda_y,HOVER_BRODOVA.get(brod),ZELENI_KVADRATI.get(brod),CRVENI_KVADRATI.get(brod))
                     brodovi_rotacija.update({brod:0})
                     brod_r = 0
                     
                 
             if event.type == MOUSEBUTTONDOWN:
-                collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,HOVER_BRODOVA.get(brod))
+                collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,HOVER_BRODOVA.get(brod),ZELENI_KVADRATI.get(brod),CRVENI_KVADRATI.get(brod))
                 
         pygame.display.update()
                 
-def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,Hover_brod):
+def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,Hover_brod,Zeleni_brod,Crveni_brod)):
     global Kvadrat_x, Kvadrat_y
     global idi
     global PROVJERA
@@ -461,7 +514,7 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
                     brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
                     brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
                     while PROVJERA:
-                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
                     idi = False
     PROVJERA= True    
  
@@ -470,30 +523,30 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
 
 
 
-def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod): #Provjerava stanu li brodovi u polje i preklapaju li se
+def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
     global PROVJERA
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
             pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
                         pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
     if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
             pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod)
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
                         pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
     if vrati_nazad_provjera == False:
@@ -564,6 +617,7 @@ def postavljanje_igracaA():
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_A
     global HOVER_BRODOVA
+    global ZELENI_KVADRATI, CRVENI_KVADRATI
     global lista_rect_kvadrata_A
     global player_A
     global player_A_render
@@ -611,7 +665,8 @@ def postavljanje_igracaA():
     VELIKI_XEVI_LISTA_A = [CARRIER_X_GRUPA_A, BATTLESHIP_X_GRUPA_A, DESTROYER_X_GRUPA_A, SUBMARINE_X_GRUPA_A, PATROL_X_GRUPA_A]
     
     HOVER_BRODOVA = {CARRIER:HOVER_CARRIER, BATTLESHIP:HOVER_BATTLESHIP, DESTROYER:HOVER_DESTROYER, SUBMARINE:HOVER_SUBMARINE, PATROL:HOVER_PATROL}
-    
+    ZELENI_KVADRATI = {CARRIER:ZELENI_KVADRAT_5, BATTLESHIP:ZELENI_KVADRAT_4, DESTROYER:ZELENI_KVADRAT_3, SUBMARINE:ZELENI_KVADRAT_3, PATROL:ZELENI_KVADRAT_2}
+    CRVENI_KVADRATI = {CARRIER:CRVENI_KVADRAT_5, BATTLESHIP:CRVENI_KVADRAT_4, DESTROYER:CRVENI_KVADRAT_3, SUBMARINE:CRVENI_KVADRAT_3, PATROL:CRVENI_KVADRAT_2}
     
     run_pA = True
     brodovi_pozicije_A = {CARRIER: (CARRIER.pozx, CARRIER.pozy), BATTLESHIP: (BATTLESHIP.pozx, BATTLESHIP.pozy), DESTROYER: (DESTROYER.pozx, DESTROYER.pozy), SUBMARINE: (SUBMARINE.pozx, SUBMARINE.pozy), PATROL: (PATROL.pozx, PATROL.pozy)}
@@ -765,7 +820,8 @@ def postavljanje_igracaB():
     VELIKI_XEVI_LISTA_B = [CARRIER_X_GRUPA_B,BATTLESHIP_X_GRUPA_B,DESTROYER_X_GRUPA_B,SUBMARINE_X_GRUPA_B,PATROL_X_GRUPA_B]
     
     HOVER_BRODOVA = {CARRIER:HOVER_CARRIER, BATTLESHIP:HOVER_BATTLESHIP, DESTROYER:HOVER_DESTROYER, SUBMARINE:HOVER_SUBMARINE, PATROL:HOVER_PATROL}
-    
+    ZELENI_KVADRATI = {CARRIER:ZELENI_KVADRAT_5, BATTLESHIP:ZELENI_KVADRAT_4, DESTROYER:ZELENI_KVADRAT_3, SUBMARINE:ZELENI_KVADRAT_3, PATROL:ZELENI_KVADRAT_2}
+    CRVENI_KVADRATI = {CARRIER:CRVENI_KVADRAT_5, BATTLESHIP:CRVENI_KVADRAT_4, DESTROYER:CRVENI_KVADRAT_3, SUBMARINE:CRVENI_KVADRAT_3, PATROL:CRVENI_KVADRAT_2}
     
     run_pB = True
     brodovi_pozicije_B = {CARRIER: (CARRIER.pozx, CARRIER.pozy), BATTLESHIP: (BATTLESHIP.pozx, BATTLESHIP.pozy), DESTROYER: (DESTROYER.pozx, DESTROYER.pozy), SUBMARINE: (SUBMARINE.pozx, SUBMARINE.pozy), PATROL: (PATROL.pozx, PATROL.pozy)}
@@ -1137,6 +1193,7 @@ def igranje_A_ekran():
                 if GUMB_SHOOT.checkForInput(mouse_pos):
                     gadanje('A')
                     if provjera_gadanja == True:
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         run = False
                 promjena_poz_odabranog_kvadrata('A', mouse_pos)
                 pass
@@ -1177,6 +1234,7 @@ def igranje_B_ekran():
                 if GUMB_SHOOT.checkForInput(mouse_pos):
                     gadanje('B')
                     if provjera_gadanja == True:
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         run = False
                 promjena_poz_odabranog_kvadrata('B', mouse_pos)
                 pass
@@ -1205,6 +1263,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if RESTART_BUTTON.checkForInput(Miš_pozicija):
+                pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                 restart = True
     pobjednik = ""
     if rezultat1 == 0:
@@ -1302,6 +1361,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                 
             if event.type == MOUSEBUTTONDOWN:
                 if BACK1.checkForInput(score_mouse_pos):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
                     
                 for i in range(8):
@@ -1312,6 +1372,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         #for z in range (8):
                         #        profili_i_score.update({PLAYERI_IMENA.get(f"player{z+1}"):score[z]})
                         with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
@@ -1409,12 +1470,15 @@ def biranje_profila(): #biranje igrača koji će igrati
             if event.type == MOUSEBUTTONDOWN:
                 if CONFIRM_SELECTED.checkForInput(biranje_mouse_poz):
                     if len(selektirani_profili) == 2:
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         biranje_profila_bool = False
                 if BACK.checkForInput(biranje_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
                 if len(selektirani_profili) <= 2:
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
+                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                             if len(selektirani_profili)<2:
                                 PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 75, 'Black', 411, 91, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
                                 PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
@@ -1571,8 +1635,10 @@ def main():
                     else: pass
             if event.type == MOUSEBUTTONDOWN:
                 if GUMB_PLAY.checkForInput(menu_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     play()
                 if GUMB_SCORE.checkForInput(menu_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     #score()
                     pass
                 if GUMB_EXIT.checkForInput(menu_mouse_poz):
