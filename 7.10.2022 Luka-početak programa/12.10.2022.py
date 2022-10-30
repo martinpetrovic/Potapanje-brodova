@@ -52,6 +52,7 @@ HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_des
 HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
 HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
 
+play_run = True
 
 #Sve za Brod spriteove i provjere postavljanja
 Kvadrat_x, Kvadrat_y = 0, 0
@@ -74,6 +75,15 @@ PLAYERI_SELEKTIRANI = {}
 PLAYERI_IMENA = {}
 PLAYERI_LISTA_GUMBOVA = []
 selektirani_profili = []
+with open("potapanje brodova\profili.txt",encoding="utf-8") as datoteka:
+        profili = datoteka.readlines()
+with open("potapanje brodova\score.txt",encoding="utf-8") as datoteka:
+    score = datoteka.readlines()
+#profili_i_score = {}
+
+imenovanje_profila_bool = True
+biranje_profila_bool = True
+
 
 
 class Button:
@@ -1178,6 +1188,8 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     global rezultat_desno
     global rezultat_lijevo
     global restart
+    global selektirani_profili
+    global profili
     PROZOR.fill(WHITE)
 
     Miš_pozicija= pygame.mouse.get_pos()
@@ -1196,34 +1208,32 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
                 restart = True
     pobjednik = ""
     if rezultat1 == 0:
-        pobjednik = "Igrač 2 je pobijedio"
-        a=1
+        pobjednik = selektirani_profili[1]
+        #a = profili.index(selektirani_profili[1])
     if rezultat2 == 0:
-        pobjednik = "Igrač 1 je pobijedio"
-        a=0
+        pobjednik = selektirani_profili[0]
+        #a = profili.index(selektirani_profili[0])
     while zapis_rezultata_jednom==True:
         with open("potapanje brodova\score.txt", encoding="utf-8") as datoteka:
             rezultati = datoteka.readlines()
-            print(rezultati)
-            rezultati[a] = str(int(rezultati[a]) + 1) + "\n"
-            print(rezultati)
-            if int(rezultati[0])>int(rezultati[1]):
+            rezultati[profili.index(pobjednik+"\n")] = str(int(rezultati[profili.index(pobjednik+"\n")]) + 1) + "\n"
+            if int(rezultati[profili.index(selektirani_profili[1]+"\n")])>int(rezultati[profili.index(selektirani_profili[0]+"\n")]):
+                boja_lijevo =  "#FF0000"
+                boja_desno =  "#32CD32" 
+            elif int(rezultati[profili.index(selektirani_profili[0]+"\n")])>int(rezultati[profili.index(selektirani_profili[1]+"\n")]):
                 boja_lijevo = "#32CD32"
                 boja_desno = "#FF0000"  
-            elif int(rezultati[1])>int(rezultati[0]):
-                boja_lijevo = "#FF0000"
-                boja_desno = "#32CD32"  
-            elif int(rezultati[1])== int(rezultati[0]):
+            elif int(rezultati[profili.index(selektirani_profili[0]+"\n")])== int(rezultati[profili.index(selektirani_profili[1]+"\n")]):
                 boja_desno= "#32CD32"
                 boja_lijevo = boja_desno
         with open("potapanje brodova\score.txt", "wt") as datoteka:
             datoteka.writelines(rezultati)
-            rezultat_lijevo = font.render(rezultati[0][:-1],True,boja_lijevo)
-            rezultat_desno = font.render(rezultati[1][:-1],True,boja_desno)
+            rezultat_lijevo = font.render(rezultati[profili.index(selektirani_profili[0]+"\n")][:-1],True,boja_lijevo)
+            rezultat_desno = font.render(rezultati[profili.index(selektirani_profili[1]+"\n")][:-1],True,boja_desno)
             
         zapis_rezultata_jednom = False
     
-    winner = font.render(pobjednik,True,"#32CD32",)
+    winner = font.render(pobjednik+" Victory Royale",True,"#32CD32",)
     dvotocka = font.render(":",True,"#000000")
     PROZOR.blit(winner,(340, 210))
     PROZOR.blit(rezultat_lijevo,(550,310))
@@ -1231,42 +1241,57 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     PROZOR.blit(dvotocka,(605,305))
     
     pygame.display.update()
+
 def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
+    #global profili_i_score
+    global score
+    global profili
     global PLAYERI_IMENA
     global PLAYERI_SELEKTIRANI
     global PLAYERI_LISTA_GUMBOVA
-    imenovanje_profila = True
+    global play_run
+    global biranje_profila_bool
+    global imenovanje_profila_bool
+    imenovanje_profila_bool = True
+    font = pygame.font.Font(None, 60)
     
     for i in range(1,9):
         PLAYERI_SELEKTIRANI.update({f"player_{i}":False})
-        PLAYERI_IMENA.update({f"player{i}": f"Player {i}"})
+        PLAYERI_IMENA.update({f"player{i}": profili[i-1][:-1]})
     
-    while imenovanje_profila == True:
-        
+    while imenovanje_profila_bool == True:
+        PROZOR.fill(WHITE)
+        Create_profile = font.render("Create profiles",1,'Black')
+        Create_profile_rect = Create_profile.get_rect(center=(630,45))
+        PROZOR.blit(Create_profile,Create_profile_rect)
         score_mouse_pos = pygame.mouse.get_pos()
         
-        PROZOR.fill(WHITE)
-        PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 0*100+100))
-        PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 1*100+100))
-        PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 2*100+100))
-        PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 3*100+100))
+        
+        PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162))
+        PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134))
+        PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*2))
+        PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*3))
         
         
-        PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 0*100+100)) 
-        PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 1*100+100))        
-        PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 2*100+100))
-        PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 3*100+100)) 
+        PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 162)) 
+        PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 1*134+162))        
+        PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 2*134+162))
+        PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 3*134+162)) 
         
         
 
         PLAYERI_LISTA_GUMBOVA = [PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
         
-        PROZOR.fill(WHITE)
+        
+        BACK1 = Button("BACK", 45, "Black", 119,55,'#475F77','#77dd77', (84,54))
+        BACK1.update(PROZOR)
+        BACK1.changeColor(score_mouse_pos)
+        BACK1.update(PROZOR)
         for player_gumb in PLAYERI_LISTA_GUMBOVA:
             player_gumb.update(PROZOR)
             player_gumb.changeColor(score_mouse_pos)
             player_gumb.update(PROZOR)                    
-        CHOOSE_PROFILE = Button("Procede to profile choosing", 30, 'Black', 350, 40, '#475F77', '#77dd77', (900,600))
+        CHOOSE_PROFILE = Button("Confirm", 30, 'Black', 119,55, '#475F77', '#77dd77', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)                   
@@ -1276,6 +1301,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                 sys.exit()
                 
             if event.type == MOUSEBUTTONDOWN:
+                if BACK1.checkForInput(score_mouse_pos):
+                    main()
+                    
                 for i in range(8):
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
                         
@@ -1284,11 +1312,27 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        imenovanje_profila = False
+                        #for z in range (8):
+                        #        profili_i_score.update({PLAYERI_IMENA.get(f"player{z+1}"):score[z]})
+                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
+                            profili = []
+                            profili = datoteka.readlines()
+                            for z in range (8):
+                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                                print (profili)
+                        imenovanje_profila_bool = False
+                        
+                        with open("potapanje brodova\profili.txt","wt") as datoteka:
+                            datoteka.writelines(profili)
+                        
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    imenovanje_profila = False
+                    if event.key == K_ESCAPE:
+                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        if zmaj == True:
+                            main()
+                        else: pass
                 for i in range(8):
                     if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
                         if event.key == pygame.K_BACKSPACE:
@@ -1301,46 +1345,54 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         
                         else:
                             trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                            trenutno_ime_upis += event.unicode
+                            trenutno_ime_upis += event.unicode 
                             PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
 
-        pygame.display.update()    
+        pygame.display.update()
+        
 
 def biranje_profila(): #biranje igrača koji će igrati
     global selektirani_profili
+    global play_run
     global PLAYERI_IMENA
     global PLAYERI_SELEKTIRANI
     global PLAYERI_LISTA_GUMBOVA
-    biranje_profila = True
+    biranje_profila_bool = True
     PROZOR.fill(WHITE)
-    PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 0*100+100))
-    PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 1*100+100))
-    PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 2*100+100))
-    PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (0*400+200, 3*100+100))
+    PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162))
+    PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134))
+    PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*2))
+    PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*3))
         
         
-    PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 0*100+100)) 
-    PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 1*100+100))        
-    PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 2*100+100))
-    PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 30, 'Black', 200, 40, '#475F77', '#77dd77', (1*400+200, 3*100+100)) 
+    PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 162)) 
+    PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 1*134+162))        
+    PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 2*134+162))
+    PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (962, 3*134+162)) 
         
-
+    font = pygame.font.Font(None, 60)
     
-    GUMBOVI_POZICIJE = [(0*400+200, 0*100+100),(0*400+200, 1*100+100),(0*400+200, 2*100+100),(0*400+200, 3*100+100),(1*400+200, 0*100+100),(1*400+200, 1*100+100),(1*400+200, 2*100+100),(1*400+200, 3*100+100)]
+    GUMBOVI_POZICIJE = [(307, 162),(307, 162+134),(307, 162+134*2),((307, 162+134*3)),((962, 162)),(962, 1*134+162),(962, 2*134+162),(962, 3*134+162)]
     PLAYERI_LISTA_GUMBOVA=[PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
     GUMBOVI_METAMORFOZA = {PLAYER_BUTTON1:0, PLAYER_BUTTON2:0, PLAYER_BUTTON3:0, PLAYER_BUTTON4:0 ,PLAYER_BUTTON5:0 ,PLAYER_BUTTON6:0 ,PLAYER_BUTTON7:0 ,PLAYER_BUTTON8:0}
     
-    while biranje_profila == True:
+    while biranje_profila_bool == True:
         biranje_mouse_poz = pygame.mouse.get_pos()
-        
+        Choose_profile = font.render("Choose profiles",1,'Black')
+        Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
+        PROZOR.blit(Choose_profile,Choose_profile_rect)
         
         for player_gumb in PLAYERI_LISTA_GUMBOVA:
             if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
-                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 30, 'Black', 200, 40, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
                 player_gumb.update(PROZOR)
                 player_gumb.changeColor(biranje_mouse_poz)
                 player_gumb.update(PROZOR)
-        CONFIRM_SELECTED =  Button(("Confirm selected profiles"), 30, 'Black', 300, 40, '#475F77', '#77dd77', ((900,600)))        
+        BACK = Button("BACK", 45, "Black", 119,55,'#475F77','#77dd77', (84,54))
+        BACK.update(PROZOR)
+        BACK.changeColor(biranje_mouse_poz)
+        BACK.update(PROZOR)
+        CONFIRM_SELECTED =  Button(("Confirm"), 30, 'Black', 119,55, '#475F77', '#77dd77', ((1137,651)))        
         CONFIRM_SELECTED.update(PROZOR)
         CONFIRM_SELECTED.changeColor(biranje_mouse_poz)
         CONFIRM_SELECTED.update(PROZOR)
@@ -1348,20 +1400,28 @@ def biranje_profila(): #biranje igrača koji će igrati
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()   
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        if zmaj == True:
+                            main()
+                        else: pass
             if event.type == MOUSEBUTTONDOWN:
                 if CONFIRM_SELECTED.checkForInput(biranje_mouse_poz):
                     if len(selektirani_profili) == 2:
-                        biranje_profila = False
+                        biranje_profila_bool = False
+                if BACK.checkForInput(biranje_mouse_poz):
+                    main()
                 if len(selektirani_profili) <= 2:
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
                             if len(selektirani_profili)<2:
-                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 200, 40, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
+                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 75, 'Black', 411, 91, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
                                 PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
                                 GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:1})
                             if PLAYERI_IMENA.get(f"player{i+1}") in selektirani_profili:
                                 selektirani_profili.remove(PLAYERI_IMENA.get(f"player{i+1}")) 
-                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 200, 40, '#475F77', '#77dd77',GUMBOVI_POZICIJE[i])
+                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 411, 91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[i])
                                 PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
                                 GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:0})
                             elif PLAYERI_IMENA.get(f"player{i+1}") not in selektirani_profili:
@@ -1417,7 +1477,12 @@ def play():
     global postavljen_kvadratB
     global rezultat_A_igrac
     global rezultat_B_igrac
-    play_run = True
+    global play_run
+    global biranje_profila_bool
+    global imenovanje_profila_bool
+    global selektirani_profili
+    resetiranje_prije_igre()
+    selektirani_profili = [] 
     resetiranje_prije_igre()
     imenovanje_profila()
     biranje_profila()
