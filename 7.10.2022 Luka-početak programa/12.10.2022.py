@@ -24,7 +24,7 @@ INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
 #Grid
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
-FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
+FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Igranje
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png"))
@@ -307,15 +307,14 @@ def esc_screen(ulazni_tekst, screen):
 def gridA(pozicija):
     global izrada_liste_A
     global lista_rect_kvadrata_A
-    y = 100
+    y = 80
     if pozicija == 'lijevo':
         #crtanje grida
-        x = 50
         for i in range(10):
-            y = y + 48
-            x = 50
+            y += 48
+            x = 48
             for j in range (10):
-                x = x + 48
+                x += 48
                 KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
@@ -323,33 +322,32 @@ def gridA(pozicija):
         izrada_liste_A = False
 
         #brojevi
-        broj_x = 70
-        broj_y = 160
+        broj_x = 80
+        broj_y = 143
         for i in range(1,11):
             broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
             if i == 10:
-                broj_x = broj_x - 10
+                broj_x -= 10
             broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
             PROZOR.blit(broj, broj_rect)
-            broj_y = broj_y + 48
+            broj_y += 48
 
         #slova
         slovo_x = 113
-        slovo_y = 637
+        slovo_y = 108
         for i in range(0,10):
             slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
-            slovo_x = slovo_x + 48
+            slovo_x += 48
 
     elif pozicija == 'desno':
         #crtanje grida
-        x = 640
         for i in range(10):
-            y = y + 48
-            x = 640
+            y += 48
+            x = 688
             for j in range (10):
-                x = x + 48
+                x += 48
                 KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
@@ -357,37 +355,36 @@ def gridA(pozicija):
         izrada_liste_A = False
 
         #brojevi
-        broj_x = 659
-        broj_y = 160
+        broj_x = 720
+        broj_y = 143
         for i in range(1,11):
             broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
             if i == 10:
-                broj_x = broj_x - 10
+                broj_x -= 10
             broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
             PROZOR.blit(broj, broj_rect)
-            broj_y = broj_y + 48
+            broj_y += 48
 
         #slova
-        slovo_x = 704
-        slovo_y = 637
+        slovo_x = 753
+        slovo_y = 108
         for i in range(0,10):
             slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
-            slovo_x = slovo_x + 48
+            slovo_x += 48
 
 def gridB(pozicija):
     global izrada_liste_B
     global lista_rect_kvadrata_B
-    y = 100
+    y = 80
     if pozicija == 'lijevo':
         #crtanje grida
-        x = 50
         for i in range(10):
-            y = y + 48
-            x = 50
+            y += 48
+            x = 48
             for j in range (10):
-                x = x + 48
+                x += 48
                 KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
@@ -395,33 +392,32 @@ def gridB(pozicija):
         izrada_liste_B = False
 
         #brojevi
-        broj_x = 70
-        broj_y = 160
+        broj_x = 80
+        broj_y = 143
         for i in range(1,11):
             broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
             if i == 10:
-                broj_x = broj_x - 10
+                broj_x -= 10
             broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
             PROZOR.blit(broj, broj_rect)
-            broj_y = broj_y + 48
+            broj_y += 48
 
         #slova
         slovo_x = 113
-        slovo_y = 637
+        slovo_y = 108
         for i in range(0,10):
             slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
-            slovo_x = slovo_x + 48
+            slovo_x += 48
 
     else:
         #crtanje grida
-        x = 640
         for i in range(10):
-            y = y + 48
-            x = 640
+            y += 48
+            x = 688
             for j in range (10):
-                x = x + 48
+                x += 48
                 KVADRAT_RECT = KVADRAT.get_rect(topleft = (x,y))
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
@@ -429,24 +425,24 @@ def gridB(pozicija):
         izrada_liste_B = False
 
         #brojevi
-        broj_x = 659
-        broj_y = 160
+        broj_x = 720
+        broj_y = 143
         for i in range(1,11):
             broj = FONT_BROJ_SLOVO.render(str(i),1,'Black')
             if i == 10:
-                broj_x = broj_x - 10
+                broj_x -= 10
             broj_rect = broj.get_rect(topleft = (broj_x, broj_y))
             PROZOR.blit(broj, broj_rect)
-            broj_y = broj_y + 48
+            broj_y += 48
 
         #slova
-        slovo_x = 704
-        slovo_y = 637
+        slovo_x = 753
+        slovo_y = 108
         for i in range(0,10):
             slovo = FONT_BROJ_SLOVO.render(str(chr(ord("A")+i)),1,'Black')
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
-            slovo_x = slovo_x + 48     
+            slovo_x += 48     
         
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos): #Crveni i zeleni hoveri
     global Zeleno, Crveno
