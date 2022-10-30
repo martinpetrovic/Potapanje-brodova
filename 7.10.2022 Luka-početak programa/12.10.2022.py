@@ -59,6 +59,8 @@ CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_k
 #Background postavljanje
 BG_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "background_postavljanje.png" ))
 BG_POSTAVALJANJE_RECT = BG_POSTAVLJANJE.get_rect(topleft=(0,0))
+GRID_VODA = pygame.image.load(os.path.join("postavljanje", "plavi_ekran.png" ))
+GRID_VODA_RECT = GRID_VODA.get_rect(topleft = (0,0))
 
 SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" ))
 SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" ))
@@ -449,6 +451,7 @@ def gridB(pozicija):
             slovo_x += 48     
         
 def crtanje_pozadine():
+    PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
     PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
     PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
@@ -472,14 +475,14 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
                         elif brodovi_rotacija.get(brod) == 0:
-                            print(j)
+                            
                             if j + duljina_broda > 10:
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
                             else:    
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
                         elif brodovi_rotacija.get(brod) == 1:
-                            print(i)
+                            
                             if i + duljina_broda > 10:
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
