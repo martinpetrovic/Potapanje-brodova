@@ -85,6 +85,10 @@ OBRUB_BATTLESHIP_RECT = OBRUB_BATTLESHIP.get_rect(topleft=(672,128))
 OBRUB_DESTROYER_RECT = OBRUB_DESTROYER.get_rect(topleft=(672,128))
 OBRUB_SUBMARINE_RECT = OBRUB_SUBMARINE.get_rect(topleft=(672,128))
 OBRUB_PATROL_RECT = OBRUB_PATROL.get_rect(topleft=(672,128))
+OBRUBI_BRODOVI_RECT = [OBRUB_CARRIER_RECT,OBRUB_BATTLESHIP_RECT,OBRUB_DESTROYER_RECT,OBRUB_SUBMARINE_RECT,OBRUB_PATROL_RECT]
+
+OBRUBI_BRODOVI_CRTANJE = [[OBRUB_CARRIER,OBRUB_CARRIER_RECT],[OBRUB_BATTLESHIP,OBRUB_BATTLESHIP_RECT],[OBRUB_DESTROYER,OBRUB_DESTROYER_RECT],
+[OBRUB_SUBMARINE,OBRUB_SUBMARINE_RECT],[OBRUB_PATROL,OBRUB_PATROL_RECT]]
 
 play_run = True
 
@@ -99,7 +103,7 @@ lista_imena_kvadrata_B = []
 lista_rect_kvadrata_B = []
 
 #Služi da se određeni programi izvrše samo jednom
-PROVJERA= True
+PROVJERA = True
 izrada_liste_A = True
 izrada_liste_B = True
 zapis_rezultata_jednom = True
@@ -444,27 +448,43 @@ def gridB(pozicija):
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48     
         
-def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos): #Crveni i zeleni hoveri
-    global Zeleno, Crveno
-    global Crveno_crtaj,Zeleno_crtaj
-    brodoslav = None
-    Crveno_crtaj = False
-    Zeleno_crtaj = False
+def crtanje_pozadine():
+    PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
+    PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
+    PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
+    PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+    for brodek in range(5):
+        if OBRUBI_BRODOVI_RECT[brodek].collidepoint(play_mouse_pos):
+            PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[brodek][0],OBRUBI_BRODOVI_CRTANJE[brodek][1])  
+
+def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
     for kvadrat in lista_rect_kvadrata:
             if kvadrat.collidepoint(mouse_pos):
+                crveni_pravokutnik = CRVENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
+                zeleni_pravokutnik = ZELENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))  
+                Kvadrat_hover_x, Kvadrat_hover_y = kvadrat.x, kvadrat.y
+                j = round((Kvadrat_hover_x-100)/48 - 1)
+                i = round((Kvadrat_hover_y-50)/48 - 1)  
                 for brodek in LISTA_BRODOVA:
                     if brod != brodek:
                         if pygame.sprite.collide_rect(brod,brodek) == True:
-                            crveni_pravokutnik = CRVENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
                             if pygame.Rect.colliderect(crveni_pravokutnik,brodek.rect) == True:
-                                brodoslav = brod
-                               
-                                Crveno_crtaj = True
-                                Crveno = PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
-                        elif brodoslav == brod:
-                            zeleni_pravokutnik = ZELENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
-                            Zeleno_crtaj = True          
-                            Zeleno = PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
+                                PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
+                                break
+                        elif brodovi_rotacija.get(brod) == 0:
+                            print(j)
+                            if j + duljina_broda > 10:
+                                PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
+                                break
+                            else:    
+                                PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
+                        elif brodovi_rotacija.get(brod) == 1:
+                            print(i)
+                            if i + duljina_broda > 10:
+                                PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
+                                break
+                            else:    
+                                PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
 def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena,igrač):
     global idi
@@ -474,10 +494,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
     while idi:
         čekanje_mouse_poz = pygame.mouse.get_pos()
         PROZOR.fill("White")
-        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+        crtanje_pozadine()
         if igrač == 'A':
             gridA('lijevo')
         elif igrač == 'B':
@@ -486,8 +503,11 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         poz_broda_x, poz_broda_y = čekanje_mouse_poz
         brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
         
+        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
+        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
+        
         #Crveni i zeleni hoveri
-        provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz)
+        provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
         
         Brodovi_grupa.draw(PROZOR)
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
@@ -501,8 +521,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         
         
         
-        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
-        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
+        
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -700,13 +719,10 @@ def postavljanje_igracaA():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+        crtanje_pozadine()
         gridA('lijevo')
         #gridB('desno')
-        PROZOR.blit(player_A_render,player_A_rect)
+        PROZOR.blit(crtanje_imena_lista_A[0],crtanje_imena_lista_A[1])
         BRODOVI_GRUPA_A.draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
@@ -860,13 +876,10 @@ def postavljanje_igracaB():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
-        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+        crtanje_pozadine()
         #gridA('desno')
         gridB('lijevo')
-        PROZOR.blit(player_B_render,player_B_rect)
+        PROZOR.blit(crtanje_imena_lista_B[0],crtanje_imena_lista_B[1])
         BRODOVI_GRUPA_B.draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
