@@ -1393,19 +1393,24 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                 sys.exit()
                 
             if event.type == MOUSEBUTTONDOWN:
+                
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
+                #Sound effect
+                if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     
                 for i in range(8):
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         
                         for k in range (8):
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                        
                         #for z in range (8):
                         #        profili_i_score.update({PLAYERI_IMENA.get(f"player{z+1}"):score[z]})
                         with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
