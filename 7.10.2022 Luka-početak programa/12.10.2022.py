@@ -63,6 +63,24 @@ CRVENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "crveni_k
 CRVENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad4.png" ))
 CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad5.png" ))
 
+#Background postavljanje
+BG_POSTAVLJANJE = pygame.image.load(os.path.join("potapanje brodova", "background_postavljanje.png" ))
+BG_POSTAVALJANJE_RECT = BG_POSTAVLJANJE.get_rect(topleft=(0,0))
+
+SUM_POSTAVLJANJE = pygame.image.load(os.path.join("potapanje brodova", "samsung_ekran.png" ))
+SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "carrier_samsung.png" ))
+SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "battleship_samsung.png" )) 
+SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "destroyer_samsung.png" )) 
+SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "submarine_samsung.png" )) 
+SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("potapanje brodova", "patrol_samsung.png" )) 
+
+SUM_POSTAVLJANJE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128)) 
+SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_BATTLESHIP_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+
 play_run = True
 
 #Sve za Brod spriteove i provjere postavljanja
@@ -447,16 +465,22 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos): #Crveni i zeleni hoveri
                             Zeleno_crtaj = True          
                             Zeleno = PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
-def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena):
+def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena,igrač):
     global idi
     global Kvadrat_x, Kvadrat_y
     global HOVER_BRODOVA
     idi = True
     while idi:
         čekanje_mouse_poz = pygame.mouse.get_pos()
-        PROZOR.fill(WHITE)
-        gridA('lijevo')
-        gridB('desno')
+        PROZOR.fill("White")
+        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+        if igrač == 'A':
+            gridA('lijevo')
+        elif igrač == 'B':
+            gridB('lijevo')
         
         poz_broda_x, poz_broda_y = čekanje_mouse_poz
         brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
@@ -674,9 +698,13 @@ def postavljanje_igracaA():
     while run_pA == True:
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
-        PROZOR.fill('White')
+        PROZOR.fill("White")
+        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
         gridA('lijevo')
-        gridB('desno')
+        #gridB('desno')
         PROZOR.blit(player_A_render,player_A_rect)
         BRODOVI_GRUPA_A.draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
@@ -708,7 +736,7 @@ def postavljanje_igracaA():
                 if run_pA == True:
                     if brod_izabran == True:
                         if brod_collidean == CARRIER:
-                            čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A)
+                            čekanje_za_odabir(CARRIER,brodovi_rotacija_A.get(CARRIER),CARRIER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A,'A')
                             if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("C")
                             elif vrati_nazad_provjera == True:
@@ -718,7 +746,7 @@ def postavljanje_igracaA():
                             brod_izabran = False
             
                         elif brod_collidean == BATTLESHIP:
-                            čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_A.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A)
+                            čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_A.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A,'A')
                             if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("B")
                             elif vrati_nazad_provjera == True:
@@ -728,7 +756,7 @@ def postavljanje_igracaA():
                             brod_izabran = False
 
                         elif brod_collidean == SUBMARINE:
-                            čekanje_za_odabir(SUBMARINE,brodovi_rotacija_A.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A)
+                            čekanje_za_odabir(SUBMARINE,brodovi_rotacija_A.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A,'A')
                             if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("S")
                             elif vrati_nazad_provjera == True:
@@ -738,7 +766,7 @@ def postavljanje_igracaA():
                             brod_izabran = False
                                                     
                         elif brod_collidean == DESTROYER:
-                            čekanje_za_odabir(DESTROYER,brodovi_rotacija_A.get(DESTROYER),DESTROYER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A)
+                            čekanje_za_odabir(DESTROYER,brodovi_rotacija_A.get(DESTROYER),DESTROYER_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A,'A')
                             if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("D")
                             elif vrati_nazad_provjera == True:
@@ -748,7 +776,7 @@ def postavljanje_igracaA():
                             brod_izabran = False
 
                         elif brod_collidean == PATROL:
-                            čekanje_za_odabir(PATROL,brodovi_rotacija_A.get(PATROL),PATROL_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A)
+                            čekanje_za_odabir(PATROL,brodovi_rotacija_A.get(PATROL),PATROL_X,brodovi_rotacija_A,BRODOVI_GRUPA_A,lista_rect_kvadrata_A,brodovi_pozicije_A,crtanje_imena_lista_A,'A')
                             if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("P")
                             elif vrati_nazad_provjera == True:
@@ -830,8 +858,12 @@ def postavljanje_igracaB():
     while run_pB == True:
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
-        PROZOR.fill('White')
-        gridA('desno')
+        PROZOR.fill("White")
+        PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
+        PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
+        #gridA('desno')
         gridB('lijevo')
         PROZOR.blit(player_B_render,player_B_rect)
         BRODOVI_GRUPA_B.draw(PROZOR)
@@ -865,7 +897,7 @@ def postavljanje_igracaB():
                 if run_pB == True:
                     if brod_izabran == True:
                         if brod_collidean == CARRIER:
-                            čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B)
+                            čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
                             if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("C")
                             elif vrati_nazad_provjera == True:
@@ -875,7 +907,7 @@ def postavljanje_igracaB():
                             brod_izabran = False
             
                         elif brod_collidean == BATTLESHIP:
-                            čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_B.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B)
+                            čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_B.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
                             if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("B")
                             elif vrati_nazad_provjera == True:
@@ -885,7 +917,7 @@ def postavljanje_igracaB():
                             brod_izabran = False
 
                         elif brod_collidean == SUBMARINE:
-                            čekanje_za_odabir(SUBMARINE,brodovi_rotacija_B.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B)
+                            čekanje_za_odabir(SUBMARINE,brodovi_rotacija_B.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
                             if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("S")
                             elif vrati_nazad_provjera == True:
@@ -895,7 +927,7 @@ def postavljanje_igracaB():
                             brod_izabran = False
                                                     
                         elif brod_collidean == DESTROYER:
-                            čekanje_za_odabir(DESTROYER,brodovi_rotacija_B.get(DESTROYER),DESTROYER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B)
+                            čekanje_za_odabir(DESTROYER,brodovi_rotacija_B.get(DESTROYER),DESTROYER_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
                             if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("D")
                             elif vrati_nazad_provjera == True:
@@ -905,7 +937,7 @@ def postavljanje_igracaB():
                             brod_izabran = False
 
                         elif brod_collidean == PATROL:
-                            čekanje_za_odabir(PATROL,brodovi_rotacija_B.get(PATROL),PATROL_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B)
+                            čekanje_za_odabir(PATROL,brodovi_rotacija_B.get(PATROL),PATROL_X,brodovi_rotacija_B,BRODOVI_GRUPA_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
                             if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
                                 postavljeni_brodovi.append("P")
                             elif vrati_nazad_provjera == True:
