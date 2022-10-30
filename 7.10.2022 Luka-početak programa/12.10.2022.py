@@ -68,11 +68,23 @@ SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "sub
 SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )) 
 
 SUM_POSTAVLJANJE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128)) 
-SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_BATTLESHIP_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE_CARRIER.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_BATTLESHIP_RECT = SUM_POSTAVLJANJE_BATTLESHIP.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE_DESTROYER.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE_SUBMARINE.get_rect(topleft=(672,128))
+SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE_PATROL.get_rect(topleft=(672,128))
+
+OBRUB_CARRIER = pygame.image.load(os.path.join("postavljanje", "obrub_carrier.png" )) 
+OBRUB_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "obrub_battleship.png" )) 
+OBRUB_DESTROYER = pygame.image.load(os.path.join("postavljanje", "obrub_destroyer.png" )) 
+OBRUB_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "obrub_submarine.png" )) 
+OBRUB_PATROL = pygame.image.load(os.path.join("postavljanje", "obrub_patrol.png" ))
+ 
+OBRUB_CARRIER_RECT = OBRUB_CARRIER.get_rect(topleft=(672,128))
+OBRUB_BATTLESHIP_RECT = OBRUB_BATTLESHIP.get_rect(topleft=(672,128))
+OBRUB_DESTROYER_RECT = OBRUB_DESTROYER.get_rect(topleft=(672,128))
+OBRUB_SUBMARINE_RECT = OBRUB_SUBMARINE.get_rect(topleft=(672,128))
+OBRUB_PATROL_RECT = OBRUB_PATROL.get_rect(topleft=(672,128))
 
 play_run = True
 
