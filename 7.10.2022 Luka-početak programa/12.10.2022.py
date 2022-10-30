@@ -501,7 +501,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
                 
         pygame.display.update()
                 
-def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,Hover_brod,Zeleni_brod,Crveni_brod)):
+def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_pozicije,brod,Hover_brod,Zeleni_brod,Crveni_brod):
     global Kvadrat_x, Kvadrat_y
     global idi
     global PROVJERA
@@ -514,7 +514,7 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
                     brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
                     brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
                     while PROVJERA:
-                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
+                        provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
                     idi = False
     PROVJERA= True    
  
@@ -523,30 +523,30 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
 
 
 
-def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)): #Provjerava stanu li brodovi u polje i preklapaju li se
+def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
     i = (x-50)/48 - 1
     global PROVJERA
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
             pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
                         pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
     if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
-            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
+            brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
             pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
-                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod))
+                        brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
                         pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
     if vrati_nazad_provjera == False:
@@ -775,6 +775,7 @@ def postavljanje_igracaB():
     global LISTA_BRODOVA
     global VELIKI_XEVI_LISTA_B
     global HOVER_BRODOVA
+    global ZELENI_KVADRATI,CRVENI_KVADRATI
     global lista_rect_kvadrata_B
     global player_B
     global player_B_render
