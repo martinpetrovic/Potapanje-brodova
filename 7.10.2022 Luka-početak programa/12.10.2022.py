@@ -57,15 +57,15 @@ CRVENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "crveni_k
 CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad5.png" ))
 
 #Background postavljanje
-BG_POSTAVLJANJE = pygame.image.load(os.path.join("potapanje brodova", "background_postavljanje.png" ))
+BG_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "background_postavljanje.png" ))
 BG_POSTAVALJANJE_RECT = BG_POSTAVLJANJE.get_rect(topleft=(0,0))
 
-SUM_POSTAVLJANJE = pygame.image.load(os.path.join("potapanje brodova", "samsung_ekran.png" ))
-SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "carrier_samsung.png" ))
-SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "battleship_samsung.png" )) 
-SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "destroyer_samsung.png" )) 
-SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "submarine_samsung.png" )) 
-SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("potapanje brodova", "patrol_samsung.png" )) 
+SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" ))
+SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" ))
+SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "battleship_samsung.png" )) 
+SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("postavljanje", "destroyer_samsung.png" )) 
+SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "submarine_samsung.png" )) 
+SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )) 
 
 SUM_POSTAVLJANJE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128)) 
 SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128))
