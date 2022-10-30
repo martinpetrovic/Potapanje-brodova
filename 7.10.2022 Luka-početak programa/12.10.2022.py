@@ -457,7 +457,7 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos): #Crveni i zeleni hoveri
                             crveni_pravokutnik = CRVENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
                             if pygame.Rect.colliderect(crveni_pravokutnik,brodek.rect) == True:
                                 brodoslav = brod
-                                #print("uslo")
+                               
                                 Crveno_crtaj = True
                                 Crveno = PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                         elif brodoslav == brod:
@@ -654,9 +654,9 @@ def postavljanje_igracaA():
     vrati_nazad_provjera = False
     brod_izabran = False
     
-    PLAYERI_FONT = pygame.font.Font(None, 35)
+    PLAYERI_FONT = pygame.font.Font(None, 30)
     player_A_render = PLAYERI_FONT.render(player_A,1,'Black')
-    player_A_rect = player_A_render.get_rect(center = (630, 20))
+    player_A_rect = player_A_render.get_rect(topleft = (440, 72))
     
     crtanje_imena_lista_A = [player_A_render,player_A_rect]
     
@@ -816,7 +816,7 @@ def postavljanje_igracaB():
     brod_izabran = False
     
     player_B_render = PLAYERI_FONT.render(player_B,1,'Black')
-    player_B_rect = player_B_render.get_rect(center = (630, 20))
+    player_B_rect = player_B_render.get_rect(topleft = (440, 72))
     
     crtanje_imena_lista_B = [player_B_render,player_B_rect]
     
@@ -1413,7 +1413,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             profili = datoteka.readlines()
                             for z in range (8):
                                 profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
-                                print (profili)
+                                
                         imenovanje_profila_bool = False
                         
                         with open("potapanje brodova\profili.txt","wt") as datoteka:
@@ -1526,7 +1526,7 @@ def biranje_profila(): #biranje igrača koji će igrati
                             if len(selektirani_profili) == 3:
                                 selektirani_profili.remove(selektirani_profili[2])
                     
-                print(selektirani_profili)
+                
                             
         pygame.display.update()
     
@@ -1645,7 +1645,7 @@ def main():
             gumb.update(PROZOR)
             
             #Zvuk
-            print(tupi_zvuk)
+            
             if gumb.checkForInput(menu_mouse_poz) == True and tupi_zvuk == 1:
                 pygame.mixer.Sound.play(TUPI_GUMB_ZVUK)
                 gumboslav = MAIN_GUMBOVI_LISTA.get(gumb)
