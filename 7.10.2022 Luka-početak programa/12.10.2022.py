@@ -142,6 +142,7 @@ zapis_rezultata_jednom = True
 PLAYERI_SELEKTIRANI = {}
 PLAYERI_IMENA = {}
 PLAYERI_LISTA_GUMBOVA = []
+
 selektirani_profili = []
 with open("potapanje brodova\profili.txt",encoding="utf-8") as datoteka:
         profili = datoteka.readlines()
@@ -158,6 +159,7 @@ class Button:
     def __init__(self, text_input, text_size, text_color, rect_width, rect_height, rect_color, hoveringRect_color, pos):
         self.x_pos = pos[0]
         self.y_pos = pos[1]
+        self.poz = (pos[0],pos[1])
         #rectangle ispod teksta
         self.main_rect = pygame.Rect(self.x_pos-(rect_width/2), self.y_pos-(rect_height/2), rect_width, rect_height)
         self.main_rect_color, self.hovering_rect_color= rect_color, hoveringRect_color
@@ -1395,12 +1397,15 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
 
 
 def linija_playscore_animacija(i):
-    global linija_key_index, linija_playscore_surf
+    global linija_key_index, linija_playscore_surf, trenutno_ime_upis
     linija_key_index += 0.01
     if linija_key_index >= len(linija_playscore_animacija_lista):
         linija_key_index = 0
     linija_playscore_surf = linija_playscore_animacija_lista[int(linija_key_index)]
-    linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].x_pos,PLAYERI_LISTA_GUMBOVA[i-1].y_pos))
+    if trenutno_ime_upis != "":
+        linija_playscore_rect = linija_playscore_surf.get_rect(midright = (PLAYERI_LISTA_GUMBOVA[i-1].text_rect.midright))
+    else:
+        linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].x_pos,PLAYERI_LISTA_GUMBOVA[i-1].y_pos))
     PROZOR.blit(linija_playscore_surf, linija_playscore_rect)
 
 def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
@@ -1413,6 +1418,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
     global play_run
     global biranje_profila_bool
     global imenovanje_profila_bool
+    global trenutno_ime_upis
     imenovanje_profila_bool = True
     font = pygame.font.Font(None, 60)
     trenutno_ime_upis = ""
@@ -1456,16 +1462,6 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
-
-        for i in range(1,9):
-            if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
-                linija_playscore_animacija(i)
-                #LINIJA_SCORE_PISANJE_RECT = LINIJA_SCORE_PISANJE.get_rect(center = PLAYERI_LISTA_GUMBOVA[i-1].main_rect.center)
-                #PROZOR.blit(LINIJA_SCORE_PISANJE, LINIJA_SCORE_PISANJE_RECT)
-                
-                
-                
-
 
 
         for event in pygame.event.get():
@@ -1532,6 +1528,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                                 trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
                                 trenutno_ime_upis += event.unicode
                                 PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+        for i in range(1,9):
+            if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
+                linija_playscore_animacija(i)
         pygame.display.update()
         
 def biranje_profila(): #biranje igrača koji će igrati
