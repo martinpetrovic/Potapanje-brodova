@@ -13,7 +13,7 @@ pygame.display.set_caption("Potapanje brodova")
 
 #clock i boje
 WHITE = (255,255,255)
-FPS = 30
+FPS = 60
 clock = pygame.time.Clock()
 
 
@@ -1461,9 +1461,11 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         
                         else:
                             trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                            trenutno_ime_upis += event.unicode 
+                            trenutno_ime_upis += event.unicode
+                            if len(trenutno_ime_upis) > 10:
+                                trenutno_ime_upis = trenutno_ime_upis[:-1]
+                                pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                             PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
-
         pygame.display.update()
         
 
@@ -1551,7 +1553,29 @@ def biranje_profila(): #biranje igrača koji će igrati
                 
                             
         pygame.display.update()
-    
+def score_screen():
+    global profili
+    global score
+    score_bool = True
+    PROZOR.fill(WHITE)
+    results = []
+    font = pygame.font.Font(None, 30)
+    def po_scoreu(x):  
+        for i in range (8):
+            return x[i][0]
+    score_i_profili = [] 
+    for i in range (8):
+        score[i] = score[i].strip("\n")
+        score_i_profili.append([score[i],profili[i]])
+    score_i_profili.sort(key = po_scoreu, reverse = True) 
+    print (score_i_profili)
+    while score_bool == True:
+        for i in range (8):
+
+            tablica = font.render("1. "+ score_i_profili[i][1][:-1]+score_i_profili[i][0],1,"Black")
+            tablica_rect = tablica.get_rect(center=(630,i*45))
+            PROZOR.blit(tablica,tablica_rect)
+        
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB
     postavljen_kvadratA = False
@@ -1694,8 +1718,8 @@ def main():
                     play()
                 if GUMB_SCORE.checkForInput(menu_mouse_poz):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    #score()
-                    pass
+                    
+                    score_screen()
                 if GUMB_EXIT.checkForInput(menu_mouse_poz):
                     esc_screen('Are you sure you want to quit the game?', PROZOR)
                     if zmaj == True:
