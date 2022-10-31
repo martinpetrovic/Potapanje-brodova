@@ -488,8 +488,8 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                 crveni_pravokutnik = CRVENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))
                 zeleni_pravokutnik = ZELENI_KVADRATI.get(brod).get_rect(topleft = (kvadrat.topleft))  
                 Kvadrat_hover_x, Kvadrat_hover_y = kvadrat.x, kvadrat.y
-                j = round((Kvadrat_hover_x-100)/48 - 1)
-                i = round((Kvadrat_hover_y-50)/48 - 1)  
+                j = (Kvadrat_hover_x-64)/48 - 1
+                i = (Kvadrat_hover_y-96)/48 - 1  
                 for brodek in LISTA_BRODOVA:
                     if brod != brodek:
                         if pygame.sprite.collide_rect(brod,brodek) == True:
@@ -497,14 +497,12 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
                         elif brodovi_rotacija.get(brod) == 0:
-                            
                             if j + duljina_broda > 10:
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
                             else:    
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
                         elif brodovi_rotacija.get(brod) == 1:
-                            
                             if i + duljina_broda > 10:
                                 PROZOR.blit(CRVENI_KVADRATI.get(brod),crveni_pravokutnik)
                                 break
@@ -597,10 +595,6 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
     PROVJERA= True    
  
  
-                   
-
-
-
 def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod): #Provjerava stanu li brodovi u polje i preklapaju li se
     
     j = (y-100)/48 - 1
