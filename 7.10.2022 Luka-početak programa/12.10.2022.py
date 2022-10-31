@@ -79,18 +79,27 @@ GRID_VODA = pygame.image.load(os.path.join("postavljanje", "plavi_ekran.png" )).
 GRID_VODA_RECT = GRID_VODA.get_rect(topleft = (0,0))
 
 SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" )).convert_alpha()
-SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" )).convert_alpha()
-SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "battleship_samsung.png" )).convert_alpha()
-SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("postavljanje", "destroyer_samsung.png" )).convert_alpha()
-SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "submarine_samsung.png" )).convert_alpha()
-SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )).convert_alpha() 
+# SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" )).convert_alpha()
+# SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "battleship_samsung.png" )).convert_alpha()
+# SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("postavljanje", "destroyer_samsung.png" )).convert_alpha()
+# SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "submarine_samsung.png" )).convert_alpha()
+# SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )).convert_alpha()
+
+# SUM_POSTAVLJANJE_CARRIER_MASK = pygame.mask.from_surface(SUM_POSTAVLJANJE_CARRIER)
+# SUM_POSTAVLJANJE_BATTLESHIP_MASK = pygame.mask.from_surface(SUM_POSTAVLJANJE_BATTLESHIP)
+# SUM_POSTAVLJANJE_DESTROYER_MASK = pygame.mask.from_surface(SUM_POSTAVLJANJE_DESTROYER)
+# SUM_POSTAVLJANJE_SUBMARINE_MASK = pygame.mask.from_surface(SUM_POSTAVLJANJE_SUBMARINE)
+# SUM_POSTAVLJANJE_PATROL_MASK = pygame.mask.from_surface(SUM_POSTAVLJANJE_PATROL)
+
+# SUM_POSTAVLJANJE_BRODOVI_MASKE = [SUM_POSTAVLJANJE_CARRIER_MASK, SUM_POSTAVLJANJE_BATTLESHIP_MASK, SUM_POSTAVLJANJE_DESTROYER_MASK,
+# SUM_POSTAVLJANJE_SUBMARINE_MASK, SUM_POSTAVLJANJE_PATROL_MASK]
 
 SUM_POSTAVLJANJE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128)) 
-SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE_CARRIER.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_BATTLESHIP_RECT = SUM_POSTAVLJANJE_BATTLESHIP.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE_DESTROYER.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE_SUBMARINE.get_rect(topleft=(672,128))
-SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE_PATROL.get_rect(topleft=(672,128))
+# SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE_CARRIER.get_rect(topleft=(672,128))
+# SUM_POSTAVLJANJE_BATTLESHIP_RECT = SUM_POSTAVLJANJE_BATTLESHIP.get_rect(topleft=(672,128))
+# SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE_DESTROYER.get_rect(topleft=(672,128))
+# SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE_SUBMARINE.get_rect(topleft=(672,128))
+# SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE_PATROL.get_rect(topleft=(672,128))
 
 OBRUB_CARRIER = pygame.image.load(os.path.join("postavljanje", "obrub_carrier.png" )).convert_alpha() 
 OBRUB_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "obrub_battleship.png" )).convert_alpha() 
@@ -191,6 +200,15 @@ class Button:
             run_pA = False
             run_pB = False
 
+class CrtanjeBrod():
+    def __init__(self, picture_path):
+        self.image = pygame.image.load(picture_path).convert_alpha()
+        self.rect = self.image.get_rect(topleft=(672,128))
+        self.mask = pygame.mask.from_surface(self.image)
+    def udpate(self):
+        self.rect 
+
+
 class Brod(pygame.sprite.Sprite):
     def __init__(self,picture_path,poz_x,poz_y):
         super().__init__()
@@ -271,10 +289,8 @@ class Brod(pygame.sprite.Sprite):
             
         brod_velkiX.rect.topleft = poz_x + 640, poz_y
         self.rect.topleft = poz_x, poz_y
-        brodovi_pozicije.update({self:(poz_x, poz_y)})
-       
+        brodovi_pozicije.update({self:(poz_x, poz_y)}) 
 
-      
 class Veliki_Xevi(pygame.sprite.Sprite):
      def __init__(self,picture_path,poz_x,poz_y):
         super().__init__()
@@ -486,15 +502,30 @@ def gridB(pozicija):
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48     
         
-def crtanje_pozadine():
+def crtanje_pozadine(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
-    PROZOR.blit(SUM_POSTAVLJANJE_CARRIER,SUM_POSTAVLJANJE_CARRIER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_BATTLESHIP,SUM_POSTAVLJANJE_BATTLESHIP_RECT)
-    PROZOR.blit(SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_DESTROYER_RECT), PROZOR.blit(SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_SUBMARINE_RECT)
-    PROZOR.blit(SUM_POSTAVLJANJE_PATROL,SUM_POSTAVLJANJE_PATROL_RECT)
-    for brodek in range(5):
-        if OBRUBI_BRODOVI_RECT[brodek].collidepoint(play_mouse_pos):
-            PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[brodek][0],OBRUBI_BRODOVI_CRTANJE[brodek][1])  
+    
+    for i in range(5):
+        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[i].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect)
+        poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
+        if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
+            #if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:
+            #    PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[1] and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[2] and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[3] and SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) :
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[4] and SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            else:
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
+           
 
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
     for kvadrat in lista_rect_kvadrata:
@@ -540,7 +571,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
     while idi:
         čekanje_mouse_poz = pygame.mouse.get_pos()
         PROZOR.fill("White")
-        crtanje_pozadine()
+        crtanje_pozadine(čekanje_mouse_poz)
         if igrač == 'A':
             gridA('lijevo')
         elif igrač == 'B':
@@ -698,6 +729,7 @@ def postavljanje_igracaA():
     global VELIKI_XEVI_LISTA_A
     global HOVER_BRODOVA
     global ZELENI_KVADRATI, CRVENI_KVADRATI
+    global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global lista_rect_kvadrata_A
     global player_A
     global player_A_render
@@ -715,6 +747,18 @@ def postavljanje_igracaA():
     player_A_rect = player_A_render.get_rect(topleft = (440, 72))
     
     crtanje_imena_lista_A = [player_A_render,player_A_rect]
+
+    
+    SUM_POSTAVLJANJE_CARRIER = CrtanjeBrod(os.path.join("postavljanje", "carrier_samsung.png" ))
+    SUM_POSTAVLJANJE_BATTLESHIP = CrtanjeBrod(os.path.join("postavljanje", "battleship_samsung.png" ))
+    SUM_POSTAVLJANJE_DESTROYER = CrtanjeBrod(os.path.join("postavljanje", "destroyer_samsung.png" ))
+    SUM_POSTAVLJANJE_SUBMARINE = CrtanjeBrod(os.path.join("postavljanje", "submarine_samsung.png" ))
+    SUM_POSTAVLJANJE_PATROL = CrtanjeBrod(os.path.join("postavljanje", "patrol_samsung.png" ))
+
+    SUM_POSTAVLJANJE_BRODOVI_LISTA = [SUM_POSTAVLJANJE_CARRIER, SUM_POSTAVLJANJE_BATTLESHIP, 
+    SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_PATROL]
+
+
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
@@ -728,7 +772,7 @@ def postavljanje_igracaA():
     
     
     VELIKI_XEVI_GRUPA_A = pygame.sprite.Group()
-    
+
     CARRIER_X = Veliki_Xevi(os.path.join("potapanje brodova", "carrier_X.png"), 93, 35)
     BATTLESHIP_X = Veliki_Xevi(os.path.join("potapanje brodova", "battleship_X.png"), 360, 35)
     DESTROYER_X = Veliki_Xevi(os.path.join("potapanje brodova", "sub,dest_X.png"), 225, 90)
@@ -755,7 +799,7 @@ def postavljanje_igracaA():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine()
+        crtanje_pozadine(play_mouse_pos)
         gridA('lijevo')
         #gridB('desno')
         PROZOR.blit(crtanje_imena_lista_A[0],crtanje_imena_lista_A[1])
@@ -857,6 +901,7 @@ def postavljanje_igracaB():
     global VELIKI_XEVI_LISTA_B
     global HOVER_BRODOVA
     global ZELENI_KVADRATI,CRVENI_KVADRATI
+    global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global lista_rect_kvadrata_B
     global player_B
     global player_B_render
@@ -872,6 +917,16 @@ def postavljanje_igracaB():
     player_B_rect = player_B_render.get_rect(topleft = (440, 72))
     
     crtanje_imena_lista_B = [player_B_render,player_B_rect]
+
+    SUM_POSTAVLJANJE_CARRIER = CrtanjeBrod(os.path.join("postavljanje", "carrier_samsung.png" ))
+    SUM_POSTAVLJANJE_BATTLESHIP = CrtanjeBrod(os.path.join("postavljanje", "battleship_samsung.png" ))
+    SUM_POSTAVLJANJE_DESTROYER = CrtanjeBrod(os.path.join("postavljanje", "destroyer_samsung.png" ))
+    SUM_POSTAVLJANJE_SUBMARINE = CrtanjeBrod(os.path.join("postavljanje", "submarine_samsung.png" ))
+    SUM_POSTAVLJANJE_PATROL = CrtanjeBrod(os.path.join("postavljanje", "patrol_samsung.png" ))
+
+    SUM_POSTAVLJANJE_BRODOVI_LISTA = [SUM_POSTAVLJANJE_CARRIER, SUM_POSTAVLJANJE_BATTLESHIP, 
+    SUM_POSTAVLJANJE_DESTROYER,SUM_POSTAVLJANJE_SUBMARINE,SUM_POSTAVLJANJE_PATROL]
+
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 360, 35)
@@ -912,7 +967,7 @@ def postavljanje_igracaB():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine()
+        crtanje_pozadine(play_mouse_pos)
         #gridA('desno')
         gridB('lijevo')
         PROZOR.blit(crtanje_imena_lista_B[0],crtanje_imena_lista_B[1])
