@@ -1398,14 +1398,15 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
 
 def linija_playscore_animacija(i):
     global linija_key_index, linija_playscore_surf, trenutno_ime_upis
-    linija_key_index += 0.01
+    linija_key_index += 0.01   
     if linija_key_index >= len(linija_playscore_animacija_lista):
         linija_key_index = 0
     linija_playscore_surf = linija_playscore_animacija_lista[int(linija_key_index)]
     if trenutno_ime_upis != "":
-        linija_playscore_rect = linija_playscore_surf.get_rect(midright = (PLAYERI_LISTA_GUMBOVA[i-1].text_rect.midright))
+        kraj_imena_x, kraj_imena_y = PLAYERI_LISTA_GUMBOVA[i-1].text_rect.midright
+        linija_playscore_rect = linija_playscore_surf.get_rect(midright = (kraj_imena_x+5, kraj_imena_y))
     else:
-        linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].x_pos,PLAYERI_LISTA_GUMBOVA[i-1].y_pos))
+        linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].main_rect.center))
     PROZOR.blit(linija_playscore_surf, linija_playscore_rect)
 
 def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
