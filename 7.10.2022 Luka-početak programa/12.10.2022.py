@@ -230,7 +230,7 @@ class Brod(pygame.sprite.Sprite):
             self.rect.topleft =(self.pozx, self.pozy)
             brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
             brod_velkiX.rect = brod_velkiX.image.get_rect()
-            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
+            brod_velkiX.rect.topleft =(self.pozx+640, self.pozy)
             brodovi_rotacija.update({self:0})
             Hover_brod = pygame.transform.rotate(Hover_brod, -90)
             Zeleni_brod = pygame.transform.rotate(Zeleni_brod, -90)
@@ -239,7 +239,7 @@ class Brod(pygame.sprite.Sprite):
             ZELENI_KVADRATI.update({self:Zeleni_brod})
             CRVENI_KVADRATI.update({self:Crveni_brod})
             
-        brod_velkiX.rect.topleft = poz_x + 590, poz_y
+        brod_velkiX.rect.topleft = poz_x + 640, poz_y
         self.rect.topleft = poz_x, poz_y
         brodovi_pozicije.update({self:(poz_x, poz_y)})
        
