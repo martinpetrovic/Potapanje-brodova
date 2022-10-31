@@ -19,19 +19,19 @@ clock = pygame.time.Clock()
 
 #Slike, zvuk, font
 #Loading screen
-LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
+LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" )).convert_alpha()
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
 #Grid
-KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
-OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png"))
+KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png")).convert_alpha()
+OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png")).convert_alpha()
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Igranje
-XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png"))
-FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png"))
-ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png"))
-VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png"))
+XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png")).convert_alpha()
+FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png")).convert_alpha()
+ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png")).convert_alpha()
+VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png")).convert_alpha()
 
 #Sound effecti
 POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
@@ -41,34 +41,34 @@ TUPI_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "tupi_gumb
 KLIK_GUMB_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "klik_gumb_zvuk.ogg"))
 
 #Hoveri brodova
-HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" ))
-HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_battleship.png" ))
-HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" ))
-HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" ))
-HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" ))
+HOVER_CARRIER = pygame.image.load(os.path.join("potapanje brodova", "hover_carrier.png" )).convert_alpha()
+HOVER_BATTLESHIP = pygame.image.load(os.path.join("potapanje brodova", "hover_battleship.png" )).convert_alpha()
+HOVER_DESTROYER = pygame.image.load(os.path.join("potapanje brodova", "hover_destroyer.png" )).convert_alpha()
+HOVER_SUBMARINE = pygame.image.load(os.path.join("potapanje brodova", "hover_submarine.png" )).convert_alpha()
+HOVER_PATROL = pygame.image.load(os.path.join("potapanje brodova", "hover_patrol.png" )).convert_alpha()
 
-ZELENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad2.png" ))
-ZELENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad3.png" ))
-ZELENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad4.png" ))
-ZELENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad5.png" ))
+ZELENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad2.png" )).convert_alpha()
+ZELENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad3.png" )).convert_alpha()
+ZELENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad4.png" )).convert_alpha()
+ZELENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "zeleni_kvad5.png" )).convert_alpha()
 
-CRVENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad2.png" ))
-CRVENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad3.png" ))
-CRVENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad4.png" ))
-CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad5.png" ))
+CRVENI_KVADRAT_2 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad2.png" )).convert_alpha()
+CRVENI_KVADRAT_3 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad3.png" )).convert_alpha()
+CRVENI_KVADRAT_4 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad4.png" )).convert_alpha()
+CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_kvad5.png" )).convert_alpha()
 
 #Background postavljanje
-BG_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "background_postavljanje.png" ))
+BG_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "background_postavljanje.png" )).convert_alpha()
 BG_POSTAVALJANJE_RECT = BG_POSTAVLJANJE.get_rect(topleft=(0,0))
-GRID_VODA = pygame.image.load(os.path.join("postavljanje", "plavi_ekran.png" ))
+GRID_VODA = pygame.image.load(os.path.join("postavljanje", "plavi_ekran.png" )).convert_alpha()
 GRID_VODA_RECT = GRID_VODA.get_rect(topleft = (0,0))
 
-SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" ))
-SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" ))
-SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "battleship_samsung.png" )) 
-SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("postavljanje", "destroyer_samsung.png" )) 
-SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "submarine_samsung.png" )) 
-SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )) 
+SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" )).convert_alpha()
+SUM_POSTAVLJANJE_CARRIER = pygame.image.load(os.path.join("postavljanje", "carrier_samsung.png" )).convert_alpha()
+SUM_POSTAVLJANJE_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "battleship_samsung.png" )).convert_alpha() 
+SUM_POSTAVLJANJE_DESTROYER = pygame.image.load(os.path.join("postavljanje", "destroyer_samsung.png" )).convert_alpha() 
+SUM_POSTAVLJANJE_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "submarine_samsung.png" )).convert_alpha() 
+SUM_POSTAVLJANJE_PATROL = pygame.image.load(os.path.join("postavljanje", "patrol_samsung.png" )).convert_alpha() 
 
 SUM_POSTAVLJANJE_RECT = SUM_POSTAVLJANJE.get_rect(topleft=(672,128)) 
 SUM_POSTAVLJANJE_CARRIER_RECT = SUM_POSTAVLJANJE_CARRIER.get_rect(topleft=(672,128))
@@ -77,11 +77,11 @@ SUM_POSTAVLJANJE_DESTROYER_RECT = SUM_POSTAVLJANJE_DESTROYER.get_rect(topleft=(6
 SUM_POSTAVLJANJE_SUBMARINE_RECT = SUM_POSTAVLJANJE_SUBMARINE.get_rect(topleft=(672,128))
 SUM_POSTAVLJANJE_PATROL_RECT = SUM_POSTAVLJANJE_PATROL.get_rect(topleft=(672,128))
 
-OBRUB_CARRIER = pygame.image.load(os.path.join("postavljanje", "obrub_carrier.png" )) 
-OBRUB_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "obrub_battleship.png" )) 
-OBRUB_DESTROYER = pygame.image.load(os.path.join("postavljanje", "obrub_destroyer.png" )) 
-OBRUB_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "obrub_submarine.png" )) 
-OBRUB_PATROL = pygame.image.load(os.path.join("postavljanje", "obrub_patrol.png" ))
+OBRUB_CARRIER = pygame.image.load(os.path.join("postavljanje", "obrub_carrier.png" )).convert_alpha() 
+OBRUB_BATTLESHIP = pygame.image.load(os.path.join("postavljanje", "obrub_battleship.png" )).convert_alpha() 
+OBRUB_DESTROYER = pygame.image.load(os.path.join("postavljanje", "obrub_destroyer.png" )).convert_alpha() 
+OBRUB_SUBMARINE = pygame.image.load(os.path.join("postavljanje", "obrub_submarine.png" )).convert_alpha() 
+OBRUB_PATROL = pygame.image.load(os.path.join("postavljanje", "obrub_patrol.png" )).convert_alpha()
  
 OBRUB_CARRIER_RECT = OBRUB_CARRIER.get_rect(topleft=(672,128))
 OBRUB_BATTLESHIP_RECT = OBRUB_BATTLESHIP.get_rect(topleft=(672,128))
@@ -93,17 +93,17 @@ OBRUBI_BRODOVI_RECT = [OBRUB_CARRIER_RECT,OBRUB_BATTLESHIP_RECT,OBRUB_DESTROYER_
 OBRUBI_BRODOVI_CRTANJE = [[OBRUB_CARRIER,OBRUB_CARRIER_RECT],[OBRUB_BATTLESHIP,OBRUB_BATTLESHIP_RECT],[OBRUB_DESTROYER,OBRUB_DESTROYER_RECT],
 [OBRUB_SUBMARINE,OBRUB_SUBMARINE_RECT],[OBRUB_PATROL,OBRUB_PATROL_RECT]]
 
-rotate1 = pygame.image.load(os.path.join("postavljanje", "rotate_frame1.png" ))
-rotate2 = pygame.image.load(os.path.join("postavljanje", "rotate_frame2.png" ))
-rotate3 = pygame.image.load(os.path.join("postavljanje", "rotate_frame3.png" ))
+rotate1 = pygame.image.load(os.path.join("postavljanje", "rotate_frame1.png" )).convert_alpha()
+rotate2 = pygame.image.load(os.path.join("postavljanje", "rotate_frame2.png" )).convert_alpha()
+rotate3 = pygame.image.load(os.path.join("postavljanje", "rotate_frame3.png" )).convert_alpha()
 rotate_key_index = 0
 rotate_lista = [rotate1,rotate2,rotate3]
 rotate_surf = rotate_lista[rotate_key_index]
 
 #Background igranje
-BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" ))
+BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" )).convert_alpha()
 BG_IGRANJE_RECT = BG_IGRANJE.get_rect(topleft=(0,0))
-VODA_IGRANJE = pygame.image.load(os.path.join("igranje", "plavi_ekrani.png" ))
+VODA_IGRANJE = pygame.image.load(os.path.join("igranje", "plavi_ekrani.png" )).convert_alpha()
 VODA_IGRANJE_RECT = VODA_IGRANJE.get_rect(topleft=(0,0))
 
 play_run = True
@@ -181,7 +181,7 @@ class Brod(pygame.sprite.Sprite):
         #rectangle
         self.pozx = poz_x
         self.pozy = poz_y
-        self.image = pygame.image.load(picture_path)
+        self.image = pygame.image.load(picture_path).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
        
@@ -264,7 +264,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
         super().__init__()
         self.pozx = poz_x
         self.pozy = poz_y
-        self.image = pygame.image.load(picture_path)
+        self.image = pygame.image.load(picture_path).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
         
@@ -511,7 +511,7 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
 
 def rotate_key_animacija(pozicija_misa):
     global rotate_key_index, rotate_surf
-    rotate_key_index += 0.25
+    rotate_key_index += 0.03
     if rotate_key_index >= len(rotate_lista):
         rotate_key_index = 0
     rotate_surf = rotate_lista[int(rotate_key_index)]
@@ -1146,7 +1146,7 @@ def crtanje_pogodenih_vlastitih(igrac):  # Funkcija provjerava i crta vatru ondj
                     PROZOR.blit(VLASTITI_POGODEN, pogoden_rectB)                 
 
 def hoveranje_animacija(igrac, mis_poz):  # Funkcija provjerava nalazi li se mis iznad kvadratica, ako da onda nacrta poseban kvadratic da to oznaci
-    HOVERANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "hoverani_kvadrat.png"))
+    HOVERANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "hoverani_kvadrat.png")).convert_alpha()
     if igrac == 'A':
         for i in range(0,100):
             rect = lista_rect_kvadrata_B[i]
@@ -1617,9 +1617,9 @@ def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     izrada_liste_B = True
 
 def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
-    TAJMER3 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_3sec.png"))
-    TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png"))
-    TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png"))
+    TAJMER3 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_3sec.png")).convert_alpha()
+    TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png")).convert_alpha()
+    TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png")).convert_alpha()
     font = pygame.font.Font(None, 30)
     tekst_surf = font.render('Next player in:', False, 'White')
     tekst_rect = tekst_surf.get_rect(midtop = (640,160))
