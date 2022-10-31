@@ -1505,7 +1505,6 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
         pygame.display.update()
         
-
 def biranje_profila(): #biranje igrača koji će igrati
     global selektirani_profili
     global play_run
@@ -1590,16 +1589,15 @@ def biranje_profila(): #biranje igrača koji će igrati
                 
                             
         pygame.display.update()
+
 def score_screen():
     global profili
     global score
     score_bool = True
     PROZOR.fill(WHITE)
-    results = []
     font = pygame.font.Font(None, 30)
     def po_scoreu(x):  
-        for i in range (8):
-            return x[i][0]
+        return int(x[0])
     score_i_profili = [] 
     for i in range (8):
         score[i] = score[i].strip("\n")
@@ -1607,12 +1605,25 @@ def score_screen():
     score_i_profili.sort(key = po_scoreu, reverse = True) 
     print (score_i_profili)
     while score_bool == True:
-        for i in range (8):
 
-            tablica = font.render("1. "+ score_i_profili[i][1][:-1]+score_i_profili[i][0],1,"Black")
-            tablica_rect = tablica.get_rect(center=(630,i*45))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if BACK3.checkForInput(score_mouse_poz) == True:
+                    main()
+        score_mouse_poz=pygame.mouse.get_pos()
+        BACK3 = Button("BACK", 45, "Black", 119,55,'#475F77','#77dd77', (84,54))
+        BACK3.update(PROZOR)
+        BACK3.changeColor(score_mouse_poz)
+        BACK3.update(PROZOR)
+
+        for i in range (8):
+            tablica = font.render(str(i+1)+". "+ score_i_profili[i][1][:-1]+": "+score_i_profili[i][0],1,"Black")
+            tablica_rect = tablica.get_rect(center=(630,100+i*45))
             PROZOR.blit(tablica,tablica_rect)
-        
+        pygame.display.update()
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB
     postavljen_kvadratA = False
@@ -1755,7 +1766,6 @@ def main():
                     play()
                 if GUMB_SCORE.checkForInput(menu_mouse_poz):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    
                     score_screen()
                 if GUMB_EXIT.checkForInput(menu_mouse_poz):
                     esc_screen('Are you sure you want to quit the game?', PROZOR)
