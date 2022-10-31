@@ -24,6 +24,7 @@ INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
 #Grid
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
+OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Igranje
@@ -331,6 +332,8 @@ def gridA(pozicija):
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (96,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_A = False
 
         #brojevi
@@ -364,6 +367,8 @@ def gridA(pozicija):
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (736,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_A = False
 
         #brojevi
@@ -401,6 +406,8 @@ def gridB(pozicija):
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (96,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_B = False
 
         #brojevi
@@ -434,6 +441,8 @@ def gridB(pozicija):
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (736,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_B = False
 
         #brojevi
