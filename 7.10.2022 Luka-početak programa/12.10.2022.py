@@ -521,13 +521,12 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         poz_broda_x, poz_broda_y = čekanje_mouse_poz
         brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
         
-        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
-        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
-        
         #Crveni i zeleni hoveri
         provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
         
         Brodovi_grupa.draw(PROZOR)
+        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
+        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
