@@ -505,26 +505,34 @@ def gridB(pozicija):
 def crtanje_pozadine(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
-    
     for i in range(5):
         PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[i].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect)
+    for i in range(5):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
             #if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:
             #    PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
-            if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[1] and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu):
                 PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+                break
 
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[2] and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
+                break
             
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[3] and SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) :
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu)) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[2][0],OBRUBI_BRODOVI_CRTANJE[2][1])
+                break
             
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[4] and SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu)) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[3][0],OBRUBI_BRODOVI_CRTANJE[4][1])
+                break
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
+                break
             else:
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+                break
            
 
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
