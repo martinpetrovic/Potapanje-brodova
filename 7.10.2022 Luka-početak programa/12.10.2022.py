@@ -31,7 +31,13 @@ FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png")).convert_alpha()
 FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png")).convert_alpha()
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png")).convert_alpha()
-VLASTITI_POGODEN = pygame.image.load(os.path.join("potapanje brodova", "pogoden_vlastiti_brod.png")).convert_alpha()
+VATRA1 = pygame.image.load(os.path.join("igranje", "vatra1.png")).convert_alpha()
+VATRA2 = pygame.image.load(os.path.join("igranje", "vatra2.png")).convert_alpha()
+VATRA3 = pygame.image.load(os.path.join("igranje", "vatra3.png")).convert_alpha()
+VATRA4 = pygame.image.load(os.path.join("igranje", "vatra4.png")).convert_alpha()
+vatra_index = 0
+vatra_lista = [VATRA1, VATRA2, VATRA3, VATRA4]
+vatra_surf = vatra_lista[vatra_index]
 
 #Sound effecti
 POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
@@ -98,7 +104,6 @@ rotate2 = pygame.image.load(os.path.join("postavljanje", "rotate_frame2.png" )).
 rotate3 = pygame.image.load(os.path.join("postavljanje", "rotate_frame3.png" )).convert_alpha()
 rotate_key_index = 0
 rotate_lista = [rotate1,rotate2,rotate3]
-rotate_surf = rotate_lista[rotate_key_index]
 
 #Background igranje
 BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" )).convert_alpha()
@@ -510,7 +515,7 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
 def rotate_key_animacija(pozicija_misa):
-    global rotate_key_index, rotate_surf
+    global rotate_key_index
     rotate_key_index += 0.03
     if rotate_key_index >= len(rotate_lista):
         rotate_key_index = 0
@@ -1130,20 +1135,25 @@ def crtanje_xeva(igrac):  # Funkcija provjerava jesu li pogodeni suparnicki brod
                         PROZOR.blit(XISIC, xisic_rectA)          
 
 def crtanje_pogodenih_vlastitih(igrac):  # Funkcija provjerava i crta vatru ondje gdje je brod pogođen SAMO NA GRIDU IGRACA KOJI IGRA
+    global vatra_index, vatra_surf
+    vatra_index += 0.1
+    if vatra_index >= len(vatra_lista):
+        vatra_index = 0
+    vatra_surf = vatra_lista[int(vatra_index)]
     if igrac == 'A':
         for i in range(0,100):
             recA = lista_rect_kvadrata_A[i]
             if len(lista_imena_kvadrata_A[i]) == 3:
                 if lista_imena_kvadrata_A[i][2] == 'x':
-                    pogoden_rectA = VLASTITI_POGODEN.get_rect(topleft = (recA.topleft))
-                    PROZOR.blit(VLASTITI_POGODEN, pogoden_rectA)
+                    pogoden_rectA = vatra_surf.get_rect(topleft = (recA.topleft))
+                    PROZOR.blit(vatra_surf, pogoden_rectA)
     elif igrac == 'B':   
         for i in range(0,100):
             recB = lista_rect_kvadrata_B[i]
             if len(lista_imena_kvadrata_B[i]) == 3:
                 if lista_imena_kvadrata_B[i][2] == 'x':
-                    pogoden_rectB = VLASTITI_POGODEN.get_rect(topleft = (recB.topleft))
-                    PROZOR.blit(VLASTITI_POGODEN, pogoden_rectB)                 
+                    pogoden_rectB = vatra_surf.get_rect(topleft = (recB.topleft))
+                    PROZOR.blit(vatra_surf, pogoden_rectB)                 
 
 def hoveranje_animacija(igrac, mis_poz):  # Funkcija provjerava nalazi li se mis iznad kvadratica, ako da onda nacrta poseban kvadratic da to oznaci
     HOVERANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "hoverani_kvadrat.png")).convert_alpha()
