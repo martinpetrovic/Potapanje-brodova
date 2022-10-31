@@ -93,6 +93,13 @@ OBRUBI_BRODOVI_RECT = [OBRUB_CARRIER_RECT,OBRUB_BATTLESHIP_RECT,OBRUB_DESTROYER_
 OBRUBI_BRODOVI_CRTANJE = [[OBRUB_CARRIER,OBRUB_CARRIER_RECT],[OBRUB_BATTLESHIP,OBRUB_BATTLESHIP_RECT],[OBRUB_DESTROYER,OBRUB_DESTROYER_RECT],
 [OBRUB_SUBMARINE,OBRUB_SUBMARINE_RECT],[OBRUB_PATROL,OBRUB_PATROL_RECT]]
 
+rotate1 = pygame.image.load(os.path.join("postavljanje", "rotate_frame1.png" ))
+rotate2 = pygame.image.load(os.path.join("postavljanje", "rotate_frame2.png" ))
+rotate3 = pygame.image.load(os.path.join("postavljanje", "rotate_frame3.png" ))
+rotate_key_index = 0
+rotate_lista = [rotate1,rotate2,rotate3]
+rotate_surf = rotate_lista[rotate_key_index]
+
 #Background igranje
 BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" ))
 BG_IGRANJE_RECT = BG_IGRANJE.get_rect(topleft=(0,0))
@@ -504,6 +511,15 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                             else:    
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
+def rotate_key_animacija(pozicija_misa):
+    global rotate_key_index, rotate_surf
+    rotate_key_index += 0.25
+    if rotate_key_index >= len(rotate_lista):
+        rotate_key_index = 0
+    rotate_surf = rotate_lista[int(rotate_key_index)]
+    rotate_rect = rotate_surf.get_rect(bottomright=(pozicija_misa))
+    PROZOR.blit(rotate_surf, rotate_rect)
+
 def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena,igrač):
     global idi
     global Kvadrat_x, Kvadrat_y
@@ -528,6 +544,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
         PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
+        rotate_key_animacija(čekanje_mouse_poz)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
