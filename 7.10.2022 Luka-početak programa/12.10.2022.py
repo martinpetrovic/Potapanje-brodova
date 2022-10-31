@@ -92,6 +92,12 @@ OBRUBI_BRODOVI_RECT = [OBRUB_CARRIER_RECT,OBRUB_BATTLESHIP_RECT,OBRUB_DESTROYER_
 OBRUBI_BRODOVI_CRTANJE = [[OBRUB_CARRIER,OBRUB_CARRIER_RECT],[OBRUB_BATTLESHIP,OBRUB_BATTLESHIP_RECT],[OBRUB_DESTROYER,OBRUB_DESTROYER_RECT],
 [OBRUB_SUBMARINE,OBRUB_SUBMARINE_RECT],[OBRUB_PATROL,OBRUB_PATROL_RECT]]
 
+#Background igranje
+BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" ))
+BG_IGRANJE_RECT = BG_IGRANJE.get_rect(topleft=(0,0))
+VODA_IGRANJE = pygame.image.load(os.path.join("igranje", "plavi_ekrani.png" ))
+VODA_IGRANJE_RECT = VODA_IGRANJE.get_rect(topleft=(0,0))
+
 play_run = True
 
 #Sve za Brod spriteove i provjere postavljanja
@@ -1208,12 +1214,17 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
                     provjera_gadanja = True
                     if lista_imena_kvadrata_A[i][1] != 'x':
                         rezultat_A_igrac -= 1                         
- 
+
+def crtanje_ekrana_igranje():
+    PROZOR.blit(VODA_IGRANJE, VODA_IGRANJE_RECT)
+    PROZOR.blit(BG_IGRANJE,BG_IGRANJE_RECT)
+
 def igranje_A_ekran():
     global zmaj
     run = True
     while run == True:
         PROZOR.fill('White')
+        crtanje_ekrana_igranje()
         gridA('lijevo')
         gridB('desno')
         PROZOR.blit(player_A_render,player_A_rect)
@@ -1255,6 +1266,7 @@ def igranje_B_ekran():
     run = True
     while run == True:
         PROZOR.fill('White')
+        crtanje_ekrana_igranje()
         gridA('desno')
         gridB('lijevo')
         PROZOR.blit(player_B_render,player_B_rect)
