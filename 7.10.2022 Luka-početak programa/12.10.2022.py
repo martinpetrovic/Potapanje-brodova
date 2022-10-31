@@ -1,4 +1,5 @@
 from ast import main
+from turtle import left
 import pygame, sys
 from pygame.locals import *
 import os
@@ -26,6 +27,14 @@ INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png")).convert_alpha()
 OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png")).convert_alpha()
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
+
+#Play_score
+LINIJA_SCORE_PISANJE = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje.png")).convert_alpha()
+LINIJA_SCORE_PRAZNINA = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje_praznina.png")).convert_alpha()
+linija_key_index = 0
+linija_playscore_animacija_lista = [LINIJA_SCORE_PISANJE,LINIJA_SCORE_PRAZNINA]
+linija_playscore_surf = linija_playscore_animacija_lista[linija_key_index]
+
 
 #Igranje
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png")).convert_alpha()
@@ -1382,6 +1391,16 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     
     pygame.display.update()
 
+
+def linija_playscore_animacija(i):
+    global linija_key_index, linija_playscore_surf
+    linija_key_index += 0.01
+    if linija_key_index >= len(linija_playscore_animacija_lista):
+        linija_key_index = 0
+    linija_playscore_surf = linija_playscore_animacija_lista[int(linija_key_index)]
+    linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].x_pos,PLAYERI_LISTA_GUMBOVA[i-1].y_pos))
+    PROZOR.blit(linija_playscore_surf, linija_playscore_rect)
+
 def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
     #global profili_i_score
     global score
@@ -1434,7 +1453,19 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE = Button("Confirm", 30, 'Black', 119,55, '#475F77', '#77dd77', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
-        CHOOSE_PROFILE.update(PROZOR)                   
+        CHOOSE_PROFILE.update(PROZOR)
+
+        for i in range(1,9):
+            if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
+                linija_playscore_animacija(i)
+                #LINIJA_SCORE_PISANJE_RECT = LINIJA_SCORE_PISANJE.get_rect(center = PLAYERI_LISTA_GUMBOVA[i-1].main_rect.center)
+                #PROZOR.blit(LINIJA_SCORE_PISANJE, LINIJA_SCORE_PISANJE_RECT)
+                
+                
+                
+
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -1455,6 +1486,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         
                         for k in range (8):
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
+                        
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
@@ -1482,6 +1514,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         else: pass
                 for i in range(8):
                     if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+
                         if event.key == pygame.K_BACKSPACE:
                             trenutno_ime_izbris = PLAYERI_IMENA.get(f"player{i+1}")
                             trenutno_ime_izbris = trenutno_ime_izbris[:-1]
