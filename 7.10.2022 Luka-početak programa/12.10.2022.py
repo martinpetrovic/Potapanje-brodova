@@ -24,6 +24,7 @@ INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
 #Grid
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
+OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png"))
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Igranje
@@ -91,6 +92,19 @@ OBRUBI_BRODOVI_RECT = [OBRUB_CARRIER_RECT,OBRUB_BATTLESHIP_RECT,OBRUB_DESTROYER_
 
 OBRUBI_BRODOVI_CRTANJE = [[OBRUB_CARRIER,OBRUB_CARRIER_RECT],[OBRUB_BATTLESHIP,OBRUB_BATTLESHIP_RECT],[OBRUB_DESTROYER,OBRUB_DESTROYER_RECT],
 [OBRUB_SUBMARINE,OBRUB_SUBMARINE_RECT],[OBRUB_PATROL,OBRUB_PATROL_RECT]]
+
+rotate1 = pygame.image.load(os.path.join("postavljanje", "rotate_frame1.png" ))
+rotate2 = pygame.image.load(os.path.join("postavljanje", "rotate_frame2.png" ))
+rotate3 = pygame.image.load(os.path.join("postavljanje", "rotate_frame3.png" ))
+rotate_key_index = 0
+rotate_lista = [rotate1,rotate2,rotate3]
+rotate_surf = rotate_lista[rotate_key_index]
+
+#Background igranje
+BG_IGRANJE = pygame.image.load(os.path.join("igranje", "background_igranje.png" ))
+BG_IGRANJE_RECT = BG_IGRANJE.get_rect(topleft=(0,0))
+VODA_IGRANJE = pygame.image.load(os.path.join("igranje", "plavi_ekrani.png" ))
+VODA_IGRANJE_RECT = VODA_IGRANJE.get_rect(topleft=(0,0))
 
 play_run = True
 
@@ -230,7 +244,7 @@ class Brod(pygame.sprite.Sprite):
             self.rect.topleft =(self.pozx, self.pozy)
             brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
             brod_velkiX.rect = brod_velkiX.image.get_rect()
-            brod_velkiX.rect.topleft =(self.pozx+590, self.pozy)
+            brod_velkiX.rect.topleft =(self.pozx+640, self.pozy)
             brodovi_rotacija.update({self:0})
             Hover_brod = pygame.transform.rotate(Hover_brod, -90)
             Zeleni_brod = pygame.transform.rotate(Zeleni_brod, -90)
@@ -239,7 +253,7 @@ class Brod(pygame.sprite.Sprite):
             ZELENI_KVADRATI.update({self:Zeleni_brod})
             CRVENI_KVADRATI.update({self:Crveni_brod})
             
-        brod_velkiX.rect.topleft = poz_x + 590, poz_y
+        brod_velkiX.rect.topleft = poz_x + 640, poz_y
         self.rect.topleft = poz_x, poz_y
         brodovi_pozicije.update({self:(poz_x, poz_y)})
        
@@ -325,6 +339,8 @@ def gridA(pozicija):
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (96,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_A = False
 
         #brojevi
@@ -358,6 +374,8 @@ def gridA(pozicija):
                 if izrada_liste_A == True:
                     lista_rect_kvadrata_A.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (736,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_A = False
 
         #brojevi
@@ -395,6 +413,8 @@ def gridB(pozicija):
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (96,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_B = False
 
         #brojevi
@@ -428,6 +448,8 @@ def gridB(pozicija):
                 if izrada_liste_B == True:
                     lista_rect_kvadrata_B.append(KVADRAT_RECT)
                 PROZOR.blit(KVADRAT,KVADRAT_RECT)
+        OKOLNI_GRID_RECT = OKOLNI_GRID.get_rect(topleft = (736,128))
+        PROZOR.blit(OKOLNI_GRID, OKOLNI_GRID_RECT)
         izrada_liste_B = False
 
         #brojevi
@@ -489,6 +511,15 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                             else:    
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
+def rotate_key_animacija(pozicija_misa):
+    global rotate_key_index, rotate_surf
+    rotate_key_index += 0.25
+    if rotate_key_index >= len(rotate_lista):
+        rotate_key_index = 0
+    rotate_surf = rotate_lista[int(rotate_key_index)]
+    rotate_rect = rotate_surf.get_rect(bottomright=(pozicija_misa))
+    PROZOR.blit(rotate_surf, rotate_rect)
+
 def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,lista_rect_kvadrata,brodovi_pozicije,crtanje_imena,igrač):
     global idi
     global Kvadrat_x, Kvadrat_y
@@ -506,14 +537,14 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
         poz_broda_x, poz_broda_y = čekanje_mouse_poz
         brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
         
-        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
-        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
-        
         #Crveni i zeleni hoveri
         provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
         
         Brodovi_grupa.draw(PROZOR)
+        hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
+        PROZOR.blit(HOVER_BRODOVA.get(brod), hoverani_brod_rect)
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
+        rotate_key_animacija(čekanje_mouse_poz)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -1208,12 +1239,17 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
                     provjera_gadanja = True
                     if lista_imena_kvadrata_A[i][1] != 'x':
                         rezultat_A_igrac -= 1                         
- 
+
+def crtanje_ekrana_igranje():
+    PROZOR.blit(VODA_IGRANJE, VODA_IGRANJE_RECT)
+    PROZOR.blit(BG_IGRANJE,BG_IGRANJE_RECT)
+
 def igranje_A_ekran():
     global zmaj
     run = True
     while run == True:
         PROZOR.fill('White')
+        crtanje_ekrana_igranje()
         gridA('lijevo')
         gridB('desno')
         PROZOR.blit(player_A_render,player_A_rect)
@@ -1255,6 +1291,7 @@ def igranje_B_ekran():
     run = True
     while run == True:
         PROZOR.fill('White')
+        crtanje_ekrana_igranje()
         gridA('desno')
         gridB('lijevo')
         PROZOR.blit(player_B_render,player_B_rect)
