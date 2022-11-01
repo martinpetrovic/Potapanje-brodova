@@ -29,11 +29,11 @@ OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.p
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Play_score
-#LINIJA_SCORE_PISANJE = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje.png")).convert_alpha()
-#LINIJA_SCORE_PRAZNINA = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje_praznina.png")).convert_alpha()
-#linija_key_index = 0
-#linija_playscore_animacija_lista = [LINIJA_SCORE_PISANJE,LINIJA_SCORE_PRAZNINA]
-#linija_playscore_surf = linija_playscore_animacija_lista[linija_key_index]
+LINIJA_SCORE_PISANJE = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje.png")).convert_alpha()
+LINIJA_SCORE_PRAZNINA = pygame.image.load(os.path.join("potapanje brodova", "linija_za_pisanje_praznina.png")).convert_alpha()
+linija_key_index = 0
+linija_playscore_animacija_lista = [LINIJA_SCORE_PISANJE,LINIJA_SCORE_PRAZNINA]
+linija_playscore_surf = linija_playscore_animacija_lista[linija_key_index]
 
 
 #Igranje
