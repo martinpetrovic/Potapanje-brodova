@@ -507,63 +507,59 @@ def crtanje_pozadine(play_mouse_pos):
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
     for i in range(5):
         PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[i].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect)
+
     for i in range(5):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
 
-            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu):
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu): #Ako C i ne B onda crtaj C
                 PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
-                for k in range(5):
-                    if k != i:
-                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                break
-
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
                 for k in range(1,5):
-                    if k != i:
-                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+                    PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                 break
-                
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu)) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[2][0],OBRUBI_BRODOVI_CRTANJE[2][1])
-                for k in range(2,5):
-                    if k != i:
-                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                break
-                
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu)) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[3][0],OBRUBI_BRODOVI_CRTANJE[4][1])
-                for k in range(3,5):
-                    if k != i:
-                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                break
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu):
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
-                for k in range(4,5):
-                    if k != i:
-                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                break
-            else:
-                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
 
-                if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:
-                    for k in range(1,5):
-                        if k != i:
-                            PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[2]:
-                    for k in range(2,5):
-                        if k != i:
-                            PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[3]:
-                    for k in range(3,5):
-                        if k != i:
-                            PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[4]:
-                    for k in range(4,5):
-                        if k != i:
-                            PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu): #Ako B i ne D onda crtaj B
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
+                for k in range(2,5):
+                        PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                 break
+                
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako D i ne S ili P onda crtaj D
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[2][0],OBRUBI_BRODOVI_CRTANJE[2][1])
+                for k in range(3,5):
+                    PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+                break
+                
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): #Ako S i ne P onda crtaj S
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[3][0],OBRUBI_BRODOVI_CRTANJE[4][1])
+                for k in range(4,5):
+                    PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+                break
+            
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): #Ako P crtaj P
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
+                break
+            # else:
+            #     print("Crta else")
+            #     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+
+            #     if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:
+            #         for k in range(1,5):
+            #             if k != i:
+            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[2]:
+            #         for k in range(2,5):
+            #             if k != i:
+            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[3]:
+            #         for k in range(3,5):
+            #             if k != i:
+            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[4]:
+            #         for k in range(4,5):
+            #             if k != i:
+            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
+            #     break
            
 
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
@@ -634,10 +630,6 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_grupa,li
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR) 
-        
-        
-        
-        
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -781,9 +773,9 @@ def postavljanje_igracaA():
     vrati_nazad_provjera = False
     brod_izabran = False
     
-    PLAYERI_FONT = pygame.font.Font(None, 30)
+    PLAYERI_FONT = pygame.font.Font(None, 28)
     player_A_render = PLAYERI_FONT.render(player_A,1,'Black')
-    player_A_rect = player_A_render.get_rect(topleft = (440, 72))
+    player_A_rect = player_A_render.get_rect(center = (482, 82))
     
     crtanje_imena_lista_A = [player_A_render,player_A_rect]
 
@@ -953,7 +945,7 @@ def postavljanje_igracaB():
     brod_izabran = False
     
     player_B_render = PLAYERI_FONT.render(player_B,1,'Black')
-    player_B_rect = player_B_render.get_rect(topleft = (440, 72))
+    player_B_rect = player_B_render.get_rect(center = (482, 82))
     
     crtanje_imena_lista_B = [player_B_render,player_B_rect]
 
