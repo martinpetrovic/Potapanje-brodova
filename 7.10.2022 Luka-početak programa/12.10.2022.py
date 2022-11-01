@@ -1730,10 +1730,12 @@ def biranje_profila(): #biranje igrača koji će igrati
                 if BACK.checkForInput(biranje_mouse_poz):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
+
                 if len(selektirani_profili) <= 2:
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
-                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                            if PLAYERI_IMENA.get(f"player{i+1}") != "Create a profile":
+                                pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                             if PLAYERI_IMENA.get(f"player{i+1}") == "Create a profile":
                                 pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                                 pass
