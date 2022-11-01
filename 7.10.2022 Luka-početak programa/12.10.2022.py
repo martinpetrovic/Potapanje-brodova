@@ -133,6 +133,7 @@ with open("potapanje brodova\profili.txt",encoding="utf-8") as datoteka:
         profili = datoteka.readlines()
 with open("potapanje brodova\score.txt",encoding="utf-8") as datoteka:
     score = datoteka.readlines()
+loša_slova=["š","đ","č","ć","ž"]
 
 imenovanje_profila_bool = True
 biranje_profila_bool = True
@@ -1340,10 +1341,10 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     pobjednik = ""
     if rezultat1 == 0:
         pobjednik = selektirani_profili[1]
-
+        #a = profili.index(selektirani_profili[1])
     if rezultat2 == 0:
         pobjednik = selektirani_profili[0]
-
+        #a = profili.index(selektirani_profili[0])
     while zapis_rezultata_jednom==True:
         with open("potapanje brodova\score.txt", encoding="utf-8") as datoteka:
             rezultati = datoteka.readlines()
@@ -1374,6 +1375,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     pygame.display.update()
 
 def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
+    global loša_slova
     global score
     global profili
     global PLAYERI_IMENA
@@ -1388,13 +1390,15 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
     for i in range(1,9):
         PLAYERI_SELEKTIRANI.update({f"player_{i}":False})
         PLAYERI_IMENA.update({f"player{i}": profili[i-1][:-1]})
+    
     while imenovanje_profila_bool == True:
         PROZOR.fill(WHITE)
         Create_profile = font.render("Create profiles",1,'Black')
         Create_profile_rect = Create_profile.get_rect(center=(630,45))
         PROZOR.blit(Create_profile,Create_profile_rect)
         score_mouse_pos = pygame.mouse.get_pos()
-
+        
+        
         PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162))
         PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134))
         PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*2))
@@ -1427,7 +1431,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+                
             if event.type == MOUSEBUTTONDOWN:
+                
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
@@ -1438,10 +1444,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                 for i in range(8):
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
                         pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                        
                         for k in range (8):
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
-                            if PLAYERI_IMENA.get(f"player{k+1}") == "" :
-                                PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
@@ -1473,7 +1478,10 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         
                         elif event.key == pygame.K_RETURN:
                             PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                        else:  
+                        
+                        else:
+                            #if event.unicode in loša_slova:
+                            #    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)    
                             if len(trenutno_ime_upis) > 10:
                                 trenutno_ime_upis = trenutno_ime_upis[:-1]
                                 pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
@@ -1550,23 +1558,19 @@ def biranje_profila(): #biranje igrača koji će igrati
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
                             pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                            if PLAYERI_IMENA.get(f"player{i+1}") == "Create a profile":
-                                pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
-                                pass
-                            else:
-                                if len(selektirani_profili)<2:
-                                    PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 75, 'Black', 411, 91, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
-                                    PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
-                                    GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:1})
-                                if PLAYERI_IMENA.get(f"player{i+1}") in selektirani_profili:
-                                    selektirani_profili.remove(PLAYERI_IMENA.get(f"player{i+1}")) 
-                                    PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 411, 91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[i])
-                                    PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
-                                    GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:0})
-                                elif PLAYERI_IMENA.get(f"player{i+1}") not in selektirani_profili:
-                                    selektirani_profili.append(PLAYERI_IMENA.get(f"player{i+1}"))
-                                if len(selektirani_profili) == 3:
-                                    selektirani_profili.remove(selektirani_profili[2])
+                            if len(selektirani_profili)<2:
+                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 75, 'Black', 411, 91, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
+                                PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
+                                GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:1})
+                            if PLAYERI_IMENA.get(f"player{i+1}") in selektirani_profili:
+                                selektirani_profili.remove(PLAYERI_IMENA.get(f"player{i+1}")) 
+                                PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 411, 91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[i])
+                                PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
+                                GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:0})
+                            elif PLAYERI_IMENA.get(f"player{i+1}") not in selektirani_profili:
+                                selektirani_profili.append(PLAYERI_IMENA.get(f"player{i+1}"))
+                            if len(selektirani_profili) == 3:
+                                selektirani_profili.remove(selektirani_profili[2])
                     
                 
                             
