@@ -281,7 +281,7 @@ class Brod(pygame.sprite.Sprite):
     def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):    
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        brod_velkiX.rect.topleft =(poz_broda_x+640, poz_broda_y)
         self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
@@ -296,7 +296,7 @@ class Brod(pygame.sprite.Sprite):
     def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        brod_velkiX.rect.topleft =(poz_broda_x+640, poz_broda_y)
         self.image = pygame.transform.rotate(self.image, -90)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
@@ -672,6 +672,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
             if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
                 Brodovi_single_grupa.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         Brodovi_single_grupa.get(brod).draw(PROZOR) 
+
         #Crveni i zeleni hoveri
         provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
         hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
@@ -720,7 +721,7 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
                     brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
                     brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
-                    brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
+                    brod_velkiX.rect.topleft = (Kvadrat_x + 640, Kvadrat_y)
                     while PROVJERA:
                         provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
                     idi = False
