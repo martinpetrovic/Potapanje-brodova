@@ -1122,6 +1122,8 @@ def postavljanje_igracaB():
             if event.type == MOUSEBUTTONDOWN:
                 for SUM_BROD in SUM_POSTAVLJANJE_BRODOVI_LISTA:
                     SUM_BROD.mask_collide(play_mouse_pos)
+                    if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_BROD) == [False,False]:
+                        SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_BROD).collide()
                 if len(postavljeni_brodovi) == 5:
                     CONFIRM_GUMB_PLAY.checkForClick('B')
             if run_pB == True:
