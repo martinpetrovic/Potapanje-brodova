@@ -20,12 +20,12 @@ clock = pygame.time.Clock()
 
 #Slike, zvuk, font
 #Loading screen
-LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
+LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" )).convert_alpha()
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
 #Grid
-KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
-OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png"))
+KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png")).convert_alpha()
+OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png")).convert_alpha()
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
 
 #Play_score
@@ -113,6 +113,23 @@ VODA_IGRANJE = pygame.image.load(os.path.join("igranje", "plavi_ekrani.png" )).c
 VODA_IGRANJE_RECT = VODA_IGRANJE.get_rect(topleft=(0,0))
 
 play_run = True
+
+#Main menu grafika
+lista_bomba_animacija = []
+bomba_index = 0
+for i in range(1,27):
+    bomba = pygame.image.load(os.path.join("main_menu\omba_animacija", f'bomba_frame{i}.png' )).convert_alpha()
+    lista_bomba_animacija.append(bomba)
+lista_brod_animacija = []
+brod_index = 0
+for i in range(1,28):
+    brod = pygame.image.load(os.path.join("main_menu\od_animacija", f'brod_frame{i}.png' )).convert_alpha()
+    lista_brod_animacija.append(brod)
+lista_more_animacija = []
+more_index = 0
+for i in range(1,5):
+    more = pygame.image.load(os.path.join("main_menu\more_animacija", f'more{i}.png' )).convert_alpha()
+    lista_more_animacija.append(more)
 
 #Sve za Brod spriteove i provjere postavljanja
 Kvadrat_x, Kvadrat_y = 0, 0
@@ -624,7 +641,7 @@ def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crven
                                 PROZOR.blit(ZELENI_KVADRATI.get(brod), zeleni_pravokutnik)
 
 def rotate_key_animacija(pozicija_misa):
-    global rotate_key_index, rotate_surf
+    global rotate_key_index
     rotate_key_index += 0.03
     if rotate_key_index >= len(rotate_lista):
         rotate_key_index = 0
@@ -1924,14 +1941,51 @@ def play():
         lista_imena_kvadrata_B = [] 
         resetiranje_prije_igre()
 
+def animacija_bombi():
+    global bomba_index
+    bomba_index += 0.12
+    if bomba_index >= len(lista_bomba_animacija):
+        bomba_index = 0
+    bomba_surf = lista_bomba_animacija[int(bomba_index)]
+    bomba_rect = bomba_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(bomba_surf, bomba_rect)
+
+def animacija_broda():
+    global brod_index
+    brod_index += 0.09
+    if brod_index >= len(lista_brod_animacija):
+        brod_index = 0
+    brod_surf = lista_brod_animacija[int(brod_index)]
+    brod_rect = brod_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(brod_surf, brod_rect)
+
+def animacija_more():
+    global more_index
+    more_index += 0.02
+    if more_index >= len(lista_more_animacija):
+        more_index = 0
+    more_surf = lista_more_animacija[int(more_index)]
+    more_rect = more_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(more_surf, more_rect)
+
 def main():
     #LOADING_SCREEN()
     global zmaj
     tupi_zvuk = 1
     gumboslav = None
+    PANORAMA = pygame.image.load(os.path.join("main_menu", "background.png" )).convert_alpha()
+    PANORAMA_RECT = PANORAMA.get_rect(topleft=(0,0))
+    NASLOV = pygame.image.load(os.path.join("main_menu", "naslov.png" )).convert_alpha()
+    NASLOV_RECT = NASLOV.get_rect(topleft=(224,32))
     while True:
         zmaj = False
         PROZOR.fill('White')
+        PROZOR.blit(PANORAMA, PANORAMA_RECT)
+        animacija_bombi()
+        PROZOR.blit(NASLOV, NASLOV_RECT)
+        animacija_broda()
+        animacija_more()
+        PROZOR.blit(NASLOV, NASLOV_RECT)
         menu_mouse_poz = pygame.mouse.get_pos()
         GUMB_PLAY = Button(text_input = "Play", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,200))
         GUMB_SCORE = Button(text_input = "Score", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,275))
