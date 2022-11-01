@@ -312,16 +312,18 @@ class Brod(pygame.sprite.Sprite):
         global brod_collidean
         global duljina_broda
         global brod_izabran
-        if self.rect.width / 5 == 48:
-            duljina_broda = 5
-        if self.rect.width / 4 == 48:
-            duljina_broda = 4  
-        if self.rect.width / 3 == 48:
-            duljina_broda = 3
-        if self.rect.width / 2 == 48:
-            duljina_broda = 2
-        brod_izabran = True
-        brod_collidean = self
+        mouse_poz = pygame.mouse.get_pos()
+        if self.rect.collidepoint(mouse_poz):
+            if self.rect.width / 5 == 48:
+                duljina_broda = 5
+            if self.rect.width / 4 == 48:
+                duljina_broda = 4  
+            if self.rect.width / 3 == 48:
+                duljina_broda = 3
+            if self.rect.width / 2 == 48:
+                duljina_broda = 2
+            brod_izabran = True
+            brod_collidean = self
     
     def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod):#Vraća brodove na prvobitne pozicije brodova 
         global vrati_nazad_provjera
@@ -665,7 +667,10 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
         
         poz_broda_x, poz_broda_y = čekanje_mouse_poz
         brod.rect.topleft = (poz_broda_x-24, poz_broda_y-24) #brod prati cursor
-        
+
+        for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
+            if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
+                Brodovi_single_grupa.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         Brodovi_single_grupa.get(brod).draw(PROZOR) 
         #Crveni i zeleni hoveri
         provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
@@ -750,7 +755,7 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
     if vrati_nazad_provjera == False:
         pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
         #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
-        SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,True]})
+        SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,False]})
         #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
         
     PROVJERA = False
@@ -904,7 +909,9 @@ def postavljanje_igracaA():
         crtanje_pozadine(play_mouse_pos)
         gridA('lijevo')
         PROZOR.blit(crtanje_imena_lista_A[0],crtanje_imena_lista_A[1])
-
+        for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
+            if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
+                BRODOVI_SINGLE_GRUPE_A.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
@@ -926,8 +933,11 @@ def postavljanje_igracaA():
             if event.type == MOUSEBUTTONDOWN:
                 for SUM_BROD in SUM_POSTAVLJANJE_BRODOVI_LISTA:
                     SUM_BROD.mask_collide(play_mouse_pos)
+                    if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_BROD) == [False,False]:
+                        SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_BROD).collide()
                 if len(postavljeni_brodovi) == 5:
                     CONFIRM_GUMB_PLAY.checkForClick('A')
+
             if run_pA == True:
                 if brod_izabran == True:
                     for kvadrat in lista_rect_kvadrata_A:
@@ -1087,7 +1097,9 @@ def postavljanje_igracaB():
         crtanje_pozadine(play_mouse_pos)
         gridB('lijevo')
         PROZOR.blit(crtanje_imena_lista_B[0],crtanje_imena_lista_B[1])
-        BRODOVI_GRUPA_B.draw(PROZOR)
+        for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
+            if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
+                BRODOVI_SINGLE_GRUPE_B.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
             CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
@@ -1112,57 +1124,59 @@ def postavljanje_igracaB():
                     SUM_BROD.mask_collide(play_mouse_pos)
                 if len(postavljeni_brodovi) == 5:
                     CONFIRM_GUMB_PLAY.checkForClick('B')
-                if run_pB == True:
-                    if brod_izabran == True:
-                        if brod_collidean == CARRIER:
-                            čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
-                            if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
-                                postavljeni_brodovi.append("C")
-                            elif vrati_nazad_provjera == True:
-                                vrati_nazad_provjera = False
-                                if "C" in postavljeni_brodovi:
-                                    postavljeni_brodovi.remove("C")
-                            brod_izabran = False
-            
-                        elif brod_collidean == BATTLESHIP:
-                            čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_B.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
-                            if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
-                                postavljeni_brodovi.append("B")
-                            elif vrati_nazad_provjera == True:
-                                vrati_nazad_provjera = False
-                                if "B" in postavljeni_brodovi:
-                                    postavljeni_brodovi.remove("B")
-                            brod_izabran = False
+            if run_pB == True:
+                if brod_izabran == True:
+                    for kvadrat in lista_rect_kvadrata_B:
+                        if kvadrat.collidepoint(play_mouse_pos):
+                            if brod_collidean == CARRIER:
+                                čekanje_za_odabir(CARRIER,brodovi_rotacija_B.get(CARRIER),CARRIER_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
+                                if "C" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                                    postavljeni_brodovi.append("C")
+                                elif vrati_nazad_provjera == True:
+                                    vrati_nazad_provjera = False
+                                    if "C" in postavljeni_brodovi:
+                                        postavljeni_brodovi.remove("C")
+                                brod_izabran = False
+                
+                            elif brod_collidean == BATTLESHIP:
+                                čekanje_za_odabir(BATTLESHIP,brodovi_rotacija_B.get(BATTLESHIP),BATTLESHIP_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
+                                if "B" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                                    postavljeni_brodovi.append("B")
+                                elif vrati_nazad_provjera == True:
+                                    vrati_nazad_provjera = False
+                                    if "B" in postavljeni_brodovi:
+                                        postavljeni_brodovi.remove("B")
+                                brod_izabran = False
 
-                        elif brod_collidean == SUBMARINE:
-                            čekanje_za_odabir(SUBMARINE,brodovi_rotacija_B.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
-                            if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
-                                postavljeni_brodovi.append("S")
-                            elif vrati_nazad_provjera == True:
-                                vrati_nazad_provjera = False
-                                if "S" in postavljeni_brodovi:
-                                    postavljeni_brodovi.remove("S")
-                            brod_izabran = False
-                                                    
-                        elif brod_collidean == DESTROYER:
-                            čekanje_za_odabir(DESTROYER,brodovi_rotacija_B.get(DESTROYER),DESTROYER_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
-                            if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
-                                postavljeni_brodovi.append("D")
-                            elif vrati_nazad_provjera == True:
-                                vrati_nazad_provjera = False
-                                if "D" in postavljeni_brodovi:
-                                    postavljeni_brodovi.remove("D")
-                            brod_izabran = False
+                            elif brod_collidean == SUBMARINE:
+                                čekanje_za_odabir(SUBMARINE,brodovi_rotacija_B.get(SUBMARINE),SUBMARINE_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
+                                if "S" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                                    postavljeni_brodovi.append("S")
+                                elif vrati_nazad_provjera == True:
+                                    vrati_nazad_provjera = False
+                                    if "S" in postavljeni_brodovi:
+                                        postavljeni_brodovi.remove("S")
+                                brod_izabran = False
+                                                        
+                            elif brod_collidean == DESTROYER:
+                                čekanje_za_odabir(DESTROYER,brodovi_rotacija_B.get(DESTROYER),DESTROYER_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
+                                if "D" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                                    postavljeni_brodovi.append("D")
+                                elif vrati_nazad_provjera == True:
+                                    vrati_nazad_provjera = False
+                                    if "D" in postavljeni_brodovi:
+                                        postavljeni_brodovi.remove("D")
+                                brod_izabran = False
 
-                        elif brod_collidean == PATROL:
-                            čekanje_za_odabir(PATROL,brodovi_rotacija_B.get(PATROL),PATROL_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
-                            if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
-                                postavljeni_brodovi.append("P")
-                            elif vrati_nazad_provjera == True:
-                                vrati_nazad_provjera = False
-                                if "P" in postavljeni_brodovi:
-                                    postavljeni_brodovi.remove("P")
-                            brod_izabran = False
+                            elif brod_collidean == PATROL:
+                                čekanje_za_odabir(PATROL,brodovi_rotacija_B.get(PATROL),PATROL_X,brodovi_rotacija_B,BRODOVI_SINGLE_GRUPE_B,lista_rect_kvadrata_B,brodovi_pozicije_B,crtanje_imena_lista_B,'B')
+                                if "P" not in postavljeni_brodovi and vrati_nazad_provjera == False:
+                                    postavljeni_brodovi.append("P")
+                                elif vrati_nazad_provjera == True:
+                                    vrati_nazad_provjera = False
+                                    if "P" in postavljeni_brodovi:
+                                        postavljeni_brodovi.remove("P")
+                                brod_izabran = False
                     
                    
                 
@@ -1626,79 +1640,40 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
-        
-        
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-            if event.type == MOUSEBUTTONDOWN:
-                for i in range (8):
-                    PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                    if PLAYERI_IMENA.get(f"player{i+1}") == "":
-                        PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                    if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
-                        pass
-                    else:
-                        score[i] = "0\n"
-
-                if BACK1.checkForInput(score_mouse_pos):
-                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()
-                #Sound effect
-                if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    
-                for i in range(8):
-                    
-                    if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
-                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                        
-                        for k in range (8):
-                            if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
-                                PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
-                            PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
-
-                        
-                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
-                        trenutno_ime_upis = ""                    
-                        PLAYERI_IMENA.update({f"player{i+1}":""})
-                    if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
-                            pass
-                        else:
-                            score[i] = "0\n"
-                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
-                            profili = []
-                            profili = datoteka.readlines()
-                            for z in range (8):
-                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
-                                
-                        imenovanje_profila_bool = False
-                        
-                        with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(profili)
-                        
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    if event.key == K_ESCAPE:
-                        esc_screen('Are you sure you want to exit current game?', PROZOR)
-                        if zmaj == True:
-                            main()
-                        else: pass
-                for i in range(8):
-                    if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
-                        
-                        
+        for i in range(8):
+            if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+                PONIŠTI = Button("Poništi",20,"Black",50,50,'#475F77', '#77dd77',(1000,i*75))
+                PONIŠTI.update(PROZOR)
+                PONIŠTI.changeColor(score_mouse_pos)
+                PONIŠTI.update(PROZOR)
+                POTVRDI = Button("Potvrdi",20,"Black",50,50,'#475F77', '#77dd77',(1050,i*75))
+                POTVRDI.update(PROZOR)
+                POTVRDI.changeColor(score_mouse_pos)
+                POTVRDI.update(PROZOR)           
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == MOUSEBUTTONDOWN:
+                        if BACK1.checkForInput(score_mouse_pos):
+                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                            main()    
+                        if PONIŠTI.checkForInput(score_mouse_pos):
+                            PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
+                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                        if POTVRDI.checkForInput(score_mouse_pos):
+                            PLAYERI_IMENA.update({f"player{i+1}":trenutno_ime_upis})
+                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            esc_screen('Are you sure you want to exit current game?', PROZOR)
+                            if zmaj == True:
+                                main()
+                            else: pass                      
                         if event.key == pygame.K_BACKSPACE:
                             trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
                             trenutno_ime_upis = trenutno_ime_upis[:-1]
                             PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
-                            
-                        
                         elif event.key == pygame.K_RETURN:
                             PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
                             if PLAYERI_IMENA.get(f"player{i+1}") == "" :
@@ -1708,13 +1683,69 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             if len(trenutno_ime_upis) < 8:
                                 trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
                                 trenutno_ime_upis += event.unicode
-                                PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                                if trenutno_ime_upis in list(PLAYERI_IMENA.values()):
+                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+                                    PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
+                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    if event.key == K_ESCAPE:
+                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        if zmaj == True:
+                            main()
+                        else:
+                            pass    
+            if event.type == MOUSEBUTTONDOWN:
+                for i in range (8):
+                    if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
+                        pass
+                    else:
+                        score[i] = "0\n"
+                if BACK1.checkForInput(score_mouse_pos):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    main()    
+                for i in range(8):
+                    
+                    if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                        
+                        for k in range (8):
+                            if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
+                                PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
+                            PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
+                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
+                        
                             
-
+                        trenutno_ime_upis = ""                    
+                        PLAYERI_IMENA.update({f"player{i+1}":""})
+                    if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
+                            pass
+                        else:
+                            score[i] = "0\n"
+                        print(score)
+                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
+                            profili = []
+                            profili = datoteka.readlines()
+                            for z in range (8):
+                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"    
+                        if profili.count("Create a profile\n") > 6:
+                            pass
+                        else:
+                            imenovanje_profila_bool = False
+                        with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
+                            datoteka.writelines(profili)
+                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
+                            datoteka.writelines(score) 
         for i in range(1,9):
             if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
                 linija_playscore_animacija(i)
         pygame.display.update()
+    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
         
 def biranje_profila(): #biranje igrača koji će igrati
     global selektirani_profili
@@ -1784,12 +1815,10 @@ def biranje_profila(): #biranje igrača koji će igrati
                 if BACK.checkForInput(biranje_mouse_poz):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
-
                 if len(selektirani_profili) <= 2:
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
-                            if PLAYERI_IMENA.get(f"player{i+1}") != "Create a profile":
-                                pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                             if PLAYERI_IMENA.get(f"player{i+1}") == "Create a profile":
                                 pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                                 pass
