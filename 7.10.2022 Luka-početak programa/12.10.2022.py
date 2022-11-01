@@ -208,10 +208,40 @@ class CrtanjeBrod():
 
     def mask_collide(self,play_mouse_pos):
         poz_u_rectu = play_mouse_pos[0] - self.rect.x, play_mouse_pos[1] - self.rect.y 
-        if self.rect.collidepoint(play_mouse_pos) and self.mask.get_at(poz_u_rectu):
-            SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({self:False}) 
+        lista_valuea = list(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.values())
+        try:  
+            if [True,True] not in lista_valuea: 
+                if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu):
+                    SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:[True,True]})
+                        
+                        
+                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu):
+                    SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:[True,True]})
+                
+                        
+                        
+                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): 
+                    SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[2]:[True,True]})
+                        
+                            
+                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): 
+                    SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[3]:[True,True]})
+                        
+                            
+                elif SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): 
+                    SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[4]:[True,True]})           
+            else:
+                SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea.index([True,True])]:[True,False]})
+        except:
+            pass
+                
+                
+                
 
 
+                    
+           
+             
 class Brod(pygame.sprite.Sprite):
     def __init__(self,picture_path,poz_x,poz_y):
         super().__init__()
@@ -505,45 +535,45 @@ def gridB(pozicija):
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48     
 
-def provjera_crtanja_sum_brodova(play_mouse_pos):
+def crtanje_obruba_hover(play_mouse_pos):
     for i in range(5):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
 
             if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu): #Ako C i ne B onda crtaj C
-                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0]) == True:
+                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
                     for k in range(1,5):
-                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k]) == True:
+                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k])[0] == True:
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
 
             elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu): #Ako B i ne D onda crtaj B
-                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[1]) == True:
+                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[1])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
                     for k in range(2,5):
-                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k]) == True:
+                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k])[0] == True:
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
                 
             elif SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako D i ne S ili P onda crtaj D
-                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[2]) == True:
+                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[2])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[2][0],OBRUBI_BRODOVI_CRTANJE[2][1])
                     for k in range(3,5):
-                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k]) == True:
+                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k])[0] == True:
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
                 
             elif SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): #Ako S i ne P onda crtaj S
-                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[3]) == True:
+                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[3])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[3][0],OBRUBI_BRODOVI_CRTANJE[4][1])
                     for k in range(4,5):
-                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k]) == True:
+                        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[k])[0] == True:
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
             
             elif SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu): #Ako P crtaj P
-                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[4]) == True:
+                if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[4])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
                     break
 
@@ -552,32 +582,11 @@ def crtanje_pozadine(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
     for i in range(5):
-        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[i]) == True:
+        if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[i])[0] == True:
             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[i].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect)
-    provjera_crtanja_sum_brodova(play_mouse_pos)
-
-    
-            # else:
-            #     print("Crta else")
-            #     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
-
-            #     if SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:
-            #         for k in range(1,5):
-            #             if k != i:
-            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[2]:
-            #         for k in range(2,5):
-            #             if k != i:
-            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[3]:
-            #         for k in range(3,5):
-            #             if k != i:
-            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-            #     elif SUM_POSTAVLJANJE_BRODOVI_LISTA[i] == SUM_POSTAVLJANJE_BRODOVI_LISTA[4]:
-            #         for k in range(4,5):
-            #             if k != i:
-            #                 PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
-            #     break
+            if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[i])[1] == True:
+                PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
+            
            
 
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
@@ -808,7 +817,8 @@ def postavljanje_igracaA():
     SUM_POSTAVLJANJE_BRODOVI_LISTA = [SUM_CARRIER, SUM_BATTLESHIP, 
     SUM_DESTROYER,SUM_SUBMARINE,SUM_PATROL]
 
-    SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:True,SUM_BATTLESHIP:True,SUM_DESTROYER:True,SUM_SUBMARINE:True,SUM_PATROL:True}
+    SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
+    SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
 
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
@@ -981,7 +991,8 @@ def postavljanje_igracaB():
     SUM_POSTAVLJANJE_BRODOVI_LISTA = [SUM_CARRIER, SUM_BATTLESHIP, 
     SUM_DESTROYER,SUM_SUBMARINE,SUM_PATROL]
 
-    SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:True,SUM_BATTLESHIP:True,SUM_DESTROYER:True,SUM_SUBMARINE:True,SUM_PATROL:True}
+    SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
+    SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
 
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 93, 35)
