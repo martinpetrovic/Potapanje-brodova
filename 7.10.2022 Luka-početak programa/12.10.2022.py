@@ -1459,22 +1459,20 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     if rezultat2 == 0:
         pobjednik = selektirani_profili[0]
     while zapis_rezultata_jednom==True:
-        with open("potapanje brodova\score.txt", encoding="utf-8") as datoteka:
-            rezultati = datoteka.readlines()
-            rezultati[profili.index(pobjednik+"\n")] = str(int(rezultati[profili.index(pobjednik+"\n")]) + 1) + "\n"
-            if int(rezultati[profili.index(selektirani_profili[1]+"\n")])>int(rezultati[profili.index(selektirani_profili[0]+"\n")]):
-                boja_lijevo =  "#FF0000"
-                boja_desno =  "#32CD32" 
-            elif int(rezultati[profili.index(selektirani_profili[0]+"\n")])>int(rezultati[profili.index(selektirani_profili[1]+"\n")]):
-                boja_lijevo = "#32CD32"
-                boja_desno = "#FF0000"  
-            elif int(rezultati[profili.index(selektirani_profili[0]+"\n")])== int(rezultati[profili.index(selektirani_profili[1]+"\n")]):
-                boja_desno= "#32CD32"
-                boja_lijevo = boja_desno
+        score[profili.index(pobjednik+"\n")] = str(int(score[profili.index(pobjednik+"\n")]) + 1) + "\n"
+        if int(score[profili.index(selektirani_profili[1]+"\n")])>int(score[profili.index(selektirani_profili[0]+"\n")]):
+            boja_lijevo =  "#FF0000"
+            boja_desno =  "#32CD32" 
+        elif int(score[profili.index(selektirani_profili[0]+"\n")])>int(score[profili.index(selektirani_profili[1]+"\n")]):
+            boja_lijevo = "#32CD32"
+            boja_desno = "#FF0000"  
+        elif int(score[profili.index(selektirani_profili[0]+"\n")])== int(score[profili.index(selektirani_profili[1]+"\n")]):
+            boja_desno= "#32CD32"
+            boja_lijevo = boja_desno
         with open("potapanje brodova\score.txt", "wt",encoding="utf-8") as datoteka:
-            datoteka.writelines(rezultati)
-            rezultat_lijevo = font.render(rezultati[profili.index(selektirani_profili[0]+"\n")][:-1],True,boja_lijevo)
-            rezultat_desno = font.render(rezultati[profili.index(selektirani_profili[1]+"\n")][:-1],True,boja_desno)
+            datoteka.writelines(score)
+            rezultat_lijevo = font.render(score[profili.index(selektirani_profili[0]+"\n")][:-1],True,boja_lijevo)
+            rezultat_desno = font.render(score[profili.index(selektirani_profili[1]+"\n")][:-1],True,boja_desno)
             
         zapis_rezultata_jednom = False
     
@@ -1554,7 +1552,8 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
-
+        
+        
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1562,7 +1561,15 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                 sys.exit()
                 
             if event.type == MOUSEBUTTONDOWN:
-                
+                for i in range (8):
+                    PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                    if PLAYERI_IMENA.get(f"player{i+1}") == "":
+                        PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
+                    if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
+                        pass
+                    else:
+                        score[i] = "0\n"
+
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
@@ -1571,18 +1578,25 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     
                 for i in range(8):
+                    
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
                         pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                         
                         for k in range (8):
-                            if PLAYERI_IMENA.get(f"player{k+1}") == "" :
+                            if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
                                 PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
+
                         
                         PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
                         trenutno_ime_upis = ""                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
+                            pass
+                        else:
+                            score[i] = "0\n"
+                        print(score)
                         with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
                             profili = []
                             profili = datoteka.readlines()
@@ -1604,13 +1618,18 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         else: pass
                 for i in range(8):
                     if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+                        
+                        
                         if event.key == pygame.K_BACKSPACE:
                             trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
                             trenutno_ime_upis = trenutno_ime_upis[:-1]
                             PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                            
                         
                         elif event.key == pygame.K_RETURN:
                             PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
+                                PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
                             trenutno_ime_upis = ""
                         else:
                             if len(trenutno_ime_upis) < 8:
@@ -1654,13 +1673,18 @@ def biranje_profila(): #biranje igrača koji će igrati
         Choose_profile = font.render("Choose profiles",1,'Black')
         Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
         PROZOR.blit(Choose_profile,Choose_profile_rect)
-        
         for player_gumb in PLAYERI_LISTA_GUMBOVA:
             if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
-                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
-                player_gumb.update(PROZOR)
-                player_gumb.changeColor(biranje_mouse_poz)
-                player_gumb.update(PROZOR)
+                if PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}") == "Create a profile":
+                    player_gumb = Button("N/A", 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                    player_gumb.update(PROZOR)
+                    pass             
+                else:
+                    player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                    player_gumb.update(PROZOR)
+                    player_gumb.changeColor(biranje_mouse_poz)
+                    player_gumb.update(PROZOR)
+
         BACK = Button("BACK", 45, "Black", 119,55,'#475F77','#77dd77', (84,54))
         BACK.update(PROZOR)
         BACK.changeColor(biranje_mouse_poz)
@@ -1726,7 +1750,7 @@ def score_screen():
         score[i] = score[i].strip("\n")
         score_i_profili.append([score[i],profili[i]])
     score_i_profili.sort(key = po_scoreu, reverse = True) 
-    print (score_i_profili)
+
     while score_bool == True:
 
         for event in pygame.event.get():
