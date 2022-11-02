@@ -217,7 +217,7 @@ class CrtanjeBrod():
             if True not in lista_valuea_obrubi: # Ako ništa nije selektirano
                 provjera_klika_sum_broda(poz_u_rectu) 
             else: # Ako je druga varijabla False
-                print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]))
+                #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]))
                 SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]:[lista_valuea[lista_valuea_obrubi.index(True)[0]],False]})
                 
                 provjera_klika_sum_broda(poz_u_rectu) 
@@ -230,14 +230,14 @@ def provjera_klika_sum_broda(poz_u_rectu):
     global brod_collidean
     global duljina_broda
     global brod_izabran
-    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu):
+    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:[True,True]})
         duljina_broda = 5
         brod_izabran = True
         brod_collidean = SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0]) 
                         
                         
-    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu):
+    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:[True,True]})
         duljina_broda = 4
         brod_izabran = True
@@ -565,7 +565,7 @@ def crtanje_obruba_hover(play_mouse_pos):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
 
-            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu): #Ako C i ne B onda crtaj C
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu)): #Ako C i ne B onda crtaj C
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
                     for k in range(1,5):
@@ -573,7 +573,7 @@ def crtanje_obruba_hover(play_mouse_pos):
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
 
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu): #Ako B i ne D onda crtaj B
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako B i ne D onda crtaj B
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[1])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
                     for k in range(2,5):
@@ -755,8 +755,9 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
                         
     if vrati_nazad_provjera == False:
         pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
-        #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
+        print((list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,False]})
+        list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)].mask.clear()
         #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
         
     PROVJERA = False
@@ -1687,7 +1688,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             pass
                         else:
                             score[i] = "0\n"
-                        print(score)
+                        
                         with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
                             profili = []
                             profili = datoteka.readlines()
