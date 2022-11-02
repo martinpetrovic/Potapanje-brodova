@@ -392,7 +392,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
 def LOADING_SCREEN():
     PROZOR.fill('White')
     PROZOR.blit(LOGO,(150,0))
-    pygame.mixer.Sound.play(INTRO)
+    pygame.mixer.Sound.play(INTRO).set_volume(0.75)
     pygame.display.update()
     time.sleep(4)                
     PROZOR.fill('White')
@@ -2032,7 +2032,7 @@ def play():
         if zmaj == True:
             pp_run == False
             break
-        #pauza_prije_promjene_igraca()
+        pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         postavljanje_igracaB()
         if zmaj == True:
@@ -2042,7 +2042,7 @@ def play():
         rezultat_B_igrac = 17
         run = True
         while run == True:
-            #pauza_prije_promjene_igraca()
+            pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_A_ekran()
             if zmaj == True:
@@ -2051,7 +2051,7 @@ def play():
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
-            #pauza_prije_promjene_igraca()
+            pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_B_ekran()
             if zmaj == True:
@@ -2098,7 +2098,7 @@ def animacija_more():
     PROZOR.blit(more_surf, more_rect)
 
 def main():
-    #LOADING_SCREEN()
+    LOADING_SCREEN()
     global zmaj
     tupi_zvuk = 1
     gumboslav = None
