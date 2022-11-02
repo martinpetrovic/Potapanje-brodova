@@ -711,10 +711,10 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
         rotate_key_animacija(čekanje_mouse_poz)
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
         
@@ -952,10 +952,10 @@ def postavljanje_igracaA():
             if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
                 BRODOVI_SINGLE_GRUPE_A.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
             
@@ -1146,10 +1146,10 @@ def postavljanje_igracaB():
                 BRODOVI_SINGLE_GRUPE_B.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, 'Grey', 'Grey', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (1040,70))
+            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
             
@@ -1560,7 +1560,7 @@ def igranje_A_ekran():
         crtanje_pogodenih_vlastitih('A')
         mouse_pos = pygame.mouse.get_pos()
         hoveranje_animacija('A', mouse_pos)
-        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#D74B4B', pos = (1000,50))
+        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
         GUMB_SHOOT.changeColor(mouse_pos)
         GUMB_SHOOT.update(PROZOR)
         crtanje_odabranog_kvadrata('A')
@@ -1603,7 +1603,7 @@ def igranje_B_ekran():
         crtanje_pogodenih_vlastitih('B')
         mouse_pos = pygame.mouse.get_pos()
         hoveranje_animacija('B', mouse_pos)
-        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#D74B4B', pos = (1000,50))
+        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
         GUMB_SHOOT.changeColor(mouse_pos)
         GUMB_SHOOT.update(PROZOR)
         crtanje_odabranog_kvadrata('B')
