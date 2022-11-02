@@ -1726,8 +1726,10 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             if len(trenutno_ime_upis) < 8:
                                 trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
                                 trenutno_ime_upis += event.unicode
-                                PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
-                            
+                                if trenutno_ime_upis not in list(PLAYERI_IMENA.values()):
+                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                                else:
+                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
 
         for i in range(1,9):
             if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
