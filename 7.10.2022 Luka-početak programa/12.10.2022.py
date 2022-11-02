@@ -242,7 +242,7 @@ class CrtanjeBrod():
             if True not in lista_valuea_obrubi: # Ako ništa nije selektirano
                 provjera_klika_sum_broda(poz_u_rectu) 
             else: # Ako je druga varijabla False
-                print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]))
+                #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]))
                 SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]:[lista_valuea[lista_valuea_obrubi.index(True)[0]],False]})
                 
                 provjera_klika_sum_broda(poz_u_rectu) 
@@ -255,14 +255,14 @@ def provjera_klika_sum_broda(poz_u_rectu):
     global brod_collidean
     global duljina_broda
     global brod_izabran
-    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu):
+    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:[True,True]})
         duljina_broda = 5
         brod_izabran = True
         brod_collidean = SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0]) 
                         
                         
-    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu):
+    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:[True,True]})
         duljina_broda = 4
         brod_izabran = True
@@ -306,7 +306,7 @@ class Brod(pygame.sprite.Sprite):
     def rotacija_poz_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):    
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, 90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        brod_velkiX.rect.topleft =(poz_broda_x+640, poz_broda_y)
         self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
@@ -321,7 +321,7 @@ class Brod(pygame.sprite.Sprite):
     def rotacija_neg_90(self,brod_velkiX,poz_broda_x,poz_broda_y,Hover_brod,Zeleni_brod,Crveni_brod):
         brod_velkiX.image = pygame.transform.rotate(brod_velkiX.image, -90)
         brod_velkiX.rect = brod_velkiX.image.get_rect()
-        brod_velkiX.rect.topleft =(poz_broda_x+590, poz_broda_y)
+        brod_velkiX.rect.topleft =(poz_broda_x+640, poz_broda_y)
         self.image = pygame.transform.rotate(self.image, -90)
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_broda_x, poz_broda_y)
@@ -352,6 +352,7 @@ class Brod(pygame.sprite.Sprite):
     
     def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod):#Vraća brodove na prvobitne pozicije brodova 
         global vrati_nazad_provjera
+        global trenutni_sum_brod
         vrati_nazad_provjera = True
         poz_x = self.pozx
         poz_y = self.pozy
@@ -368,11 +369,13 @@ class Brod(pygame.sprite.Sprite):
             Crveni_brod = pygame.transform.rotate(Crveni_brod, -90)
             HOVER_BRODOVA.update({self:Hover_brod})
             ZELENI_KVADRATI.update({self:Zeleni_brod})
-            CRVENI_KVADRATI.update({self:Crveni_brod})
-            
+            CRVENI_KVADRATI.update({self:Crveni_brod})  
         brod_velkiX.rect.topleft = poz_x + 640, poz_y
         self.rect.topleft = poz_x, poz_y
-        brodovi_pozicije.update({self:(poz_x, poz_y)}) 
+        brodovi_pozicije.update({self:(poz_x, poz_y)})
+        trenutni_sum_brod = list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(self)]
+        SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({trenutni_sum_brod:[True,False]})
+         
 
 class Veliki_Xevi(pygame.sprite.Sprite):
      def __init__(self,picture_path,poz_x,poz_y):
@@ -590,7 +593,7 @@ def crtanje_obruba_hover(play_mouse_pos):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
 
-            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu): #Ako C i ne B onda crtaj C
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako C i ne B onda crtaj C
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
                     for k in range(1,5):
@@ -598,7 +601,7 @@ def crtanje_obruba_hover(play_mouse_pos):
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
 
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu): #Ako B i ne D onda crtaj B
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako B i ne D onda crtaj B
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[1])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
                     for k in range(2,5):
@@ -697,6 +700,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
             if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
                 Brodovi_single_grupa.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         Brodovi_single_grupa.get(brod).draw(PROZOR) 
+
         #Crveni i zeleni hoveri
         provjera_hovera(brod,lista_rect_kvadrata,čekanje_mouse_poz,brodovi_rotacija)
         hoverani_brod_rect = HOVER_BRODOVA.get(brod).get_rect(topleft = (brod.rect.topleft))
@@ -745,7 +749,7 @@ def collide_kvadrat(brod_velkiX,brodovi_rotacija,lista_rect_kvadrata,brodovi_poz
                     Kvadrat_x, Kvadrat_y = kvadrat.x, kvadrat.y
                     brod.rect.topleft = (Kvadrat_x, Kvadrat_y)
                     brodovi_pozicije.update({brod:(Kvadrat_x,Kvadrat_y)})
-                    brod_velkiX.rect.topleft = (Kvadrat_x + 590, Kvadrat_y)
+                    brod_velkiX.rect.topleft = (Kvadrat_x + 640, Kvadrat_y)
                     while PROVJERA:
                         provjera(Kvadrat_x, Kvadrat_y, duljina_broda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
                     idi = False
@@ -759,30 +763,30 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
     if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
     if vrati_nazad_provjera == False:
         pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
-        #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
+        print((list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,False]})
+        list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)].mask.clear()
         #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
-        
+    
+    elif vrati_nazad_provjera == True:
+        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+
     PROVJERA = False
     
 def zapis(igrac): #zapisuje pozicije brodova u listu
@@ -849,6 +853,7 @@ def postavljanje_igracaA():
     global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global SUM_POSTAVLJANJE_BRODOVI_CRTAJ
     global SUM_BRODOVI_VEZA_SPRITE_BRODOVI
+    global SUM_POSTAVLJANJE_IMENA
     global lista_rect_kvadrata_A
     global player_A
     global player_A_render
@@ -881,6 +886,9 @@ def postavljanje_igracaA():
 
     SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
     SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
+
+    SUM_POSTAVLJANJE_IMENA = {SUM_CARRIER:"carrier", SUM_BATTLESHIP:"battleship", SUM_DESTROYER:"destroyer", 
+    SUM_SUBMARINE:"submarine", SUM_PATROL:"patrol"}
 
     
 
@@ -1043,6 +1051,7 @@ def postavljanje_igracaB():
     global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global SUM_POSTAVLJANJE_BRODOVI_CRTAJ
     global SUM_BRODOVI_VEZA_SPRITE_BRODOVI
+    global SUM_POSTAVLJANJE_IMENA
     global lista_rect_kvadrata_B
     global player_B
     global player_B_render
@@ -1071,6 +1080,9 @@ def postavljanje_igracaB():
 
     SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
     SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
+
+    SUM_POSTAVLJANJE_IMENA = {SUM_CARRIER:"carrier", SUM_BATTLESHIP:"battleship", SUM_DESTROYER:"destroyer", 
+    SUM_SUBMARINE:"submarine", SUM_PATROL:"patrol"}
 
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 0, 0)
@@ -1152,6 +1164,8 @@ def postavljanje_igracaB():
             if event.type == MOUSEBUTTONDOWN:
                 for SUM_BROD in SUM_POSTAVLJANJE_BRODOVI_LISTA:
                     SUM_BROD.mask_collide(play_mouse_pos)
+                    if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_BROD) == [False,False]:
+                        SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_BROD).collide()
                 if len(postavljeni_brodovi) == 5:
                     CONFIRM_GUMB_PLAY.checkForClick('B')
             if run_pB == True:
@@ -1736,74 +1750,31 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
-        for i in range(8):
-            if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
-                PONIŠTI = Button("Poništi",20,"Black",50,50,'#475F77', '#77dd77',(1000,i*75))
-                PONIŠTI.update(PROZOR)
-                PONIŠTI.changeColor(score_mouse_pos)
-                PONIŠTI.update(PROZOR)
-                POTVRDI = Button("Potvrdi",20,"Black",50,50,'#475F77', '#77dd77',(1050,i*75))
-                POTVRDI.update(PROZOR)
-                POTVRDI.changeColor(score_mouse_pos)
-                POTVRDI.update(PROZOR)           
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    if event.type == MOUSEBUTTONDOWN:
-                        if BACK1.checkForInput(score_mouse_pos):
-                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                            main()    
-                        if PONIŠTI.checkForInput(score_mouse_pos):
-                            PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                        if POTVRDI.checkForInput(score_mouse_pos):
-                            PLAYERI_IMENA.update({f"player{i+1}":trenutno_ime_upis})
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:
-                            esc_screen('Are you sure you want to exit current game?', PROZOR)
-                            if zmaj == True:
-                                main()
-                            else: pass                      
-                        if event.key == pygame.K_BACKSPACE:
-                            trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                            trenutno_ime_upis = trenutno_ime_upis[:-1]
-                            PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
-                        elif event.key == pygame.K_RETURN:
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
-                                PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                            trenutno_ime_upis = ""
-                        else:
-                            if len(trenutno_ime_upis) < 8:
-                                trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                                trenutno_ime_upis += event.unicode
-                                if trenutno_ime_upis in list(PLAYERI_IMENA.values()):
-                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
-                                    PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+        
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    if event.key == K_ESCAPE:
-                        esc_screen('Are you sure you want to exit current game?', PROZOR)
-                        if zmaj == True:
-                            main()
-                        else:
-                            pass    
+                
             if event.type == MOUSEBUTTONDOWN:
                 for i in range (8):
+                    PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                    if PLAYERI_IMENA.get(f"player{i+1}") == "":
+                        PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
                     if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
                         pass
                     else:
                         score[i] = "0\n"
+
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()    
+                    main()
+                #Sound effect
+                if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    
                 for i in range(8):
                     
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
@@ -1813,9 +1784,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
                                 PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
-                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
+
                         
-                            
+                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
                         trenutno_ime_upis = ""                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
@@ -1823,25 +1794,55 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             pass
                         else:
                             score[i] = "0\n"
-                        print(score)
+                        
                         with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
                             profili = []
                             profili = datoteka.readlines()
                             for z in range (8):
-                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"    
-                        if profili.count("Create a profile\n") > 6:
-                            pass
-                        else:
-                            imenovanje_profila_bool = False
+                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                                
+                        imenovanje_profila_bool = False
+                        
                         with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
                             datoteka.writelines(profili)
-                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(score) 
+                        
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    if event.key == K_ESCAPE:
+                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        if zmaj == True:
+                            main()
+                        else: pass
+                for i in range(8):
+                    if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+                        
+                        
+                        if event.key == pygame.K_BACKSPACE:
+                            trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                            trenutno_ime_upis = trenutno_ime_upis[:-1]
+                            PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                            
+                        
+                        elif event.key == pygame.K_RETURN:
+                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
+                                PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
+                            trenutno_ime_upis = ""
+                        else:
+                            if len(trenutno_ime_upis) < 8:
+                                trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                                trenutno_ime_upis += event.unicode
+                                if trenutno_ime_upis not in list(PLAYERI_IMENA.values()):
+                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                                else:
+                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+
         for i in range(1,9):
             if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
                 linija_playscore_animacija(i)
         pygame.display.update()
-    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+        
         
 def biranje_profila(): #biranje igrača koji će igrati
     global selektirani_profili
