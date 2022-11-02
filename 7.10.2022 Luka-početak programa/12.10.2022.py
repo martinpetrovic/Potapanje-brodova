@@ -38,7 +38,7 @@ linija_playscore_surf = linija_playscore_animacija_lista[linija_key_index]
 
 #Igranje
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png")).convert_alpha()
-FULANO = pygame.image.load(os.path.join("potapanje brodova", "fulano.png")).convert_alpha()
+FULANO = pygame.image.load(os.path.join("igranje", "fulano.png")).convert_alpha()
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png")).convert_alpha()
 VATRA1 = pygame.image.load(os.path.join("igranje", "vatra1.png")).convert_alpha()
 VATRA2 = pygame.image.load(os.path.join("igranje", "vatra2.png")).convert_alpha()
@@ -47,6 +47,31 @@ VATRA4 = pygame.image.load(os.path.join("igranje", "vatra4.png")).convert_alpha(
 vatra_lista = [VATRA1, VATRA2, VATRA3, VATRA4]
 vatra_index = 0
 vatra_surf = vatra_lista[vatra_index]
+
+vlastito_pogodeno_lista = []
+vlas_pog_index = 0
+pogodeno_lista = []
+pog_index = 0
+bomba_fulano_lista = []
+bomb_ful_index = 0
+fulano_lista = []
+fulano_index = 0
+for i in range(1,10):
+    slika = pygame.image.load(os.path.join("igranje", f"bomba_padanje{i}.png")).convert_alpha()
+    pogodeno_lista.append(slika)
+    bomba_fulano_lista.append(slika)
+for i in range(1,10):
+    rupa = pygame.image.load(os.path.join("igranje", f"rupa{i}.png")).convert_alpha()
+    bomba_fulano_lista.append(rupa)
+for i in range(1,7):
+    pogodenosapozadinom = pygame.image.load(os.path.join("igranje", f"bomba_pogodeno{i}.png")).convert_alpha()
+    pogodenobezpoz = pygame.image.load(os.path.join("igranje", f"pogodeno_vlastito{i}.png")).convert_alpha()
+    pogodeno_lista.append(pogodenosapozadinom)
+    vlastito_pogodeno_lista.append(pogodenobezpoz)
+for i in range(1,9):
+    fulan = pygame.image.load(os.path.join("igranje", f"fulano_animacija{i}.png")).convert_alpha()
+    fulano_lista.append(fulan)
+
 
 #Sound effecti
 POSTAVLJANJE_BRODA_ZVUK = pygame.mixer.Sound(os.path.join("potapanje brodova", "postavljanje_broda_zvuk.ogg"))
@@ -774,6 +799,7 @@ def zapis(igrac): #zapisuje pozicije brodova u listu
     global LISTA_BRODOVA
     index = 0
     if igrac == 'A':
+        lista_imena_kvadrata_A = []
         for z in range(0,100):
             Kvadrat = ["a" + str(z)]
             lista_imena_kvadrata_A.append(Kvadrat)
@@ -794,6 +820,7 @@ def zapis(igrac): #zapisuje pozicije brodova u listu
                 lista_imena_kvadrata_A[index].append("p")
             index += 1
     if igrac == 'B':
+        lista_imena_kvadrata_B = []
         for z in range(0,100):
             Kvadrat = ["b" + str(z)]
             lista_imena_kvadrata_B.append(Kvadrat)
@@ -836,6 +863,8 @@ def postavljanje_igracaA():
     global player_A_render
     global player_A_rect
     global PLAYERI_FONT
+
+    zmaj = False
 
     player_A = selektirani_profili[0]
     postavljeni_brodovi = []
@@ -1037,6 +1066,7 @@ def postavljanje_igracaB():
     LISTA_BRODOVA = []
     vrati_nazad_provjera = False
     brod_izabran = False
+    zmaj = False
     
     player_B_render = PLAYERI_FONT.render(player_B,1,'Black')
     player_B_rect = player_B_render.get_rect(center = (482, 82))
@@ -1425,9 +1455,62 @@ def promjena_poz_odabranog_kvadrata(igrac, mis_poz):  # Funkcija mijenja pozicij
                             odabrani_kvadrat_rectB = ODABRANI_KVADRAT.get_rect(topleft = (rect.topleft))
                             postavljen_kvadratB = True
 
+def animacija_pogodenog(pozicija):
+    global pog_index
+    runpog = True
+    pog_index = 0
+    while runpog == True:
+        reset = pygame.Surface((1280,720))
+        reset.fill('Black')
+        reset.set_alpha(0)
+        PROZOR.blit(reset,(0,0))
+        pog_index += 0.15
+        if pog_index > len(pogodeno_lista):
+            pog_index = 0
+            runpog = False
+            time.sleep(1)
+            return
+        pogodeno_surf = pogodeno_lista[int(pog_index)]
+        pogodeno_rect = pogodeno_surf.get_rect(topleft = pozicija)
+        PROZOR.blit(pogodeno_surf, pogodeno_rect)
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.update()
+        clock.tick(FPS)
+
+def animacija_fulanog(pozicija):
+    global bomb_ful_index
+    runful = True
+    bomb_ful_index = 0
+    while runful == True:
+        reset = pygame.Surface((1280,720))
+        reset.fill('Black')
+        reset.set_alpha(0)
+        PROZOR.blit(reset,(0,0))
+        bomb_ful_index += 0.15
+        if bomb_ful_index > len(bomba_fulano_lista):
+            bomb_ful_index = 0
+            runful = False
+            time.sleep(1)
+            return
+        fulano_surf = bomba_fulano_lista[int(bomb_ful_index)]
+        fulano_rect = fulano_surf.get_rect(topleft = pozicija)
+        PROZOR.blit(fulano_surf, fulano_rect)
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.update()
+        clock.tick(FPS)
+
 def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezultat
-    global rezultat_A_igrac, rezultat_B_igrac, provjera_gadanja
+    global rezultat_A_igrac, rezultat_B_igrac, provjera_gadanja, pogodeno
     provjera_gadanja = False
+    pogodeno = False
     if igrac == 'A':
         if postavljen_kvadratA:
             for i in range(0,100):
@@ -1437,6 +1520,11 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
                     provjera_gadanja = True
                     if lista_imena_kvadrata_B[i][1] != 'x':
                         rezultat_B_igrac -= 1
+                        pogodeno = True
+            if pogodeno == True:
+                animacija_pogodenog((odabrani_kvadrat_rectA.topleft))
+            else:
+                animacija_fulanog((odabrani_kvadrat_rectA.topleft))
     if igrac == 'B':
         if postavljen_kvadratB:
             for i in range(0,100):
@@ -1445,7 +1533,12 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
                     lista_imena_kvadrata_A[i].append('x')
                     provjera_gadanja = True
                     if lista_imena_kvadrata_A[i][1] != 'x':
-                        rezultat_A_igrac -= 1                         
+                        rezultat_A_igrac -= 1
+                        pogodeno = True
+            if pogodeno == True:
+                animacija_pogodenog((odabrani_kvadrat_rectB.topleft))
+            else:
+                animacija_fulanog((odabrani_kvadrat_rectB.topleft))                      
 
 def crtanje_ekrana_igranje():
     PROZOR.blit(VODA_IGRANJE, VODA_IGRANJE_RECT)
@@ -1453,6 +1546,7 @@ def crtanje_ekrana_igranje():
 
 def igranje_A_ekran():
     global zmaj
+    zmaj = False
     run = True
     while run == True:
         PROZOR.fill('White')
@@ -1462,6 +1556,7 @@ def igranje_A_ekran():
         PROZOR.blit(player_A_render,player_A_rect)
         BRODOVI_GRUPA_A.draw(PROZOR)
         crtanje_fulanih_podrucja()
+        #animacija_gadanja()
         zbrajanje_pogodenih_dijelova_brodova()
         crtanje_xeva('A')
         crtanje_pogodenih_vlastitih('A')
@@ -1495,6 +1590,7 @@ def igranje_A_ekran():
 
 def igranje_B_ekran():
     global zmaj
+    zmaj = False
     run = True
     while run == True:
         PROZOR.fill('White')
@@ -1923,25 +2019,26 @@ def play():
     global postavljen_kvadratB
     global rezultat_A_igrac
     global rezultat_B_igrac
-    global play_run
     global biranje_profila_bool
     global imenovanje_profila_bool
     global selektirani_profili
+    zmaj = False
     resetiranje_prije_igre()
     selektirani_profili = [] 
     resetiranje_prije_igre()
     imenovanje_profila()
     biranje_profila()
-    while play_run == True:
+    pp_run = True
+    while pp_run == True:
         postavljanje_igracaA()
         if zmaj == True:
-            play_run == False
+            pp_run == False
             break
         pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         postavljanje_igracaB()
         if zmaj == True:
-            play_run == False
+            pp_run == False
             break
         rezultat_A_igrac = 17
         rezultat_B_igrac = 17
@@ -1951,7 +2048,7 @@ def play():
             resetiranje_prije_igre()
             igranje_A_ekran()
             if zmaj == True:
-                play_run == False
+                pp_run == False
                 run = False
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
@@ -1960,13 +2057,13 @@ def play():
             resetiranje_prije_igre()
             igranje_B_ekran()
             if zmaj == True:
-                play_run == False
+                pp_run == False
                 run = False
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
         if zmaj == True:
-            play_run = False
+            pp_run = False
             break
         restart = False
         while restart == False:
