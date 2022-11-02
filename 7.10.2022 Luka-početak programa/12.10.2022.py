@@ -230,14 +230,14 @@ def provjera_klika_sum_broda(poz_u_rectu):
     global brod_collidean
     global duljina_broda
     global brod_izabran
-    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu)):
+    if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[0]:[True,True]})
         duljina_broda = 5
         brod_izabran = True
         brod_collidean = SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0]) 
                         
                         
-    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
+    elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)):
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[1]:[True,True]})
         duljina_broda = 4
         brod_izabran = True
@@ -327,6 +327,7 @@ class Brod(pygame.sprite.Sprite):
     
     def vrati_nazad(self,brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod):#Vraća brodove na prvobitne pozicije brodova 
         global vrati_nazad_provjera
+        global trenutni_sum_brod
         vrati_nazad_provjera = True
         poz_x = self.pozx
         poz_y = self.pozy
@@ -343,11 +344,13 @@ class Brod(pygame.sprite.Sprite):
             Crveni_brod = pygame.transform.rotate(Crveni_brod, -90)
             HOVER_BRODOVA.update({self:Hover_brod})
             ZELENI_KVADRATI.update({self:Zeleni_brod})
-            CRVENI_KVADRATI.update({self:Crveni_brod})
-            
+            CRVENI_KVADRATI.update({self:Crveni_brod})  
         brod_velkiX.rect.topleft = poz_x + 640, poz_y
         self.rect.topleft = poz_x, poz_y
-        brodovi_pozicije.update({self:(poz_x, poz_y)}) 
+        brodovi_pozicije.update({self:(poz_x, poz_y)})
+        trenutni_sum_brod = list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(self)]
+        SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({trenutni_sum_brod:[True,False]})
+         
 
 class Veliki_Xevi(pygame.sprite.Sprite):
      def __init__(self,picture_path,poz_x,poz_y):
@@ -565,7 +568,7 @@ def crtanje_obruba_hover(play_mouse_pos):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
         if SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.collidepoint(play_mouse_pos) and SUM_POSTAVLJANJE_BRODOVI_LISTA[i].mask.get_at(poz_u_rectu): #Gleda da smo u rectu, a onda i u maski (ne moze gledati samo drugo jer dolazi do problema ako izademo iz recta)
 
-            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu)): #Ako C i ne B onda crtaj C
+            if SUM_POSTAVLJANJE_BRODOVI_LISTA[0].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako C i ne B onda crtaj C
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[0])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[0][0],OBRUBI_BRODOVI_CRTANJE[0][1])
                     for k in range(1,5):
@@ -573,7 +576,7 @@ def crtanje_obruba_hover(play_mouse_pos):
                             PROZOR.blit(SUM_POSTAVLJANJE_BRODOVI_LISTA[k].image,SUM_POSTAVLJANJE_BRODOVI_LISTA[k].rect)
                     break
 
-            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako B i ne D onda crtaj B
+            elif SUM_POSTAVLJANJE_BRODOVI_LISTA[1].mask.get_at(poz_u_rectu) and not (SUM_POSTAVLJANJE_BRODOVI_LISTA[2].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[3].mask.get_at(poz_u_rectu) or SUM_POSTAVLJANJE_BRODOVI_LISTA[4].mask.get_at(poz_u_rectu)): #Ako B i ne D onda crtaj B
                 if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[1])[0] == True:
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[1][0],OBRUBI_BRODOVI_CRTANJE[1][1])
                     for k in range(2,5):
@@ -735,23 +738,19 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
     if brodovi_rotacija.get(brod) == 1:
         if j + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
     if brodovi_rotacija.get(brod) == 0:
         if i + duljinabroda > 10:
             brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
         else:
             for brodek in LISTA_BRODOVA:
                 if brod != brodek:
                     if pygame.sprite.collide_rect(brodek,brod) == True:
                         brod.vrati_nazad(brod_velkiX,brodovi_rotacija,brodovi_pozicije,Hover_brod,Zeleni_brod,Crveni_brod)
-                        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
     if vrati_nazad_provjera == False:
         pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
@@ -759,7 +758,10 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,False]})
         list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)].mask.clear()
         #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
-        
+    
+    elif vrati_nazad_provjera == True:
+        pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+
     PROVJERA = False
     
 def zapis(igrac): #zapisuje pozicije brodova u listu
@@ -824,6 +826,7 @@ def postavljanje_igracaA():
     global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global SUM_POSTAVLJANJE_BRODOVI_CRTAJ
     global SUM_BRODOVI_VEZA_SPRITE_BRODOVI
+    global SUM_POSTAVLJANJE_IMENA
     global lista_rect_kvadrata_A
     global player_A
     global player_A_render
@@ -854,6 +857,9 @@ def postavljanje_igracaA():
 
     SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
     SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
+
+    SUM_POSTAVLJANJE_IMENA = {SUM_CARRIER:"carrier", SUM_BATTLESHIP:"battleship", SUM_DESTROYER:"destroyer", 
+    SUM_SUBMARINE:"submarine", SUM_PATROL:"patrol"}
 
     
 
@@ -1016,6 +1022,7 @@ def postavljanje_igracaB():
     global SUM_POSTAVLJANJE_BRODOVI_LISTA
     global SUM_POSTAVLJANJE_BRODOVI_CRTAJ
     global SUM_BRODOVI_VEZA_SPRITE_BRODOVI
+    global SUM_POSTAVLJANJE_IMENA
     global lista_rect_kvadrata_B
     global player_B
     global player_B_render
@@ -1043,6 +1050,9 @@ def postavljanje_igracaB():
 
     SUM_POSTAVLJANJE_BRODOVI_CRTAJ = {SUM_CARRIER:[True,False], SUM_BATTLESHIP:[True,False], SUM_DESTROYER:[True,False], 
     SUM_SUBMARINE:[True,False], SUM_PATROL:[True,False]}
+
+    SUM_POSTAVLJANJE_IMENA = {SUM_CARRIER:"carrier", SUM_BATTLESHIP:"battleship", SUM_DESTROYER:"destroyer", 
+    SUM_SUBMARINE:"submarine", SUM_PATROL:"patrol"}
 
     
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 0, 0)
