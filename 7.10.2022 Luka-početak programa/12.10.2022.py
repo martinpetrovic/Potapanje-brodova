@@ -242,7 +242,6 @@ class CrtanjeBrod():
             if True not in lista_valuea_obrubi: # Ako ništa nije selektirano
                 provjera_klika_sum_broda(poz_u_rectu) 
             else: # Ako je druga varijabla False
-                #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]))
                 SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({SUM_POSTAVLJANJE_BRODOVI_LISTA[lista_valuea_obrubi.index(True)]:[lista_valuea[lista_valuea_obrubi.index(True)[0]],False]})
                 
                 provjera_klika_sum_broda(poz_u_rectu) 
@@ -783,10 +782,9 @@ def provjera(x,y,duljinabroda,brod,brod_velkiX,brodovi_rotacija,brodovi_pozicije
                         
     if vrati_nazad_provjera == False:
         pygame.mixer.Sound.play(POSTAVLJANJE_BRODA_ZVUK)
-        print((list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
+        
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]:[False,False]})
         list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)].mask.clear()
-        #print(SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(brod)]))
     
     elif vrati_nazad_provjera == True:
         pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
@@ -1638,7 +1636,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     global restart
     global selektirani_profili
     global profili
-    PROZOR.fill(WHITE)
+    PROZOR.fill('#143763')
 
     Miš_pozicija= pygame.mouse.get_pos()
 
@@ -1719,7 +1717,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         PLAYERI_IMENA.update({f"player{i}": profili[i-1][:-1]})
     
     while imenovanje_profila_bool == True:
-        PROZOR.fill(WHITE)
+        PROZOR.fill('#143763')
         Create_profile = font.render("Create profiles",1,'Black')
         Create_profile_rect = Create_profile.get_rect(center=(630,45))
         PROZOR.blit(Create_profile,Create_profile_rect)
@@ -1855,7 +1853,7 @@ def biranje_profila(): #biranje igrača koji će igrati
     global PLAYERI_SELEKTIRANI
     global PLAYERI_LISTA_GUMBOVA
     biranje_profila_bool = True
-    PROZOR.fill(WHITE)
+    PROZOR.fill('#143763')
     PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162))
     PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134))
     PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#475F77', '#77dd77', (307, 162+134*2))
@@ -1946,7 +1944,7 @@ def score_screen():
     global profili
     global score
     score_bool = True
-    PROZOR.fill(WHITE)
+    PROZOR.fill('#143763')
     font = pygame.font.Font(None, 60)
     def po_scoreu(x):  
         return int(x[0])
@@ -2034,7 +2032,7 @@ def play():
         if zmaj == True:
             pp_run == False
             break
-        pauza_prije_promjene_igraca()
+        #pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         postavljanje_igracaB()
         if zmaj == True:
@@ -2044,7 +2042,7 @@ def play():
         rezultat_B_igrac = 17
         run = True
         while run == True:
-            pauza_prije_promjene_igraca()
+            #pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_A_ekran()
             if zmaj == True:
@@ -2053,7 +2051,7 @@ def play():
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
-            pauza_prije_promjene_igraca()
+            #pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_B_ekran()
             if zmaj == True:
