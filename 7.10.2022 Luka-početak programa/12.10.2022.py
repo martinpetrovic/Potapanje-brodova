@@ -223,6 +223,9 @@ class CrtanjeBrod():
                 provjera_klika_sum_broda(poz_u_rectu) 
         except:
             pass
+    
+    def update(self):
+        self.mask = pygame.mask.from_surface(self.image)
                 
                 
                 
@@ -350,6 +353,7 @@ class Brod(pygame.sprite.Sprite):
         brodovi_pozicije.update({self:(poz_x, poz_y)})
         trenutni_sum_brod = list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.keys())[list(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.values()).index(self)]
         SUM_POSTAVLJANJE_BRODOVI_CRTAJ.update({trenutni_sum_brod:[True,False]})
+        trenutni_sum_brod.update()
          
 
 class Veliki_Xevi(pygame.sprite.Sprite):
