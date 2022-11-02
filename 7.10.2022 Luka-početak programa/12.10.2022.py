@@ -187,8 +187,14 @@ with open("potapanje brodova\score.txt",encoding="utf-8") as datoteka:
 imenovanje_profila_bool = True
 biranje_profila_bool = True
 
-
-
+def LOADING_SCREEN():
+    PROZOR.fill('White')
+    PROZOR.blit(LOGO,(150,0))
+    pygame.mixer.Sound.play(INTRO).set_volume(0.75)
+    pygame.display.update()
+    time.sleep(3.3)                
+    PROZOR.fill('White')
+LOADING_SCREEN()
 class Button:
     def __init__(self, text_input, text_size, text_color, rect_width, rect_height, rect_color, hoveringRect_color, pos):
         self.x_pos = pos[0]
@@ -389,13 +395,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
         
-def LOADING_SCREEN():
-    PROZOR.fill('White')
-    PROZOR.blit(LOGO,(150,0))
-    pygame.mixer.Sound.play(INTRO).set_volume(0.75)
-    pygame.display.update()
-    time.sleep(4)                
-    PROZOR.fill('White')
+
 
 def esc_screen(ulazni_tekst, screen):
     run = True
@@ -2098,7 +2098,6 @@ def animacija_more():
     PROZOR.blit(more_surf, more_rect)
 
 def main():
-    LOADING_SCREEN()
     global zmaj
     tupi_zvuk = 1
     gumboslav = None
