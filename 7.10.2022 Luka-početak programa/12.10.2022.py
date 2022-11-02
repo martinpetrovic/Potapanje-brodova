@@ -1643,74 +1643,31 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
-        for i in range(8):
-            if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
-                PONIŠTI = Button("Poništi",20,"Black",50,50,'#475F77', '#77dd77',(1000,i*75))
-                PONIŠTI.update(PROZOR)
-                PONIŠTI.changeColor(score_mouse_pos)
-                PONIŠTI.update(PROZOR)
-                POTVRDI = Button("Potvrdi",20,"Black",50,50,'#475F77', '#77dd77',(1050,i*75))
-                POTVRDI.update(PROZOR)
-                POTVRDI.changeColor(score_mouse_pos)
-                POTVRDI.update(PROZOR)           
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    if event.type == MOUSEBUTTONDOWN:
-                        if BACK1.checkForInput(score_mouse_pos):
-                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                            main()    
-                        if PONIŠTI.checkForInput(score_mouse_pos):
-                            PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                        if POTVRDI.checkForInput(score_mouse_pos):
-                            PLAYERI_IMENA.update({f"player{i+1}":trenutno_ime_upis})
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:
-                            esc_screen('Are you sure you want to exit current game?', PROZOR)
-                            if zmaj == True:
-                                main()
-                            else: pass                      
-                        if event.key == pygame.K_BACKSPACE:
-                            trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                            trenutno_ime_upis = trenutno_ime_upis[:-1]
-                            PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
-                        elif event.key == pygame.K_RETURN:
-                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
-                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
-                                PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                            trenutno_ime_upis = ""
-                        else:
-                            if len(trenutno_ime_upis) < 8:
-                                trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
-                                trenutno_ime_upis += event.unicode
-                                if trenutno_ime_upis in list(PLAYERI_IMENA.values()):
-                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
-                                    PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
-                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+        
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    if event.key == K_ESCAPE:
-                        esc_screen('Are you sure you want to exit current game?', PROZOR)
-                        if zmaj == True:
-                            main()
-                        else:
-                            pass    
+                
             if event.type == MOUSEBUTTONDOWN:
                 for i in range (8):
+                    PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                    if PLAYERI_IMENA.get(f"player{i+1}") == "":
+                        PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
                     if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
                         pass
                     else:
                         score[i] = "0\n"
+
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()    
+                    main()
+                #Sound effect
+                if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    
                 for i in range(8):
                     
                     if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
@@ -1720,9 +1677,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
                                 PLAYERI_IMENA.update({f"player{k+1}":"Create a profile"})
                             PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
-                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
+
                         
-                            
+                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
                         trenutno_ime_upis = ""                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
@@ -1735,20 +1692,48 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                             profili = []
                             profili = datoteka.readlines()
                             for z in range (8):
-                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"    
-                        if profili.count("Create a profile\n") > 6:
-                            pass
-                        else:
-                            imenovanje_profila_bool = False
+                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                                
+                        imenovanje_profila_bool = False
+                        
                         with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
                             datoteka.writelines(profili)
-                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(score) 
+                        
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    if event.key == K_ESCAPE:
+                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        if zmaj == True:
+                            main()
+                        else: pass
+                for i in range(8):
+                    if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+                        
+                        
+                        if event.key == pygame.K_BACKSPACE:
+                            trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                            trenutno_ime_upis = trenutno_ime_upis[:-1]
+                            PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                            
+                        
+                        elif event.key == pygame.K_RETURN:
+                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
+                                PLAYERI_IMENA.update({f"player{i+1}":"Create a profile"})
+                            trenutno_ime_upis = ""
+                        else:
+                            if len(trenutno_ime_upis) < 8:
+                                trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                                trenutno_ime_upis += event.unicode
+                                PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                            
+
         for i in range(1,9):
             if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
                 linija_playscore_animacija(i)
         pygame.display.update()
-    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+        
         
 def biranje_profila(): #biranje igrača koji će igrati
     global selektirani_profili
