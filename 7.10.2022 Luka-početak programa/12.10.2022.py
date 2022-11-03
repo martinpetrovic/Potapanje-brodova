@@ -1690,7 +1690,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     dvotocka = font.render(":",True,"#000000")
     winner_rect = winner.get_rect(midtop = (640,210))
     PROZOR.blit(winner,(winner_rect))
-    PROZOR.blit(rezultat_lijevo,(550-len(selektirani_profili[0])*50,310))
+    PROZOR.blit(rezultat_lijevo,(550-len(selektirani_profili[0])*40,310))
     PROZOR.blit(rezultat_desno,(650,310))
     PROZOR.blit(dvotocka,(605,305))
     
