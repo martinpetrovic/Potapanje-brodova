@@ -1682,11 +1682,11 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
             datoteka.writelines(score)
             
             rezultat_lijevo = font.render(selektirani_profili[0] +" "+score[profili.index(selektirani_profili[0]+"\n")][:-1],True,boja_lijevo)
-            rezultat_desno = font.render(selektirani_profili[1]+ " "+score[profili.index(selektirani_profili[1]+"\n")][:-1],True,boja_desno)
+            rezultat_desno = font.render(score[profili.index(selektirani_profili[1]+"\n")][:-1]+ " " +selektirani_profili[1],True,boja_desno)
             
         zapis_rezultata_jednom = False
     
-    winner = font.render(pobjednik+" Victory Royale",True,"#32CD32",)
+    winner = font.render(pobjednik+" Victory Royale",True,"#3EC9E9",)
     dvotocka = font.render(":",True,"#000000")
     winner_rect = winner.get_rect(midtop = (640,210))
     PROZOR.blit(winner,(winner_rect))
