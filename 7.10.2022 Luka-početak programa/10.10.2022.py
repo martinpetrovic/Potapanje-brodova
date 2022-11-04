@@ -6,28 +6,28 @@ import pygame, sys
 from pygame.locals import *
 import os
 import time
-pygame.init()
+pygame.init()#funkcija koja je potrebna kako bi pygame uopće radio
 pygame.mixer.init()
 
 #Grafičko sučelje
 ŠIRINA, VISINA = 1280, 720
 PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
-pygame.display.set_caption("Potapanje brodova")
+pygame.display.set_caption("Potapanje brodova")#naslov
 
 FPS = 60
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()#funkcija za pamćenje vremena
 
 img = None
 LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" ))
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
-KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))
-FONT_BROJ_SLOVO = pygame.font.Font(None, 40)
+KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png"))#uploadanje slika
+FONT_BROJ_SLOVO = pygame.font.Font(None, 40)#kreira font
 pritisak = 0
-BRODOVI_GRUPA = pygame.sprite.Group()
+BRODOVI_GRUPA = pygame.sprite.Group()#!
 Kvadrat_x, Kvadrat_y = 0, 0
 
 
-class Brod(pygame.sprite.Sprite):
+class Brod(pygame.sprite.Sprite):#pogledaj u dokumentaciji
     def __init__(self,picture_path,poz_x,poz_y):
         super().__init__()
         #rectangle
