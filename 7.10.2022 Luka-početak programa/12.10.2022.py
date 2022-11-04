@@ -1543,9 +1543,10 @@ def crtanje_ekrana_igranje():
     PROZOR.blit(BG_IGRANJE,BG_IGRANJE_RECT)
 
 def igranje_A_ekran():
-    global zmaj
+    global zmaj, provjera_gadanja
     zmaj = False
     run = True
+    provjera_gadanja = False
     while run == True:
         PROZOR.fill('White')
         crtanje_ekrana_igranje()
@@ -1587,9 +1588,10 @@ def igranje_A_ekran():
         clock.tick(FPS)
 
 def igranje_B_ekran():
-    global zmaj
+    global zmaj, provjera_gadanja
     zmaj = False
     run = True
+    provjera_gadanja = False
     while run == True:
         PROZOR.fill('White')
         crtanje_ekrana_igranje()
@@ -2064,6 +2066,7 @@ def play():
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
                 run = False
+                break    
             pauza_prije_promjene_igraca()
             resetiranje_prije_igre()
             igranje_B_ekran()
@@ -2128,9 +2131,9 @@ def main():
         animacija_more()
         PROZOR.blit(NASLOV, NASLOV_RECT)
         menu_mouse_poz = pygame.mouse.get_pos()
-        GUMB_PLAY = Button(text_input = "Play", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,200))
-        GUMB_SCORE = Button(text_input = "Score", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#77dd77', pos = (640,275))
-        GUMB_EXIT = Button(text_input = "Exit", text_size = 30, text_color = 'Black', rect_width = 200, rect_height = 40, rect_color = '#475F77', hoveringRect_color = '#D74B4B', pos = (640,350))
+        GUMB_PLAY = Button(text_input = "Play", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,250))
+        GUMB_SCORE = Button(text_input = "Score", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,350))
+        GUMB_EXIT = Button(text_input = "Exit", text_size = 30, text_color = 'Black', rect_width = 80, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#D74B4B', pos = (640,450))
         MAIN_GUMBOVI_LISTA = {GUMB_PLAY: "GUMB_PLAY", GUMB_SCORE: "GUMB_SCORE", GUMB_EXIT: "GUMB_EXIT"}
         
         for gumb in [GUMB_PLAY, GUMB_SCORE, GUMB_EXIT]:
