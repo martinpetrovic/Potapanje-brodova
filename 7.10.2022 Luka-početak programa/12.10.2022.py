@@ -36,7 +36,7 @@ linija_playscore_animacija_lista = [LINIJA_SCORE_PISANJE,LINIJA_SCORE_PRAZNINA]
 linija_playscore_surf = linija_playscore_animacija_lista[linija_key_index]
 
 
-#Igranje
+#Igranje/gađaje brodova
 XISIC = pygame.image.load(os.path.join("potapanje brodova", "xisic.png")).convert_alpha()
 FULANO = pygame.image.load(os.path.join("igranje", "fulano.png")).convert_alpha()
 ODABRANI_KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "odabrani_kvadrat.png")).convert_alpha()
