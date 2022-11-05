@@ -4,18 +4,18 @@ import pygame, sys
 from pygame.locals import *
 import os
 import time
-pygame.init()
-pygame.mixer.init()
+pygame.init()#instalira sve pygame module
+pygame.mixer.init()#učitava i omogućuje reprodukciju zvukova
 
 #Definiranje displaya
 ŠIRINA, VISINA = 1280, 720
-PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))
+PROZOR = pygame.display.set_mode((ŠIRINA, VISINA))#stvara suraface
 pygame.display.set_caption("Potapanje brodova")
 
 #clock i boje
 WHITE = (255,255,255)
 FPS = 60
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()#prati/pamti vrijeme
 
 
 #Slike, zvuk, font
@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 LOGO = pygame.image.load(os.path.join("potapanje brodova", "MLKJR_LOGO.png" )).convert_alpha()
 INTRO = pygame.mixer.Sound(os.path.join("potapanje brodova", "INTRO.ogg"))
 
-#Grid
+#Grid/mreža
 KVADRAT = pygame.image.load(os.path.join("potapanje brodova", "kvadrat.png")).convert_alpha()
 OKOLNI_GRID = pygame.image.load(os.path.join("potapanje brodova", "okolni_grid.png")).convert_alpha()
 FONT_BROJ_SLOVO = pygame.font.Font(None, 30)
@@ -101,7 +101,7 @@ CRVENI_KVADRAT_5 = pygame.image.load(os.path.join("potapanje brodova", "crveni_k
 BG_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "background_postavljanje.png" )).convert_alpha()
 BG_POSTAVALJANJE_RECT = BG_POSTAVLJANJE.get_rect(topleft=(0,0))
 GRID_VODA = pygame.image.load(os.path.join("postavljanje", "plavi_ekran.png" )).convert_alpha()
-GRID_VODA_RECT = GRID_VODA.get_rect(topleft = (0,0))
+GRID_VODA_RECT = GRID_VODA.get_rect(topleft = (0,0))#rect vode, ovo omogućuje da se slika zapravo miče
 
 SUM_POSTAVLJANJE = pygame.image.load(os.path.join("postavljanje", "samsung_ekran.png" )).convert_alpha()
 
@@ -298,7 +298,7 @@ def provjera_klika_sum_broda(poz_u_rectu):
         brod_collidean = SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(SUM_POSTAVLJANJE_BRODOVI_LISTA[4])
 
                     
-           
+ #rotiranje brodova          
              
 class Brod(pygame.sprite.Sprite):
     def __init__(self,picture_path,poz_x,poz_y):
@@ -395,7 +395,7 @@ class Veliki_Xevi(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft =(poz_x, poz_y)
         
-
+#exit screen
 
 def esc_screen(ulazni_tekst, screen):
     run = True
@@ -442,7 +442,7 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
         pygame.display.update()
         clock.tick(FPS)
-        
+#mreža prvog igrača        
 def gridA(pozicija):
     global izrada_liste_A
     global lista_rect_kvadrata_A
@@ -516,7 +516,7 @@ def gridA(pozicija):
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48
-
+#mreža drugog igrača
 def gridB(pozicija):
     global izrada_liste_B
     global lista_rect_kvadrata_B
@@ -590,7 +590,7 @@ def gridB(pozicija):
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48     
-
+#obrub
 def crtanje_obruba_hover(play_mouse_pos):
     for i in range(5):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
@@ -893,7 +893,7 @@ def postavljanje_igracaA():
     SUM_SUBMARINE:"submarine", SUM_PATROL:"patrol"}
 
     
-
+#uploada slike Spriteova
     CARRIER = Brod(os.path.join("potapanje brodova", "carrier5.png"), 0, 0)
     BATTLESHIP = Brod(os.path.join("potapanje brodova", "battleship4.png"), 0, 0)
     DESTROYER = Brod(os.path.join("potapanje brodova", "destroyer3.png"), 0, 0)
@@ -937,7 +937,7 @@ def postavljanje_igracaA():
     HOVER_BRODOVA = {CARRIER:HOVER_CARRIER, BATTLESHIP:HOVER_BATTLESHIP, DESTROYER:HOVER_DESTROYER, SUBMARINE:HOVER_SUBMARINE, PATROL:HOVER_PATROL}
     ZELENI_KVADRATI = {CARRIER:ZELENI_KVADRAT_5, BATTLESHIP:ZELENI_KVADRAT_4, DESTROYER:ZELENI_KVADRAT_3, SUBMARINE:ZELENI_KVADRAT_3, PATROL:ZELENI_KVADRAT_2}
     CRVENI_KVADRATI = {CARRIER:CRVENI_KVADRAT_5, BATTLESHIP:CRVENI_KVADRAT_4, DESTROYER:CRVENI_KVADRAT_3, SUBMARINE:CRVENI_KVADRAT_3, PATROL:CRVENI_KVADRAT_2}
-    
+    #za igranje
     run_pA = True
     brodovi_pozicije_A = {CARRIER: (CARRIER.pozx, CARRIER.pozy), BATTLESHIP: (BATTLESHIP.pozx, BATTLESHIP.pozy), DESTROYER: (DESTROYER.pozx, DESTROYER.pozy), SUBMARINE: (SUBMARINE.pozx, SUBMARINE.pozy), PATROL: (PATROL.pozx, PATROL.pozy)}
     brodovi_rotacija_A = {CARRIER: 0, BATTLESHIP: 0, DESTROYER: 0, SUBMARINE: 0, PATROL: 0}
@@ -1668,7 +1668,7 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     if rezultat2 == 0:
         pobjednik = selektirani_profili[0]
     while zapis_rezultata_jednom==True:
-        score[profili.index(pobjednik+"\n")] = str(int(score[profili.index(pobjednik+"\n")]) + 1)
+        score[profili.index(pobjednik+"\n")] = str(int(score[profili.index(pobjednik+"\n")]) + 1)#računanje scora
         if int(score[profili.index(selektirani_profili[1]+"\n")])>int(score[profili.index(selektirani_profili[0]+"\n")]):
             boja_lijevo =  "#FF0000"
             boja_desno =  "#32CD32" 
