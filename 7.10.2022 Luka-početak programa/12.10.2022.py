@@ -1983,9 +1983,12 @@ def score_screen():
         BACK3.changeColor(score_mouse_poz)
         BACK3.update(PROZOR)
         for i in range (8):
-            tablica = font.render(str(i+1)+". "+ score_i_profili[i][1][:-1]+": "+score_i_profili[i][0],1,"Black")
-            tablica_rect = tablica.get_rect(center=(630,100+i*60))
-            PROZOR.blit(tablica,tablica_rect)
+            if score_i_profili[i][1]== "Create a profile\n":
+                pass
+            else:
+                tablica = font.render(str(i+1)+". "+ score_i_profili[i][1][:-1]+": "+score_i_profili[i][0],1,"Black")
+                tablica_rect = tablica.get_rect(center=(630,100+i*60))
+                PROZOR.blit(tablica,tablica_rect)
         pygame.display.update()
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB, zapis_rezultata_jednom
