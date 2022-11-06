@@ -1798,7 +1798,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
 
                 if BACK1.checkForInput(score_mouse_pos):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()
+                    imenovanje_profila_bool = False
+                    zmaj = True
+                    break
                 #Sound effect
                 if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
                         pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
@@ -1832,15 +1834,14 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         imenovanje_profila_bool = False
                         
                         with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(profili)
-                        
+                            datoteka.writelines(profili) 
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    if event.key == K_ESCAPE:
-                        esc_screen('Želiš li izaći iz igre?', PROZOR)
-                        if zmaj == True:
-                            break
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        imenovanje_profila_bool = False
+                    else: pass
                 for i in range(8):
                     if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
                         
@@ -1869,6 +1870,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
                 linija_playscore_animacija(i)
         pygame.display.update()
+        clock.tick(FPS)
         
         
 def biranje_profila(): #biranje igrača koji će igrati
@@ -1929,12 +1931,12 @@ def biranje_profila(): #biranje igrača koji će igrati
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()   
-            if event.type == KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == K_ESCAPE:
-                        esc_screen('Želiš li izaći iz igre?', PROZOR)
-                        if zmaj == True:
-                            break
-                        else: pass
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        biranje_profila_bool = False
+                    else: pass
             if event.type == MOUSEBUTTONDOWN:
                 if CONFIRM_SELECTED.checkForInput(biranje_mouse_poz):
                     if len(selektirani_profili) == 2:
@@ -1942,7 +1944,9 @@ def biranje_profila(): #biranje igrača koji će igrati
                         biranje_profila_bool = False
                 if BACK.checkForInput(biranje_mouse_poz):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()
+                    biranje_profila_bool = False
+                    zmaj = True
+                    break
                 if len(selektirani_profili) <= 2:
                     for i in range(8):
                         if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
@@ -1995,7 +1999,8 @@ def score_screen():
             if event.type == MOUSEBUTTONDOWN:
                 if BACK3.checkForInput(score_mouse_poz) == True:
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    main()
+                    score_bool = False
+                    break
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     esc_screen('Želiš li izaći iz igre?', PROZOR)
