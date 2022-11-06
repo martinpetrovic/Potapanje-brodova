@@ -195,6 +195,7 @@ def LOADING_SCREEN():
     time.sleep(3.3)                
     PROZOR.fill('White')
 LOADING_SCREEN()
+
 class Button:
     def __init__(self, text_input, text_size, text_color, rect_width, rect_height, rect_color, hoveringRect_color, pos):
         self.x_pos = pos[0]
@@ -421,8 +422,8 @@ def esc_screen(ulazni_tekst, screen):
         pygame.draw.rect(screen,'Black', okvir_rect, 6)
         screen.blit(tekst_surf, tekst_rect)
 
-        CANCEL_GUMB = Button('Cancel', 30, 'Black', 200, 40, '#475F77', '#D74B4B', (490, 410))
-        CONFIRM_GUMB = Button('Confirm', 30, 'Black', 200, 40, '#475F77', '#77dd77', (790, 410))
+        CANCEL_GUMB = Button('Ne', 30, 'Black', 70, 40, '#475F77', '#D74B4B', (490, 410))
+        CONFIRM_GUMB = Button('Da', 30, 'Black', 70, 40, '#475F77', '#77dd77', (790, 410))
 
         for gumb in [CANCEL_GUMB, CONFIRM_GUMB]:
             gumb.changeColor(ESC_MOUSE_POS)
@@ -711,10 +712,10 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
         PROZOR.blit(crtanje_imena[0],crtanje_imena[1])
         rotate_key_animacija(čekanje_mouse_poz)
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
         
@@ -952,10 +953,10 @@ def postavljanje_igracaA():
             if SUM_POSTAVLJANJE_BRODOVI_CRTAJ.get(brodic) == [False,False]: 
                 BRODOVI_SINGLE_GRUPE_A.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
             
@@ -965,7 +966,7 @@ def postavljanje_igracaA():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Are you sure you want to exit current game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         run_pA = False
                     else: pass
@@ -1146,10 +1147,10 @@ def postavljanje_igracaB():
                 BRODOVI_SINGLE_GRUPE_B.get(SUM_BRODOVI_VEZA_SPRITE_BRODOVI.get(brodic)).draw(PROZOR)
         
         if len(postavljeni_brodovi) < 5:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, 'Grey', 'Grey', (1157,70))
             CONFIRM_GUMB_PLAY.update(PROZOR)
         else:
-            CONFIRM_GUMB_PLAY = Button('Confirm', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
+            CONFIRM_GUMB_PLAY = Button('Potvrdi', 30, 'Black', 175, 34, '#3EC9E9', '#77dd77', (1157,70))
             CONFIRM_GUMB_PLAY.changeColor(play_mouse_pos)
             CONFIRM_GUMB_PLAY.update(PROZOR)
             
@@ -1159,7 +1160,7 @@ def postavljanje_igracaB():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Are you sure you want to exit current game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         run_pB = False
                     else: pass
@@ -1561,7 +1562,7 @@ def igranje_A_ekran():
         crtanje_pogodenih_vlastitih('A')
         mouse_pos = pygame.mouse.get_pos()
         hoveranje_animacija('A', mouse_pos)
-        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
+        GUMB_SHOOT = Button(text_input = "Pucaj", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
         GUMB_SHOOT.changeColor(mouse_pos)
         GUMB_SHOOT.update(PROZOR)
         crtanje_odabranog_kvadrata('A')
@@ -1572,7 +1573,7 @@ def igranje_A_ekran():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Are you sure you want to exit current game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         run = False
                     else: pass
@@ -1605,7 +1606,7 @@ def igranje_B_ekran():
         crtanje_pogodenih_vlastitih('B')
         mouse_pos = pygame.mouse.get_pos()
         hoveranje_animacija('B', mouse_pos)
-        GUMB_SHOOT = Button(text_input = "Shoot", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
+        GUMB_SHOOT = Button(text_input = "Pucaj", text_size = 30, text_color = 'Black', rect_width = 175, rect_height = 34, rect_color = '#3EC9E9', hoveringRect_color = '#D74B4B', pos = (1172,37))
         GUMB_SHOOT.changeColor(mouse_pos)
         GUMB_SHOOT.update(PROZOR)
         crtanje_odabranog_kvadrata('B')
@@ -1616,7 +1617,7 @@ def igranje_B_ekran():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Are you sure you want to exit current game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         run = False
                     else: pass
@@ -1638,6 +1639,8 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     global restart
     global selektirani_profili
     global profili
+    global zmaj
+    zmaj = False
     PROZOR.fill('#143763')
     for i in range(8):
         score[i]= score[i].strip("\n")
@@ -1662,6 +1665,12 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
             if MAIN_MENU_BUTTON.checkForInput(Miš_pozicija):
                 pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                 main()
+        if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        restart = True
+                        return
     pobjednik = ""
     if rezultat1 == 0:
         pobjednik = selektirani_profili[1]
@@ -1722,12 +1731,14 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
     global biranje_profila_bool
     global imenovanje_profila_bool
     global trenutno_ime_upis
+    global zmaj
     imenovanje_profila_bool = True
     font = pygame.font.Font(None, 60)
     trenutno_ime_upis = ""
     for i in range(1,9):
         PLAYERI_SELEKTIRANI.update({f"player_{i}":False})
         PLAYERI_IMENA.update({f"player{i}": profili[i-1][:-1]})
+    zmaj = False
     
     while imenovanje_profila_bool == True:
         PROZOR.fill('#143763')
@@ -1753,7 +1764,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
         PLAYERI_LISTA_GUMBOVA = [PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
         
         
-        BACK1 = Button("BACK", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
+        BACK1 = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
         BACK1.update(PROZOR)
         BACK1.changeColor(score_mouse_pos)
         BACK1.update(PROZOR)
@@ -1761,7 +1772,7 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             player_gumb.update(PROZOR)
             player_gumb.changeColor(score_mouse_pos)
             player_gumb.update(PROZOR)                    
-        CHOOSE_PROFILE = Button("Confirm", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
@@ -1772,6 +1783,8 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            
                 
             if event.type == MOUSEBUTTONDOWN:
                 for i in range (8):
@@ -1825,10 +1838,9 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     if event.key == K_ESCAPE:
-                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        esc_screen('Želiš li izaći iz igre?', PROZOR)
                         if zmaj == True:
-                            main()
-                        else: pass
+                            break
                 for i in range(8):
                     if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
                         
@@ -1865,6 +1877,7 @@ def biranje_profila(): #biranje igrača koji će igrati
     global PLAYERI_IMENA
     global PLAYERI_SELEKTIRANI
     global PLAYERI_LISTA_GUMBOVA
+    global zmaj
     biranje_profila_bool = True
     PROZOR.fill('#143763')
     PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162))
@@ -1884,7 +1897,10 @@ def biranje_profila(): #biranje igrača koji će igrati
     PLAYERI_LISTA_GUMBOVA=[PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
     GUMBOVI_METAMORFOZA = {PLAYER_BUTTON1:0, PLAYER_BUTTON2:0, PLAYER_BUTTON3:0, PLAYER_BUTTON4:0 ,PLAYER_BUTTON5:0 ,PLAYER_BUTTON6:0 ,PLAYER_BUTTON7:0 ,PLAYER_BUTTON8:0}
     
+    zmaj = False
+
     while biranje_profila_bool == True:
+        PROZOR.fill('#143763')
         biranje_mouse_poz = pygame.mouse.get_pos()
         Choose_profile = font.render("Choose profiles",1,'Black')
         Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
@@ -1901,11 +1917,11 @@ def biranje_profila(): #biranje igrača koji će igrati
                     player_gumb.changeColor(biranje_mouse_poz)
                     player_gumb.update(PROZOR)
 
-        BACK = Button("BACK", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
+        BACK = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
         BACK.update(PROZOR)
         BACK.changeColor(biranje_mouse_poz)
         BACK.update(PROZOR)
-        CONFIRM_SELECTED =  Button(("Confirm"), 30, 'Black', 119,55, '#DADBDD', '#77dd77', ((1137,651)))        
+        CONFIRM_SELECTED =  Button(("Potvrdi"), 30, 'Black', 119,55, '#DADBDD', '#77dd77', ((1137,651)))        
         CONFIRM_SELECTED.update(PROZOR)
         CONFIRM_SELECTED.changeColor(biranje_mouse_poz)
         CONFIRM_SELECTED.update(PROZOR)
@@ -1915,9 +1931,9 @@ def biranje_profila(): #biranje igrača koji će igrati
                 sys.exit()   
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                        esc_screen('Are you sure you want to exit current game?', PROZOR)
+                        esc_screen('Želiš li izaći iz igre?', PROZOR)
                         if zmaj == True:
-                            main()
+                            break
                         else: pass
             if event.type == MOUSEBUTTONDOWN:
                 if CONFIRM_SELECTED.checkForInput(biranje_mouse_poz):
@@ -1956,9 +1972,11 @@ def biranje_profila(): #biranje igrača koji će igrati
 def score_screen():
     global profili
     global score
+    global zmaj
     score_bool = True
     PROZOR.fill('#143763')
     font = pygame.font.Font(None, 60)
+    zmaj = False
     def po_scoreu(x):  
         return int(x[0])
     score_i_profili = [] 
@@ -1968,6 +1986,7 @@ def score_screen():
     score_i_profili.sort(key = po_scoreu, reverse = True) 
 
     while score_bool == True:
+        PROZOR.fill('#143763')
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1977,8 +1996,15 @@ def score_screen():
                 if BACK3.checkForInput(score_mouse_poz) == True:
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     main()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        score_bool = False
+                        break
+            
         score_mouse_poz=pygame.mouse.get_pos()
-        BACK3 = Button("BACK", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
+        BACK3 = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
         BACK3.update(PROZOR)
         BACK3.changeColor(score_mouse_poz)
         BACK3.update(PROZOR)
@@ -1990,6 +2016,8 @@ def score_screen():
                 tablica_rect = tablica.get_rect(center=(630,100+i*60))
                 PROZOR.blit(tablica,tablica_rect)
         pygame.display.update()
+        clock.tick(FPS)
+
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB, zapis_rezultata_jednom
     postavljen_kvadratA = False
@@ -2043,7 +2071,11 @@ def play():
     selektirani_profili = [] 
     resetiranje_prije_igre()
     imenovanje_profila()
+    if zmaj == True:
+        return
     biranje_profila()
+    if zmaj == True:
+        return
     pp_run = True
     while pp_run == True:
         postavljanje_igracaA()
@@ -2134,9 +2166,9 @@ def main():
         animacija_more()
         PROZOR.blit(NASLOV, NASLOV_RECT)
         menu_mouse_poz = pygame.mouse.get_pos()
-        GUMB_PLAY = Button(text_input = "Play", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,250))
-        GUMB_SCORE = Button(text_input = "Score", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,350))
-        GUMB_EXIT = Button(text_input = "Exit", text_size = 30, text_color = 'Black', rect_width = 80, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#D74B4B', pos = (640,450))
+        GUMB_PLAY = Button(text_input = "Igraj", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,250))
+        GUMB_SCORE = Button(text_input = "Rezultati", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,350))
+        GUMB_EXIT = Button(text_input = "Izađi", text_size = 30, text_color = 'Black', rect_width = 80, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#D74B4B', pos = (640,450))
         MAIN_GUMBOVI_LISTA = {GUMB_PLAY: "GUMB_PLAY", GUMB_SCORE: "GUMB_SCORE", GUMB_EXIT: "GUMB_EXIT"}
         
         for gumb in [GUMB_PLAY, GUMB_SCORE, GUMB_EXIT]:
@@ -2158,7 +2190,7 @@ def main():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Are you sure you want to quit the game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
                         time.sleep(1.2)
@@ -2173,7 +2205,7 @@ def main():
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
                     score_screen()
                 if GUMB_EXIT.checkForInput(menu_mouse_poz):
-                    esc_screen('Are you sure you want to quit the game?', PROZOR)
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
                     if zmaj == True:
                         pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
                         time.sleep(1.2)
