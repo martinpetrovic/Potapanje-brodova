@@ -2122,6 +2122,10 @@ def play():
         restart = False
         while restart == False:
             end_screen(rezultat_A_igrac,rezultat_B_igrac)
+            if zmaj == True:
+                pp_run == False
+                run = False
+                break
         lista_imena_kvadrata_A= []   
         lista_imena_kvadrata_B = [] 
         resetiranje_prije_igre()
