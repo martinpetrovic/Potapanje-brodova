@@ -6,12 +6,13 @@ Bolje bi bilo da se zepiše kao: "player1" 2:0 "player2" - fixed
 Game mora završiti u trenutku kada igrač koji gađa pogodi zadnji brod protivnika do kraja - fixed
 Player 1 pobijedi kada fula prvi hit, a Player 2 pogodi - fixed
 Bilo bi ljepše da se "Create a profile" ne vidi u scoru - fixed
-Score se vrati nazad u jednog lika iako mu se u igrici trenutno izbrise
+Score se vrati nazad u jednog lika iako mu se u igrici trenutno izbrise - fixed
 Back vrati previše nazad
 Esc ne radi u scoru - fixed
 Escape screen postane pozadina u odabiru igrača - fixed
 Gumbovi profila se brišu u odabiru igrača - fixed
 Escape screen ne radi u odabiru i imenovanju - fixed
 Escape screen ti na end screenu resetira igru - fixed
-Create a profile se pojavljuje u odabiru profila
-Game breaking bug u ulaženju u rezultate
+Create a profile se pojavljuje u odabiru profila - fixed
+Game breaking bug u ulaženju u rezultate - fixed
+Pozadina u odabiru profila se ponovo mijenja kada se sa esc želi izaći
