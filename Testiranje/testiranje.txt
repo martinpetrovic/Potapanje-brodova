@@ -13,5 +13,6 @@ Escape screen postane pozadina u odabiru igrača - fixed
 Gumbovi profila se brišu u odabiru igrača - fixed
 Escape screen ne radi u odabiru i imenovanju - fixed
 Escape screen ti na end screenu resetira igru - fixed
-Create a profile se pojavljuje u odabiru profila
+Create a profile se pojavljuje u odabiru profila - fixed
 Game breaking bug u ulaženju u rezultate
+Pozadina u odabiru profila se ponovo mijenja kada se sa esc želi izaći
