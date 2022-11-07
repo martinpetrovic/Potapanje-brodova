@@ -1,5 +1,4 @@
 from ast import main
-from turtle import left
 import pygame, sys
 from pygame.locals import *
 import os
