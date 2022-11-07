@@ -1911,8 +1911,7 @@ def biranje_profila(): #biranje igrača koji će igrati
             if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
                 if PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}") == "Napravi profil":
                     player_gumb = Button("N/A", 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
-                    player_gumb.update(PROZOR)
-                    pass             
+                    player_gumb.update(PROZOR)           
                 else:
                     player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#DADBDD', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
                     player_gumb.update(PROZOR)
@@ -1978,7 +1977,6 @@ def score_screen():
     global score
     global zmaj
     score_bool = True
-    print (score)
     PROZOR.fill('#143763')
     font = pygame.font.Font(None, 60)
     zmaj = False
@@ -2025,7 +2023,6 @@ def score_screen():
         clock.tick(FPS)
     for i in range (8):
         score[i] = score[i]+"\n"
-        print (score)
 
 def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
     global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB, zapis_rezultata_jednom
