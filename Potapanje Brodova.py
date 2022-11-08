@@ -2005,7 +2005,7 @@ def score_screen():
                     break
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    esc_screen('Želiš li izaći iz rezultata?', PROZOR)
                     if zmaj == True:
                         score_bool = False
                         break
