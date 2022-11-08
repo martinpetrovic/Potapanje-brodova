@@ -439,6 +439,7 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
                 if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    PROZOR.fill("#143763")
                     run = False
         pygame.display.update()
         clock.tick(FPS)
