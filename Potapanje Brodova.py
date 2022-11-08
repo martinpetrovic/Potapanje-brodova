@@ -1076,7 +1076,7 @@ def crtanje_obruba_hover(play_mouse_pos):
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
                     break
 
-def crtanje_pozadine(play_mouse_pos):
+def crtanje_pozadine_postavljanje(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
     for i in range(len(SUM_POSTAVLJANJE_BRODOVI_CRTAJ)):
@@ -1130,7 +1130,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
     while idi:
         čekanje_mouse_poz = pygame.mouse.get_pos()
         PROZOR.fill("White")
-        crtanje_pozadine(čekanje_mouse_poz)
+        crtanje_pozadine_postavljanje(čekanje_mouse_poz)
         if igrač == 'A':
             gridA('lijevo')
         elif igrač == 'B':
@@ -1385,7 +1385,7 @@ def postavljanje_igracaA():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine(play_mouse_pos)
+        crtanje_pozadine_postavljanje(play_mouse_pos)
         gridA('lijevo')
         PROZOR.blit(crtanje_imena_lista_A[0],crtanje_imena_lista_A[1])
         for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
@@ -1578,7 +1578,7 @@ def postavljanje_igracaB():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine(play_mouse_pos)
+        crtanje_pozadine_postavljanje(play_mouse_pos)
         gridB('lijevo')
         PROZOR.blit(crtanje_imena_lista_B[0],crtanje_imena_lista_B[1])
         for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
