@@ -676,7 +676,10 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             player_gumb.update(PROZOR)
             player_gumb.changeColor(score_mouse_pos)
             player_gumb.update(PROZOR)                    
-        CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+       if list(PLAYERI_IMENA.values()).count("Napravi profil") <= 6:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        else:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#FF0000', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
