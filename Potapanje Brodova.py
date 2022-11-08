@@ -439,7 +439,6 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
                 if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    PROZOR.fill("#143763")
                     run = False
         pygame.display.update()
         clock.tick(FPS)
@@ -1903,7 +1902,7 @@ def biranje_profila(): #biranje igrača koji će igrati
     zmaj = False
 
     while biranje_profila_bool == True:
-
+        PROZOR.fill('#143763')
         biranje_mouse_poz = pygame.mouse.get_pos()
         Choose_profile = font.render("Izaberi profile",1,'Black')
         Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
