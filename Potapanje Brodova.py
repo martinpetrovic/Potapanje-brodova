@@ -193,6 +193,7 @@ def LOADING_SCREEN():
     pygame.display.update()
     time.sleep(5.7)                
     PROZOR.fill('White')
+    
 LOADING_SCREEN()
 
 class Button:
@@ -2087,13 +2088,13 @@ def play():
     while pp_run == True:
         postavljanje_igracaA()
         if zmaj == True:
-            pp_run == False
+            pp_run = False
             break
         pauza_prije_promjene_igraca()
         resetiranje_prije_igre()
         postavljanje_igracaB()
         if zmaj == True:
-            pp_run == False
+            pp_run = False
             break
         rezultat_A_igrac = 17
         rezultat_B_igrac = 17
@@ -2103,7 +2104,7 @@ def play():
             resetiranje_prije_igre()
             igranje_A_ekran()
             if zmaj == True:
-                pp_run == False
+                pp_run = False
                 run = False
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
@@ -2113,7 +2114,7 @@ def play():
             resetiranje_prije_igre()
             igranje_B_ekran()
             if zmaj == True:
-                pp_run == False
+                pp_run = False
                 run = False
                 break
             if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
@@ -2125,8 +2126,8 @@ def play():
         while restart == False:
             end_screen(rezultat_A_igrac,rezultat_B_igrac)
             if zmaj == True:
-                pp_run == False
-                run = False
+                pp_run = False
+                restart = True
                 break
         lista_imena_kvadrata_A= []   
         lista_imena_kvadrata_B = [] 
