@@ -440,7 +440,6 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
                 if CANCEL_GUMB.checkForInput(ESC_MOUSE_POS):
                     pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    PROZOR.fill("#143763")
                     run = False
         pygame.display.update()
         clock.tick(FPS)
@@ -1904,7 +1903,7 @@ def biranje_profila(): #biranje igrača koji će igrati
     zmaj = False
 
     while biranje_profila_bool == True:
-
+        PROZOR.fill('#143763')
         biranje_mouse_poz = pygame.mouse.get_pos()
         Choose_profile = font.render("Izaberi profile",1,'Black')
         Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
@@ -1913,12 +1912,15 @@ def biranje_profila(): #biranje igrača koji će igrati
             if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
                 if PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}") == "Napravi profil":
                     player_gumb = Button("N/A", 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
-                    player_gumb.update(PROZOR)           
+                    player_gumb.update(PROZOR)         
                 else:
                     player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#DADBDD', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
                     player_gumb.update(PROZOR)
                     player_gumb.changeColor(biranje_mouse_poz)
                     player_gumb.update(PROZOR)
+            else:
+                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#FF0000', '#FF0000',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                player_gumb.update(PROZOR) 
 
         BACK = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
         BACK.update(PROZOR)
@@ -2004,7 +2006,7 @@ def score_screen():
                     break
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    esc_screen('Želiš li izaći iz rezultata?', PROZOR)
                     if zmaj == True:
                         score_bool = False
                         break
@@ -2041,7 +2043,7 @@ def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
     TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png")).convert_alpha()
     TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png")).convert_alpha()
     font = pygame.font.Font(None, 30)
-    tekst_surf = font.render('Next player in:', False, 'White')
+    tekst_surf = font.render('Idući igrač za:', False, 'White')
     tekst_rect = tekst_surf.get_rect(midtop = (640,160))
     tajmer_rect = TAJMER3.get_rect(midtop = (640, 210))
     PROZOR.fill("Black")
@@ -2129,7 +2131,7 @@ def play():
                 pp_run = False
                 restart = True
                 break
-        lista_imena_kvadrata_A= []   
+        lista_imena_kvadrata_A = []   
         lista_imena_kvadrata_B = [] 
         resetiranje_prije_igre()
 
