@@ -1912,12 +1912,15 @@ def biranje_profila(): #biranje igrača koji će igrati
             if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
                 if PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}") == "Napravi profil":
                     player_gumb = Button("N/A", 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
-                    player_gumb.update(PROZOR)           
+                    player_gumb.update(PROZOR)         
                 else:
                     player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#DADBDD', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
                     player_gumb.update(PROZOR)
                     player_gumb.changeColor(biranje_mouse_poz)
                     player_gumb.update(PROZOR)
+            else:
+                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#FF0000', '#FF0000',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                player_gumb.update(PROZOR) 
 
         BACK = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
         BACK.update(PROZOR)
