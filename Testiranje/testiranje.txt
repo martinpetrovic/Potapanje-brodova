@@ -17,3 +17,5 @@ Escape screen ti na end screenu resetira igru - fixed
 "Create a profile" se pojavljuje u odabiru profila - fixed
 Game breaking bug u ulaženju u rezultate - fixed
 Pozadina u odabiru profila se ponovo mijenja kada se sa esc želi izaći - fixed
+Na linku je video izvještaja iz 6.11.
+https://drive.google.com/file/d/13SezT6kVn-9zBvevoZVCEowio-VzGEix/view?usp=sharing
