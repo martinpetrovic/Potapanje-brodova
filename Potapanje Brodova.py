@@ -2042,7 +2042,7 @@ def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
     TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png")).convert_alpha()
     TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png")).convert_alpha()
     font = pygame.font.Font(None, 30)
-    tekst_surf = font.render('Next player in:', False, 'White')
+    tekst_surf = font.render('Idući igrač za:', False, 'White')
     tekst_rect = tekst_surf.get_rect(midtop = (640,160))
     tajmer_rect = TAJMER3.get_rect(midtop = (640, 210))
     PROZOR.fill("Black")
