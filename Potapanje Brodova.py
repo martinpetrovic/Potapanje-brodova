@@ -1820,22 +1820,24 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         trenutno_ime_upis = ""                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
-                            pass
-                        else:
-                            score[i] = "0\n"
-                        
-                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
-                            profili = []
-                            profili = datoteka.readlines()
-                            for z in range (8):
-                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
-                        with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(profili) 
-                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(score)         
-                        imenovanje_profila_bool = False
-                        
+                        if list(PLAYERI_IMENA.values()).count("Napravi profil") <= 6:
+                            if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
+                                pass
+                            else:
+                                score[i] = "0\n"
+                            
+                            with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
+                                profili = []
+                                profili = datoteka.readlines()
+                                for z in range (8):
+                                    profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                            with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
+                                datoteka.writelines(profili) 
+                            with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
+                                datoteka.writelines(score)         
+                            imenovanje_profila_bool = False
+                        else:                            
+                            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
             if event.type == pygame.KEYDOWN:
                 if event.key == K_ESCAPE:
