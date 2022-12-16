@@ -443,7 +443,443 @@ def esc_screen(ulazni_tekst, screen):
                     run = False
         pygame.display.update()
         clock.tick(FPS)
-#mreža prvog igrača        
+#mreža prvog igrača 
+
+def animacija_bombi():
+    global bomba_index
+    bomba_index += 0.12
+    if bomba_index >= len(lista_bomba_animacija):
+        bomba_index = 0
+    bomba_surf = lista_bomba_animacija[int(bomba_index)]
+    bomba_rect = bomba_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(bomba_surf, bomba_rect)
+
+def animacija_broda():
+    global brod_index
+    brod_index += 0.09
+    if brod_index >= len(lista_brod_animacija):
+        brod_index = 0
+    brod_surf = lista_brod_animacija[int(brod_index)]
+    brod_rect = brod_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(brod_surf, brod_rect)
+
+def animacija_more():
+    global more_index
+    more_index += 0.02
+    if more_index >= len(lista_more_animacija):
+        more_index = 0
+    more_surf = lista_more_animacija[int(more_index)]
+    more_rect = more_surf.get_rect(topleft=(0,0))
+    PROZOR.blit(more_surf, more_rect)
+
+def main():
+    global zmaj
+    tupi_zvuk = 1
+    gumboslav = None
+    PANORAMA = pygame.image.load(os.path.join("main_menu", "background.png" )).convert_alpha()
+    PANORAMA_RECT = PANORAMA.get_rect(topleft=(0,0))
+    NASLOV = pygame.image.load(os.path.join("main_menu", "naslov.png" )).convert_alpha()
+    NASLOV_RECT = NASLOV.get_rect(topleft=(224,32))
+    while True:
+        zmaj = False
+        PROZOR.fill('White')
+        PROZOR.blit(PANORAMA, PANORAMA_RECT)
+        animacija_bombi()
+        PROZOR.blit(NASLOV, NASLOV_RECT)
+        animacija_broda()
+        animacija_more()
+        PROZOR.blit(NASLOV, NASLOV_RECT)
+        menu_mouse_poz = pygame.mouse.get_pos()
+        GUMB_PLAY = Button(text_input = "Igraj", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,250))
+        GUMB_SCORE = Button(text_input = "Rezultati", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,350))
+        GUMB_EXIT = Button(text_input = "Izađi", text_size = 30, text_color = 'Black', rect_width = 80, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#D74B4B', pos = (640,450))
+        MAIN_GUMBOVI_LISTA = {GUMB_PLAY: "GUMB_PLAY", GUMB_SCORE: "GUMB_SCORE", GUMB_EXIT: "GUMB_EXIT"}
+        
+        for gumb in [GUMB_PLAY, GUMB_SCORE, GUMB_EXIT]:
+            gumb.changeColor(menu_mouse_poz)
+            gumb.update(PROZOR)
+            
+            #Zvuk
+            
+            if gumb.checkForInput(menu_mouse_poz) == True and tupi_zvuk == 1:
+                pygame.mixer.Sound.play(TUPI_GUMB_ZVUK)
+                gumboslav = MAIN_GUMBOVI_LISTA.get(gumb)
+                tupi_zvuk = 0
+            elif MAIN_GUMBOVI_LISTA.get(gumb) == gumboslav and gumb.checkForInput(menu_mouse_poz) == False:
+                tupi_zvuk = 1
+                
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
+                        time.sleep(1.2)
+                        pygame.quit()
+                        sys.exit()
+                    else: pass
+            if event.type == MOUSEBUTTONDOWN:
+                if GUMB_PLAY.checkForInput(menu_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    play()
+                if GUMB_SCORE.checkForInput(menu_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    score_screen()
+                if GUMB_EXIT.checkForInput(menu_mouse_poz):
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
+                        time.sleep(1.2)
+                        pygame.quit()
+                        sys.exit()
+                    else: pass
+        pygame.display.update()
+        clock.tick(FPS) 
+
+
+def play():
+    global lista_imena_kvadrata_A
+    global lista_imena_kvadrata_B
+    global restart
+    global zmaj
+    global postavljen_kvadratA
+    global postavljen_kvadratB
+    global rezultat_A_igrac
+    global rezultat_B_igrac
+    global biranje_profila_bool
+    global imenovanje_profila_bool
+    global selektirani_profili
+    zmaj = False
+    resetiranje_prije_igre()
+    selektirani_profili = [] 
+    resetiranje_prije_igre()
+    imenovanje_profila()
+    if zmaj == True:
+        return
+    biranje_profila()
+    if zmaj == True:
+        return
+    pp_run = True
+    while pp_run == True:
+        postavljanje_igracaA()
+        if zmaj == True:
+            pp_run = False
+            break
+        pauza_prije_promjene_igraca()
+        resetiranje_prije_igre()
+        postavljanje_igracaB()
+        if zmaj == True:
+            pp_run = False
+            break
+        rezultat_A_igrac = 17
+        rezultat_B_igrac = 17
+        run = True
+        while run == True:
+            pauza_prije_promjene_igraca()
+            resetiranje_prije_igre()
+            igranje_A_ekran()
+            if zmaj == True:
+                pp_run = False
+                run = False
+                break
+            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
+                run = False
+                break    
+            pauza_prije_promjene_igraca()
+            resetiranje_prije_igre()
+            igranje_B_ekran()
+            if zmaj == True:
+                pp_run = False
+                run = False
+                break
+            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
+                run = False
+        if zmaj == True:
+            pp_run = False
+            break
+        restart = False
+        while restart == False:
+            end_screen(rezultat_A_igrac,rezultat_B_igrac)
+            if zmaj == True:
+                pp_run = False
+                restart = True
+                break
+        lista_imena_kvadrata_A = []   
+        lista_imena_kvadrata_B = [] 
+        resetiranje_prije_igre()
+
+
+def linija_playscore_animacija(i):
+    global linija_key_index, linija_playscore_surf, trenutno_ime_upis
+    linija_key_index += 0.01   
+    if linija_key_index >= len(linija_playscore_animacija_lista):
+        linija_key_index = 0
+    linija_playscore_surf = linija_playscore_animacija_lista[int(linija_key_index)]
+    if trenutno_ime_upis != "":
+        kraj_imena_x, kraj_imena_y = PLAYERI_LISTA_GUMBOVA[i-1].text_rect.midright
+        linija_playscore_rect = linija_playscore_surf.get_rect(midright = (kraj_imena_x+5, kraj_imena_y))
+    else:
+        linija_playscore_rect = linija_playscore_surf.get_rect(center = (PLAYERI_LISTA_GUMBOVA[i-1].main_rect.center))
+    PROZOR.blit(linija_playscore_surf, linija_playscore_rect)
+
+def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezultata
+    global score
+    global profili
+    global PLAYERI_IMENA
+    global PLAYERI_SELEKTIRANI
+    global PLAYERI_LISTA_GUMBOVA
+    global play_run
+    global biranje_profila_bool
+    global imenovanje_profila_bool
+    global trenutno_ime_upis
+    global zmaj
+    imenovanje_profila_bool = True
+    font = pygame.font.Font(None, 60)
+    trenutno_ime_upis = ""
+    for i in range(1,9):
+        PLAYERI_SELEKTIRANI.update({f"player_{i}":False})
+        PLAYERI_IMENA.update({f"player{i}": profili[i-1][:-1]})
+    zmaj = False
+    
+    while imenovanje_profila_bool == True:
+        PROZOR.fill('#143763')
+        Create_profile = font.render("Napravi profile",1,'Black')
+        Create_profile_rect = Create_profile.get_rect(center=(630,45))
+        PROZOR.blit(Create_profile,Create_profile_rect)
+        score_mouse_pos = pygame.mouse.get_pos()
+        
+
+        PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162))
+        PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134))
+        PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134*2))
+        PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134*3))
+        
+        
+        PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 162)) 
+        PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 1*134+162))        
+        PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 2*134+162))
+        PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 3*134+162)) 
+        
+        
+
+        PLAYERI_LISTA_GUMBOVA = [PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
+        
+        
+        BACK1 = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
+        BACK1.update(PROZOR)
+        BACK1.changeColor(score_mouse_pos)
+        BACK1.update(PROZOR)
+        for player_gumb in PLAYERI_LISTA_GUMBOVA:
+            player_gumb.update(PROZOR)
+            player_gumb.changeColor(score_mouse_pos)
+            player_gumb.update(PROZOR)                    
+        CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        CHOOSE_PROFILE.update(PROZOR)
+        CHOOSE_PROFILE.changeColor(score_mouse_pos)
+        CHOOSE_PROFILE.update(PROZOR)
+        
+        
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            
+                
+            if event.type == MOUSEBUTTONDOWN:
+                for i in range (8):
+                    PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                    if PLAYERI_IMENA.get(f"player{i+1}") == "":
+                        PLAYERI_IMENA.update({f"player{i+1}":"Napravi profil"})
+                    if PLAYERI_IMENA.get(f"player{i+1}") + "\n" == profili[i]:
+                        pass
+                    else:
+                        score[i] = "0\n"
+
+                if BACK1.checkForInput(score_mouse_pos):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    imenovanje_profila_bool = False
+                    zmaj = True
+                    break
+                #Sound effect
+                if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    
+                for i in range(8):
+                    
+                    if PLAYERI_LISTA_GUMBOVA[i].checkForInput(score_mouse_pos):
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                        
+                        for k in range (8):
+                            if PLAYERI_IMENA.get(f"player{k+1}") == "" and PLAYERI_SELEKTIRANI.get(f"player{k+1}") == False:
+                                PLAYERI_IMENA.update({f"player{k+1}":"Napravi profil"})
+                            PLAYERI_SELEKTIRANI.update({f"player_{k+1}":False})
+
+                        
+                        PLAYERI_SELEKTIRANI.update({f"player_{i+1}":True})
+                        trenutno_ime_upis = ""                    
+                        PLAYERI_IMENA.update({f"player{i+1}":""})
+                    if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
+                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
+                            pass
+                        else:
+                            score[i] = "0\n"
+                        
+                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
+                            profili = []
+                            profili = datoteka.readlines()
+                            for z in range (8):
+                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                        with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
+                            datoteka.writelines(profili) 
+                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
+                            datoteka.writelines(score)         
+                        imenovanje_profila_bool = False
+                        
+                        
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        imenovanje_profila_bool = False
+                    else: pass
+                for i in range(8):
+                    if PLAYERI_SELEKTIRANI.get(f"player_{i+1}") == True:
+                        
+                        
+                        if event.key == pygame.K_BACKSPACE:
+                            trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                            trenutno_ime_upis = trenutno_ime_upis[:-1]
+                            PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                            
+                        
+                        elif event.key == pygame.K_RETURN:
+                            PLAYERI_SELEKTIRANI.update({f"player_{i+1}":False})
+                            if PLAYERI_IMENA.get(f"player{i+1}") == "" :
+                                PLAYERI_IMENA.update({f"player{i+1}":"Napravi profil"})
+                            trenutno_ime_upis = ""
+                        else:
+                            if len(trenutno_ime_upis) < 8:
+                                trenutno_ime_upis = PLAYERI_IMENA.get(f"player{i+1}")
+                                trenutno_ime_upis += event.unicode
+                                if trenutno_ime_upis not in list(PLAYERI_IMENA.values()):
+                                    PLAYERI_IMENA.update({f"player{i+1}": trenutno_ime_upis})
+                                else:
+                                    pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+
+        for i in range(1,9):
+            if PLAYERI_SELEKTIRANI.get(f"player_{i}") == True:
+                linija_playscore_animacija(i)
+        pygame.display.update()
+        clock.tick(FPS)
+                
+def biranje_profila(): #biranje igrača koji će igrati
+    global selektirani_profili
+    global play_run
+    global PLAYERI_IMENA
+    global PLAYERI_SELEKTIRANI
+    global PLAYERI_LISTA_GUMBOVA
+    global zmaj
+    biranje_profila_bool = True
+    PROZOR.fill('#143763')
+    PLAYER_BUTTON1 = Button(PLAYERI_IMENA.get("player1"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162))
+    PLAYER_BUTTON2 = Button(PLAYERI_IMENA.get("player2"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134))
+    PLAYER_BUTTON3 = Button(PLAYERI_IMENA.get("player3"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134*2))
+    PLAYER_BUTTON4 = Button(PLAYERI_IMENA.get("player4"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (307, 162+134*3))
+        
+        
+    PLAYER_BUTTON5 = Button(PLAYERI_IMENA.get("player5"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 162)) 
+    PLAYER_BUTTON6 = Button(PLAYERI_IMENA.get("player6"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 1*134+162))        
+    PLAYER_BUTTON7 = Button(PLAYERI_IMENA.get("player7"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 2*134+162))
+    PLAYER_BUTTON8 = Button(PLAYERI_IMENA.get("player8"), 75, 'Black', 411, 91, '#DADBDD', '#77dd77', (962, 3*134+162)) 
+        
+    font = pygame.font.Font(None, 60)
+    
+    GUMBOVI_POZICIJE = [(307, 162),(307, 162+134),(307, 162+134*2),((307, 162+134*3)),((962, 162)),(962, 1*134+162),(962, 2*134+162),(962, 3*134+162)]
+    PLAYERI_LISTA_GUMBOVA=[PLAYER_BUTTON1,PLAYER_BUTTON2,PLAYER_BUTTON3,PLAYER_BUTTON4,PLAYER_BUTTON5,PLAYER_BUTTON6,PLAYER_BUTTON7,PLAYER_BUTTON8]
+    GUMBOVI_METAMORFOZA = {PLAYER_BUTTON1:0, PLAYER_BUTTON2:0, PLAYER_BUTTON3:0, PLAYER_BUTTON4:0 ,PLAYER_BUTTON5:0 ,PLAYER_BUTTON6:0 ,PLAYER_BUTTON7:0 ,PLAYER_BUTTON8:0}
+    PROZOR.fill('#143763')
+    zmaj = False
+
+    while biranje_profila_bool == True:
+        PROZOR.fill('#143763')
+        biranje_mouse_poz = pygame.mouse.get_pos()
+        Choose_profile = font.render("Izaberi profile",1,'Black')
+        Choose_profile_rect = Choose_profile.get_rect(center=(630,45))
+        PROZOR.blit(Choose_profile,Choose_profile_rect)
+        for player_gumb in PLAYERI_LISTA_GUMBOVA:
+            if GUMBOVI_METAMORFOZA.get(player_gumb) == 0:
+                if PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}") == "Napravi profil":
+                    player_gumb = Button("N/A", 75, 'Black', 411,91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                    player_gumb.update(PROZOR)         
+                else:
+                    player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#DADBDD', '#77dd77',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                    player_gumb.update(PROZOR)
+                    player_gumb.changeColor(biranje_mouse_poz)
+                    player_gumb.update(PROZOR)
+            else:
+                player_gumb = Button(PLAYERI_IMENA.get(f"player{PLAYERI_LISTA_GUMBOVA.index(player_gumb)+1}"), 75, 'Black', 411,91, '#D74B4B', '#D74B4B',GUMBOVI_POZICIJE[PLAYERI_LISTA_GUMBOVA.index(player_gumb)])
+                player_gumb.update(PROZOR) 
+
+        BACK = Button("NAZAD", 45, "Black", 119,55,'#DADBDD','#77dd77', (84,54))
+        BACK.update(PROZOR)
+        BACK.changeColor(biranje_mouse_poz)
+        BACK.update(PROZOR)
+        CONFIRM_SELECTED =  Button(("Potvrdi"), 30, 'Black', 119,55, '#DADBDD', '#77dd77', ((1137,651)))        
+        CONFIRM_SELECTED.update(PROZOR)
+        CONFIRM_SELECTED.changeColor(biranje_mouse_poz)
+        CONFIRM_SELECTED.update(PROZOR)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()   
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_ESCAPE:
+                    esc_screen('Želiš li izaći iz igre?', PROZOR)
+                    if zmaj == True:
+                        biranje_profila_bool = False
+                    else: pass
+            if event.type == MOUSEBUTTONDOWN:
+                if CONFIRM_SELECTED.checkForInput(biranje_mouse_poz):
+                    if len(selektirani_profili) == 2:
+                        pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                        biranje_profila_bool = False
+                if BACK.checkForInput(biranje_mouse_poz):
+                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                    biranje_profila_bool = False
+                    zmaj = True
+                    break
+                if len(selektirani_profili) <= 2:
+                    for i in range(8):
+                        if PLAYERI_LISTA_GUMBOVA[i].checkForInput(biranje_mouse_poz):
+                            pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
+                            if PLAYERI_IMENA.get(f"player{i+1}") == "Napravi profil":
+                                pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
+                                pass
+                            else:
+                                if len(selektirani_profili)<2:
+                                    PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 75, 'Black', 411, 91, '#D74B4B', '#77dd77',GUMBOVI_POZICIJE[i])
+                                    PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
+                                    GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:1})
+                                if PLAYERI_IMENA.get(f"player{i+1}") in selektirani_profili:
+                                    selektirani_profili.remove(PLAYERI_IMENA.get(f"player{i+1}")) 
+                                    PLAYERI_LISTA_GUMBOVA[i] = Button(PLAYERI_IMENA.get(f"player{i+1}"), 30, 'Black', 411, 91, '#475F77', '#77dd77',GUMBOVI_POZICIJE[i])
+                                    PLAYERI_LISTA_GUMBOVA[i].update(PROZOR)
+                                    GUMBOVI_METAMORFOZA.update({PLAYERI_LISTA_GUMBOVA[i]:0})
+                                elif PLAYERI_IMENA.get(f"player{i+1}") not in selektirani_profili:
+                                    selektirani_profili.append(PLAYERI_IMENA.get(f"player{i+1}"))
+                                if len(selektirani_profili) == 3:
+                                    selektirani_profili.remove(selektirani_profili[2])
+                    
+                
+                            
+        pygame.display.update()
+
+
 def gridA(pozicija):
     global izrada_liste_A
     global lista_rect_kvadrata_A
@@ -517,7 +953,7 @@ def gridA(pozicija):
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48
-#mreža drugog igrača
+
 def gridB(pozicija):
     global izrada_liste_B
     global lista_rect_kvadrata_B
@@ -591,7 +1027,7 @@ def gridB(pozicija):
             slovo_rect = slovo.get_rect(topleft = (slovo_x, slovo_y))
             PROZOR.blit(slovo, slovo_rect)
             slovo_x += 48     
-#obrub
+
 def crtanje_obruba_hover(play_mouse_pos):
     for i in range(5):
         poz_u_rectu = play_mouse_pos[0] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.x, play_mouse_pos[1] - SUM_POSTAVLJANJE_BRODOVI_LISTA[i].rect.y #Postavlja 0,0 koordinate za poziciju miša u rect.topleft, a povećava se kretanjem unutar tog recta
@@ -634,7 +1070,6 @@ def crtanje_obruba_hover(play_mouse_pos):
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
                     break
 
-
 def crtanje_pozadine(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
@@ -645,8 +1080,6 @@ def crtanje_pozadine(play_mouse_pos):
                 PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[i][0],OBRUBI_BRODOVI_CRTANJE[i][1])
     crtanje_obruba_hover(play_mouse_pos)
             
-           
-
 def provjera_hovera(brod,lista_rect_kvadrata,mouse_pos,brodovi_rotacija): #Crveni i zeleni hoveri
     for kvadrat in lista_rect_kvadrata:
             if kvadrat.collidepoint(mouse_pos):
@@ -1231,6 +1664,38 @@ def postavljanje_igracaB():
         pygame.display.update()
         clock.tick(FPS)
 
+
+def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
+    TAJMER3 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_3sec.png")).convert_alpha()
+    TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png")).convert_alpha()
+    TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png")).convert_alpha()
+    font = pygame.font.Font(None, 30)
+    tekst_surf = font.render('Idući igrač za:', False, 'White')
+    tekst_rect = tekst_surf.get_rect(midtop = (640,160))
+    tajmer_rect = TAJMER3.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER3, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)
+    tajmer_rect = TAJMER2.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER2, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)
+    tajmer_rect = TAJMER1.get_rect(midtop = (640, 210))
+    PROZOR.fill("Black")
+    PROZOR.blit(tekst_surf, tekst_rect)
+    PROZOR.blit(TAJMER1, tajmer_rect)
+    pygame.display.update()
+    time.sleep(1)
+
+
+def crtanje_ekrana_igranje():
+    PROZOR.blit(VODA_IGRANJE, VODA_IGRANJE_RECT)
+    PROZOR.blit(BG_IGRANJE,BG_IGRANJE_RECT)
+
 def crtanje_fulanih_podrucja():  # Funkcija crta područja na gridu gdje su oba igrača fulala brod
     for i in range(0,100):
             rectA = lista_rect_kvadrata_A[i]
@@ -1539,10 +2004,6 @@ def gadanje(igrac):  # Funkcija u listi imena kvadrata upisuje x i updejta rezul
             else:
                 animacija_fulanog((odabrani_kvadrat_rectB.topleft))                      
 
-def crtanje_ekrana_igranje():
-    PROZOR.blit(VODA_IGRANJE, VODA_IGRANJE_RECT)
-    PROZOR.blit(BG_IGRANJE,BG_IGRANJE_RECT)
-
 def igranje_A_ekran():
     global zmaj, provjera_gadanja
     zmaj = False
@@ -1631,7 +2092,9 @@ def igranje_B_ekran():
                 pass
         pygame.display.update()
         clock.tick(FPS)        
-        
+
+
+
 def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata igrača i restart gumb i
     global zapis_rezultata_jednom
     global rezultat_desno
@@ -1707,6 +2170,15 @@ def end_screen(rezultat1, rezultat2): #end screen i dugotrajni zapis rezultata i
     
     pygame.display.update()
 
+def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
+    global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB, zapis_rezultata_jednom
+    postavljen_kvadratA = False
+    postavljen_kvadratB = False
+    lista_rect_kvadrata_A = []
+    lista_rect_kvadrata_B = []
+    izrada_liste_A = True
+    izrada_liste_B = True
+    zapis_rezultata_jednom = True
 
 def linija_playscore_animacija(i):
     global linija_key_index, linija_playscore_surf, trenutno_ime_upis
@@ -1772,7 +2244,10 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             player_gumb.update(PROZOR)
             player_gumb.changeColor(score_mouse_pos)
             player_gumb.update(PROZOR)                    
-        CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        if list(PLAYERI_IMENA.values()).count("Napravi profil") <= 6:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        else:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#FF0000', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
@@ -2029,207 +2504,6 @@ def score_screen():
         clock.tick(FPS)
     for i in range (8):
         score[i] = score[i]+"\n"
-
-def resetiranje_prije_igre(): # Resetira listu rectangleova prije svakog igranja
-    global lista_rect_kvadrata_A, lista_rect_kvadrata_B, izrada_liste_A, izrada_liste_B, postavljen_kvadratA, postavljen_kvadratB, zapis_rezultata_jednom
-    postavljen_kvadratA = False
-    postavljen_kvadratB = False
-    lista_rect_kvadrata_A = []
-    lista_rect_kvadrata_B = []
-    izrada_liste_A = True
-    izrada_liste_B = True
-    zapis_rezultata_jednom = True
-
-def pauza_prije_promjene_igraca():  # Napravi pauzu od 3 sek između igrača
-    TAJMER3 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_3sec.png")).convert_alpha()
-    TAJMER2 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_2sec.png")).convert_alpha()
-    TAJMER1 = pygame.image.load(os.path.join("potapanje brodova", "tajmer_1sec.png")).convert_alpha()
-    font = pygame.font.Font(None, 30)
-    tekst_surf = font.render('Idući igrač za:', False, 'White')
-    tekst_rect = tekst_surf.get_rect(midtop = (640,160))
-    tajmer_rect = TAJMER3.get_rect(midtop = (640, 210))
-    PROZOR.fill("Black")
-    PROZOR.blit(tekst_surf, tekst_rect)
-    PROZOR.blit(TAJMER3, tajmer_rect)
-    pygame.display.update()
-    time.sleep(1)
-    tajmer_rect = TAJMER2.get_rect(midtop = (640, 210))
-    PROZOR.fill("Black")
-    PROZOR.blit(tekst_surf, tekst_rect)
-    PROZOR.blit(TAJMER2, tajmer_rect)
-    pygame.display.update()
-    time.sleep(1)
-    tajmer_rect = TAJMER1.get_rect(midtop = (640, 210))
-    PROZOR.fill("Black")
-    PROZOR.blit(tekst_surf, tekst_rect)
-    PROZOR.blit(TAJMER1, tajmer_rect)
-    pygame.display.update()
-    time.sleep(1)        
-    
-def play():
-    global lista_imena_kvadrata_A
-    global lista_imena_kvadrata_B
-    global restart
-    global zmaj
-    global postavljen_kvadratA
-    global postavljen_kvadratB
-    global rezultat_A_igrac
-    global rezultat_B_igrac
-    global biranje_profila_bool
-    global imenovanje_profila_bool
-    global selektirani_profili
-    zmaj = False
-    resetiranje_prije_igre()
-    selektirani_profili = [] 
-    resetiranje_prije_igre()
-    imenovanje_profila()
-    if zmaj == True:
-        return
-    biranje_profila()
-    if zmaj == True:
-        return
-    pp_run = True
-    while pp_run == True:
-        postavljanje_igracaA()
-        if zmaj == True:
-            pp_run = False
-            break
-        pauza_prije_promjene_igraca()
-        resetiranje_prije_igre()
-        postavljanje_igracaB()
-        if zmaj == True:
-            pp_run = False
-            break
-        rezultat_A_igrac = 17
-        rezultat_B_igrac = 17
-        run = True
-        while run == True:
-            pauza_prije_promjene_igraca()
-            resetiranje_prije_igre()
-            igranje_A_ekran()
-            if zmaj == True:
-                pp_run = False
-                run = False
-                break
-            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
-                run = False
-                break    
-            pauza_prije_promjene_igraca()
-            resetiranje_prije_igre()
-            igranje_B_ekran()
-            if zmaj == True:
-                pp_run = False
-                run = False
-                break
-            if rezultat_A_igrac == 0 or rezultat_B_igrac == 0:
-                run = False
-        if zmaj == True:
-            pp_run = False
-            break
-        restart = False
-        while restart == False:
-            end_screen(rezultat_A_igrac,rezultat_B_igrac)
-            if zmaj == True:
-                pp_run = False
-                restart = True
-                break
-        lista_imena_kvadrata_A = []   
-        lista_imena_kvadrata_B = [] 
-        resetiranje_prije_igre()
-
-def animacija_bombi():
-    global bomba_index
-    bomba_index += 0.12
-    if bomba_index >= len(lista_bomba_animacija):
-        bomba_index = 0
-    bomba_surf = lista_bomba_animacija[int(bomba_index)]
-    bomba_rect = bomba_surf.get_rect(topleft=(0,0))
-    PROZOR.blit(bomba_surf, bomba_rect)
-
-def animacija_broda():
-    global brod_index
-    brod_index += 0.09
-    if brod_index >= len(lista_brod_animacija):
-        brod_index = 0
-    brod_surf = lista_brod_animacija[int(brod_index)]
-    brod_rect = brod_surf.get_rect(topleft=(0,0))
-    PROZOR.blit(brod_surf, brod_rect)
-
-def animacija_more():
-    global more_index
-    more_index += 0.02
-    if more_index >= len(lista_more_animacija):
-        more_index = 0
-    more_surf = lista_more_animacija[int(more_index)]
-    more_rect = more_surf.get_rect(topleft=(0,0))
-    PROZOR.blit(more_surf, more_rect)
-
-def main():
-    global zmaj
-    tupi_zvuk = 1
-    gumboslav = None
-    PANORAMA = pygame.image.load(os.path.join("main_menu", "background.png" )).convert_alpha()
-    PANORAMA_RECT = PANORAMA.get_rect(topleft=(0,0))
-    NASLOV = pygame.image.load(os.path.join("main_menu", "naslov.png" )).convert_alpha()
-    NASLOV_RECT = NASLOV.get_rect(topleft=(224,32))
-    while True:
-        zmaj = False
-        PROZOR.fill('White')
-        PROZOR.blit(PANORAMA, PANORAMA_RECT)
-        animacija_bombi()
-        PROZOR.blit(NASLOV, NASLOV_RECT)
-        animacija_broda()
-        animacija_more()
-        PROZOR.blit(NASLOV, NASLOV_RECT)
-        menu_mouse_poz = pygame.mouse.get_pos()
-        GUMB_PLAY = Button(text_input = "Igraj", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,250))
-        GUMB_SCORE = Button(text_input = "Rezultati", text_size = 30, text_color = 'Black', rect_width = 120, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#77dd77', pos = (640,350))
-        GUMB_EXIT = Button(text_input = "Izađi", text_size = 30, text_color = 'Black', rect_width = 80, rect_height = 40, rect_color = '#DADBDD', hoveringRect_color = '#D74B4B', pos = (640,450))
-        MAIN_GUMBOVI_LISTA = {GUMB_PLAY: "GUMB_PLAY", GUMB_SCORE: "GUMB_SCORE", GUMB_EXIT: "GUMB_EXIT"}
-        
-        for gumb in [GUMB_PLAY, GUMB_SCORE, GUMB_EXIT]:
-            gumb.changeColor(menu_mouse_poz)
-            gumb.update(PROZOR)
-            
-            #Zvuk
-            
-            if gumb.checkForInput(menu_mouse_poz) == True and tupi_zvuk == 1:
-                pygame.mixer.Sound.play(TUPI_GUMB_ZVUK)
-                gumboslav = MAIN_GUMBOVI_LISTA.get(gumb)
-                tupi_zvuk = 0
-            elif MAIN_GUMBOVI_LISTA.get(gumb) == gumboslav and gumb.checkForInput(menu_mouse_poz) == False:
-                tupi_zvuk = 1
-                
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    esc_screen('Želiš li izaći iz igre?', PROZOR)
-                    if zmaj == True:
-                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
-                        time.sleep(1.2)
-                        pygame.quit()
-                        sys.exit()
-                    else: pass
-            if event.type == MOUSEBUTTONDOWN:
-                if GUMB_PLAY.checkForInput(menu_mouse_poz):
-                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    play()
-                if GUMB_SCORE.checkForInput(menu_mouse_poz):
-                    pygame.mixer.Sound.play(KLIK_GUMB_ZVUK)
-                    score_screen()
-                if GUMB_EXIT.checkForInput(menu_mouse_poz):
-                    esc_screen('Želiš li izaći iz igre?', PROZOR)
-                    if zmaj == True:
-                        pygame.mixer.Sound.play(EXIT_GUMB_ZVUK)
-                        time.sleep(1.2)
-                        pygame.quit()
-                        sys.exit()
-                    else: pass
-        pygame.display.update()
-        clock.tick(FPS)
 
 if __name__ == "__main__":
     main()
