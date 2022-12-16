@@ -574,8 +574,8 @@ def play():
         if zmaj == True:
             pp_run = False
             break
-        rezultat_A_igrac = 17
-        rezultat_B_igrac = 17
+        rezultat_A_igrac = 3
+        rezultat_B_igrac = 3
         run = True
         while run == True:
             pauza_prije_promjene_igraca()
@@ -676,7 +676,10 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
             player_gumb.update(PROZOR)
             player_gumb.changeColor(score_mouse_pos)
             player_gumb.update(PROZOR)                    
-        CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        if list(PLAYERI_IMENA.values()).count("Napravi profil") <= 6:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#77dd77', (1137,651))
+        else:
+            CHOOSE_PROFILE = Button("Potvrdi", 30, 'Black', 119,55, '#DADBDD', '#D74B4B', (1137,651))
         CHOOSE_PROFILE.update(PROZOR)
         CHOOSE_PROFILE.changeColor(score_mouse_pos)
         CHOOSE_PROFILE.update(PROZOR)
@@ -724,21 +727,24 @@ def imenovanje_profila(): #upisivanje imena igrača/profila za pamćenje rezulta
                         trenutno_ime_upis = ""                    
                         PLAYERI_IMENA.update({f"player{i+1}":""})
                     if CHOOSE_PROFILE.checkForInput(score_mouse_pos):
-                        if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
-                            pass
-                        else:
-                            score[i] = "0\n"
-                        
-                        with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
-                            profili = []
-                            profili = datoteka.readlines()
-                            for z in range (8):
-                                profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
-                        with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(profili) 
-                        with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
-                            datoteka.writelines(score)         
-                        imenovanje_profila_bool = False
+                        if list(PLAYERI_IMENA.values()).count("Napravi profil") <= 6:
+                            if PLAYERI_IMENA.get(f"player{i+1}")+"\n"== profili[i]:
+                                pass
+                            else:
+                                score[i] = "0\n"
+                            
+                            with open("potapanje brodova\profili.txt", encoding="utf-8") as datoteka:
+                                profili = []
+                                profili = datoteka.readlines()
+                                for z in range (8):
+                                    profili[z] = PLAYERI_IMENA.get(f"player{z+1}") + "\n"
+                            with open("potapanje brodova\profili.txt","wt",encoding="utf-8",) as datoteka:
+                                datoteka.writelines(profili) 
+                            with open("potapanje brodova\score.txt","wt",encoding="utf-8",) as datoteka:
+                                datoteka.writelines(score)         
+                            imenovanje_profila_bool = False
+                        else:                            
+                            pygame.mixer.Sound.play(VRATI_NAZAD_ZVUK)
                         
                         
             if event.type == pygame.KEYDOWN:
@@ -1070,7 +1076,7 @@ def crtanje_obruba_hover(play_mouse_pos):
                     PROZOR.blit(OBRUBI_BRODOVI_CRTANJE[4][0],OBRUBI_BRODOVI_CRTANJE[4][1])
                     break
 
-def crtanje_pozadine(play_mouse_pos):
+def crtanje_pozadine_postavljanje(play_mouse_pos):
     PROZOR.blit(GRID_VODA,GRID_VODA_RECT)
     PROZOR.blit(BG_POSTAVLJANJE,BG_POSTAVALJANJE_RECT), PROZOR.blit(SUM_POSTAVLJANJE,SUM_POSTAVLJANJE_RECT)
     for i in range(len(SUM_POSTAVLJANJE_BRODOVI_CRTAJ)):
@@ -1124,7 +1130,7 @@ def čekanje_za_odabir(brod,brod_r,brod_velkiX,brodovi_rotacija,Brodovi_single_g
     while idi:
         čekanje_mouse_poz = pygame.mouse.get_pos()
         PROZOR.fill("White")
-        crtanje_pozadine(čekanje_mouse_poz)
+        crtanje_pozadine_postavljanje(čekanje_mouse_poz)
         if igrač == 'A':
             gridA('lijevo')
         elif igrač == 'B':
@@ -1379,7 +1385,7 @@ def postavljanje_igracaA():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine(play_mouse_pos)
+        crtanje_pozadine_postavljanje(play_mouse_pos)
         gridA('lijevo')
         PROZOR.blit(crtanje_imena_lista_A[0],crtanje_imena_lista_A[1])
         for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
@@ -1572,7 +1578,7 @@ def postavljanje_igracaB():
         play_mouse_pos = pygame.mouse.get_pos()
         zmaj = False
         PROZOR.fill("White")
-        crtanje_pozadine(play_mouse_pos)
+        crtanje_pozadine_postavljanje(play_mouse_pos)
         gridB('lijevo')
         PROZOR.blit(crtanje_imena_lista_B[0],crtanje_imena_lista_B[1])
         for brodic in SUM_POSTAVLJANJE_BRODOVI_LISTA:
