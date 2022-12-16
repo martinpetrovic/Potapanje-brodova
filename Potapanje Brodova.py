@@ -1,4 +1,3 @@
-from ast import main
 import pygame, sys
 from pygame.locals import *
 import os
@@ -574,8 +573,8 @@ def play():
         if zmaj == True:
             pp_run = False
             break
-        rezultat_A_igrac = 3
-        rezultat_B_igrac = 3
+        rezultat_A_igrac = 17
+        rezultat_B_igrac = 17
         run = True
         while run == True:
             pauza_prije_promjene_igraca()
